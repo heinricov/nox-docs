@@ -19,3 +19,21 @@ To use the components in your app, import them from the `ui` package.
 ```tsx
 import { Button } from "@workspace/ui/components/button";
 ```
+
+# nox
+
+## APPS
+
+- [cli](apps/cli)
+- [web](apps/web)
+
+### CLI
+
+packages:
+
+- @clack/core
+- @clack/prompts
+
+scripts:
+
+- npm start
