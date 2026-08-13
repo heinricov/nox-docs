@@ -2,18 +2,13 @@
 
 import * as React from "react"
 
+import { NavCollaps } from "@nox/layouts/nav-collaps"
 import { NavMain } from "@nox/layouts/nav-main"
-import { NavProjects } from "@nox/layouts/nav-projects"
-import { NavSecondary } from "@nox/layouts/nav-secondary"
-import { NavUser } from "@nox/layouts/nav-user"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from "@nox/components/sidebar"
 import {
   TerminalSquareIcon,
@@ -25,102 +20,109 @@ import {
   FrameIcon,
   PieChartIcon,
   MapIcon,
-  TerminalIcon,
+  Home,
+  Settings,
 } from "lucide-react"
+import { GroupSwitcher } from "@nox/layouts/group-switcher"
+import { NavLogo } from "@nox/layouts/nav-logo"
 
 const data = {
+  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
   user: {
     name: "shadcn",
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  navMain: [
-    {
-      title: "Playground",
-      url: "#",
-      icon: <TerminalSquareIcon />,
-      isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: <BotIcon />,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: <BookOpenIcon />,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: <Settings2Icon />,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
-  ],
+  navMain: {
+    label: "Platform",
+    items: [
+      {
+        title: "Playground",
+        url: "#",
+        icon: <TerminalSquareIcon />,
+        isActive: true,
+        items: [
+          {
+            title: "History",
+            url: "#",
+          },
+          {
+            title: "Starred",
+            url: "#",
+          },
+          {
+            title: "Settings",
+            url: "#",
+          },
+        ],
+      },
+      {
+        title: "Models",
+        url: "#",
+        icon: <BotIcon />,
+        items: [
+          {
+            title: "Genesis",
+            url: "#",
+          },
+          {
+            title: "Explorer",
+            url: "#",
+          },
+          {
+            title: "Quantum",
+            url: "#",
+          },
+        ],
+      },
+      {
+        title: "Documentation",
+        url: "#",
+        icon: <BookOpenIcon />,
+        items: [
+          {
+            title: "Introduction",
+            url: "#",
+          },
+          {
+            title: "Get Started",
+            url: "#",
+          },
+          {
+            title: "Tutorials",
+            url: "#",
+          },
+          {
+            title: "Changelog",
+            url: "#",
+          },
+        ],
+      },
+      {
+        title: "Settings",
+        url: "#",
+        icon: <Settings2Icon />,
+        items: [
+          {
+            title: "General",
+            url: "#",
+          },
+          {
+            title: "Team",
+            url: "#",
+          },
+          {
+            title: "Billing",
+            url: "#",
+          },
+          {
+            title: "Limits",
+            url: "#",
+          },
+        ],
+      },
+    ],
+  },
   navSecondary: [
     {
       title: "Support",
@@ -133,23 +135,45 @@ const data = {
       icon: <SendIcon />,
     },
   ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: <FrameIcon />,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: <PieChartIcon />,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: <MapIcon />,
-    },
-  ],
+  menus: {
+    items: [
+      {
+        title: "Home",
+        url: "/",
+        icon: <Home />,
+      },
+      {
+        title: "Documentation",
+        url: "/docs",
+        icon: <BookOpenIcon />,
+      },
+      {
+        title: "Contact",
+        url: "/contact",
+        icon: <SendIcon />,
+      },
+    ],
+  },
+  docsMenus: {
+    label: "Documentation",
+    items: [
+      {
+        title: "Home",
+        url: "/",
+        icon: <Home />,
+      },
+      {
+        title: "Installation",
+        url: "/docs/installation/",
+        icon: <Settings />,
+      },
+      {
+        title: "Travel",
+        url: "#",
+        icon: <MapIcon />,
+      },
+    ],
+  },
 }
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -158,27 +182,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {...props}
     >
       <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton size="lg" render={<a href="#" />}>
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                <TerminalIcon className="size-4" />
-              </div>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">Acme Inc</span>
-                <span className="truncate text-xs">Enterprise</span>
-              </div>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <GroupSwitcher
+          versions={data.versions}
+          defaultVersion={data.versions[0] || ""}
+        />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        <NavMain items={data.menus.items} />
+        <NavMain label={data.docsMenus.label} items={data.docsMenus.items} />
+        <NavCollaps label={data.navMain.label} items={data.navMain.items} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavLogo className="rounded-md border sm:hidden" />
       </SidebarFooter>
     </Sidebar>
   )
