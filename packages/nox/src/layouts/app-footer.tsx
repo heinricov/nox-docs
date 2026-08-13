@@ -5,7 +5,6 @@ import Link from "next/link"
 import { RiTwitterXFill } from "react-icons/ri"
 import { FaGithub } from "react-icons/fa"
 import { cn } from "@nox/lib/utils"
-import { useSidebar } from "@nox/components/sidebar"
 import { NavLogo } from "./nav-logo"
 
 const links = [
@@ -27,18 +26,11 @@ const links = [
   },
 ]
 
-export function AppFooter({
-  sidebarVisible = false,
-}: {
-  sidebarVisible?: boolean
-}) {
-  const { state } = useSidebar()
-
+export function AppFooter() {
   return (
     <footer
       className={cn(
         "border-t bg-background px-4 py-2 transition-[padding] duration-200 ease-linear"
-        // sidebarVisible && state === "expanded" && "md:pl-(--sidebar-width)"
       )}
     >
       <div className="max-w-container mx-auto w-full divide-y">

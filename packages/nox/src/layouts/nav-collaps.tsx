@@ -31,7 +31,9 @@ export function NavCollaps({ label, items }: NavCollapsProps) {
   return (
     <SidebarGroup>
       {label !== null ? (
-        <SidebarGroupLabel>{label ?? "Platform"}</SidebarGroupLabel>
+        <SidebarGroupLabel className="text-lg">
+          {label ?? "Platform"}
+        </SidebarGroupLabel>
       ) : null}
 
       <SidebarMenu>
@@ -44,6 +46,7 @@ export function NavCollaps({ label, items }: NavCollapsProps) {
             <SidebarMenuButton
               tooltip={item.title}
               render={<a href={item.url} />}
+              className="text-lg"
             >
               {item.icon}
 
@@ -65,7 +68,10 @@ export function NavCollaps({ label, items }: NavCollapsProps) {
                   <SidebarMenuSub>
                     {item.items.map((subItem) => (
                       <SidebarMenuSubItem key={subItem.title}>
-                        <SidebarMenuSubButton render={<a href={subItem.url} />}>
+                        <SidebarMenuSubButton
+                          render={<a href={subItem.url} />}
+                          className="text-lg"
+                        >
                           <span>{subItem.title}</span>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>

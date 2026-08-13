@@ -40,7 +40,7 @@ export function NoxLayout({ menu, children, targetDir }: NoxLayoutProps) {
               <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
             </SidebarInset>
           </div>
-          <AppFooter sidebarVisible={showSidebar} />
+          <AppFooter />
         </SidebarProvider>
       </div>
     </TooltipProvider>
