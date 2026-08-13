@@ -26,6 +26,11 @@ const links = [
   },
 ]
 
+const socials = [
+  { title: "Twitter / X", href: "/", icon: RiTwitterXFill },
+  { title: "GitHub", href: "/", icon: FaGithub },
+]
+
 export function AppFooter() {
   return (
     <footer
@@ -35,7 +40,19 @@ export function AppFooter() {
     >
       <div className="max-w-container mx-auto w-full divide-y">
         <div className="flex flex-col items-center justify-between gap-4 px-2 pt-3 pb-5 sm:flex-row">
-          <NavLogo />
+          <div className="flex w-full items-center justify-between gap-4 sm:w-auto sm:justify-normal">
+            <NavLogo />
+
+            <ul className="flex items-center gap-4 sm:hidden">
+              {socials.map(({ title, href, icon: Icon }) => (
+                <li key={title}>
+                  <Link href={href} aria-label={title}>
+                    <Icon className="h-5 w-5 text-muted-foreground" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm font-medium">
             {links.map(({ title, href }) => (
@@ -51,14 +68,15 @@ export function AppFooter() {
             reserved.
           </p>
 
-          <div className="flex items-center gap-4">
-            <Link href="/">
-              <RiTwitterXFill className="h-5 w-5 text-muted-foreground" />
-            </Link>
-            <Link href="/">
-              <FaGithub className="h-5 w-5 text-muted-foreground" />
-            </Link>
-          </div>
+          <ul className="hidden items-center gap-4 sm:flex">
+            {socials.map(({ title, href, icon: Icon }) => (
+              <li key={title}>
+                <Link href={href} aria-label={title}>
+                  <Icon className="h-5 w-5 text-muted-foreground" />
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </footer>

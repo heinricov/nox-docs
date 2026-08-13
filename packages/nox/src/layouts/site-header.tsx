@@ -41,7 +41,7 @@ export function SiteHeader() {
           className="sm:hidden data-vertical:h-4 data-vertical:self-auto"
         />
 
-        <div className="flex min-w-0 items-center gap-1 sm:gap-2">
+        <div className="flex min-w-0 items-center gap-1 sm:gap-10">
           <NavLogo />
           <nav className="hidden items-center sm:flex">
             <ol className="flex items-center gap-0.5">
@@ -53,8 +53,8 @@ export function SiteHeader() {
                     className={cn(
                       "inline-flex items-center rounded-md px-2 py-1.5 text-xs font-medium whitespace-nowrap transition-colors lg:px-3 lg:text-sm",
                       isActive(item.href)
-                        ? "bg-muted text-foreground"
-                        : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+                        ? "text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
                     )}
                   >
                     {item.title}

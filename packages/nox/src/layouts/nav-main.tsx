@@ -18,7 +18,7 @@ export function NavMain({ label, items }: NavMainProps) {
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       {label !== null ? (
-        <SidebarGroupLabel className="text-lg">
+        <SidebarGroupLabel className="text-md">
           {label ?? "Menus"}
         </SidebarGroupLabel>
       ) : null}
@@ -29,7 +29,7 @@ export function NavMain({ label, items }: NavMainProps) {
             <SidebarMenuButton
               render={<a href={item.url} />}
               tooltip={item.title}
-              className="text-lg"
+              className="text-xl"
             >
               {item.icon}
               <span>{item.title}</span>

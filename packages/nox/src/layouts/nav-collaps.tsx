@@ -31,7 +31,7 @@ export function NavCollaps({ label, items }: NavCollapsProps) {
   return (
     <SidebarGroup>
       {label !== null ? (
-        <SidebarGroupLabel className="text-lg">
+        <SidebarGroupLabel className="text-md">
           {label ?? "Platform"}
         </SidebarGroupLabel>
       ) : null}
@@ -46,7 +46,7 @@ export function NavCollaps({ label, items }: NavCollapsProps) {
             <SidebarMenuButton
               tooltip={item.title}
               render={<a href={item.url} />}
-              className="text-lg"
+              className="text-xl"
             >
               {item.icon}
 
@@ -70,7 +70,7 @@ export function NavCollaps({ label, items }: NavCollapsProps) {
                       <SidebarMenuSubItem key={subItem.title}>
                         <SidebarMenuSubButton
                           render={<a href={subItem.url} />}
-                          className="text-lg"
+                          className="text-xl"
                         >
                           <span>{subItem.title}</span>
                         </SidebarMenuSubButton>
