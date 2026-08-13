@@ -91,7 +91,7 @@ export async function MdxLayout({
   }))
 
   return (
-    <section className="flex min-h-svh w-full justify-center overflow-x-clip bg-background px-6 py-4 text-foreground">
+    <section className="flex min-h-svh w-full justify-center overflow-x-clip bg-background px-2 py-4 text-foreground">
       <div className="flex w-full max-w-6xl flex-col gap-2 lg:flex-row lg:gap-10">
         <div className="flex min-w-0 flex-1 flex-col gap-5">
           <MdxBreadcrumb items={breadcrumbs} />

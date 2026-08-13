@@ -32,10 +32,10 @@ export function MdxHeader({
         </h1>
         <MdxCopyPage />
       </div>
-      <p className="mt-3 text-muted-foreground">
+      {/* <p className="mt-3 text-muted-foreground">
         {description ??
           "Connect a provider, protect your routes, and read the current session on the server."}
-      </p>
+      </p> */}
       {created || updated ? (
         <div className="mt-4 flex flex-col gap-1">
           <p className="text-xs text-muted-foreground tabular-nums">
