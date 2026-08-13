@@ -9,6 +9,7 @@ import { TooltipProvider } from "@nox/components/tooltip"
 import { AppSidebar } from "./app-sidebar"
 
 import "@nox/styles/globals.css"
+import { AppFooter } from "./app-footer"
 
 type NoxLayoutProps = {
   menu: SidebarMenu[]
@@ -39,6 +40,7 @@ export function NoxLayout({ menu, children, targetDir }: NoxLayoutProps) {
               <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
             </SidebarInset>
           </div>
+          <AppFooter sidebarVisible={showSidebar} />
         </SidebarProvider>
       </div>
     </TooltipProvider>

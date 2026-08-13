@@ -1,26 +1,25 @@
 import Link from "next/link"
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@nox/components/sidebar"
 import { cn } from "@nox/lib/utils"
 import { TerminalIcon } from "lucide-react"
 
 export function NavLogo({ className }: { className?: string }) {
   return (
-    <SidebarMenu className={cn("", className)}>
-      <SidebarMenuItem>
-        <SidebarMenuButton size="lg" render={<Link href="/" />}>
-          <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-            <TerminalIcon className="size-4" />
-          </div>
-          <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-medium">Acme Inc</span>
-            <span className="truncate text-xs">Enterprise</span>
-          </div>
-        </SidebarMenuButton>
-      </SidebarMenuItem>
-    </SidebarMenu>
+    <Link
+      href="/"
+      className={cn(
+        "inline-flex items-center gap-2 rounded-md px-2 py-1.5 transition-colors hover:bg-muted/60",
+        className
+      )}
+    >
+      <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+        <TerminalIcon className="size-4" />
+      </div>
+      <div className="grid text-left text-sm leading-tight">
+        <span className="truncate font-medium">Acme Inc</span>
+        <span className="truncate text-xs text-muted-foreground">
+          Enterprise
+        </span>
+      </div>
+    </Link>
   )
 }

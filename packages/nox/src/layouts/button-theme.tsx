@@ -1,8 +1,8 @@
 "use client"
 
 import { Button } from "@nox/components/button"
+import { useTheme } from "@nox/lib/theme"
 import { MoonIcon, SunIcon } from "lucide-react"
-import { useTheme } from "next-themes"
 import { useEffect, useState } from "react"
 
 export function ButtonTheme() {

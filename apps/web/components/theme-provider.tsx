@@ -1,23 +1,25 @@
 "use client"
 
 import * as React from "react"
-import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes"
+import { ThemeProvider as NoxThemeProvider, useTheme } from "@nox/lib/theme"
 
 function ThemeProvider({
   children,
   ...props
-}: React.ComponentProps<typeof NextThemesProvider>) {
+}: {
+  children: React.ReactNode
+  defaultTheme?: "light" | "dark" | "system"
+  disableTransitionOnChange?: boolean
+}) {
   return (
-    <NextThemesProvider
-      attribute="class"
+    <NoxThemeProvider
       defaultTheme="system"
-      enableSystem
       disableTransitionOnChange
       {...props}
     >
       <ThemeHotkey />
       {children}
-    </NextThemesProvider>
+    </NoxThemeProvider>
   )
 }
 
