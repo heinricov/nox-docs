@@ -1,6 +1,5 @@
 "use client"
 
-import type { ReactNode } from "react"
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -8,30 +7,20 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@nox/components/sidebar"
+import type { NavMainItem } from "@nox/layouts/sidebar"
 
-export function NavMain({
-  label,
-  items,
-}: {
-  /**
-   * Label grup menu yang ditampilkan di atas daftar item.
-   * @default "Projects"
-   */
+type NavMainProps = {
   label?: string
-  /**
-   * Daftar item navigasi flat (level tunggal) dengan icon opsional.
-   */
-  items: {
-    title: string
-    url: string
-    icon?: ReactNode
-  }[]
-}) {
+  items: NavMainItem[]
+}
+
+export function NavMain({ label, items }: NavMainProps) {
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       {label !== null ? (
         <SidebarGroupLabel>{label ?? "Menus"}</SidebarGroupLabel>
       ) : null}
+
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.title}>
