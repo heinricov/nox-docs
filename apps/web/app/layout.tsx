@@ -4,6 +4,8 @@ import "@workspace/ui/globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@workspace/ui/lib/utils"
 
+import { NoxLayout } from "@nox/layouts/nox-layout"
+
 const oxanium = Oxanium({ subsets: ["latin"], variable: "--font-sans" })
 
 const fontMono = Geist_Mono({
@@ -28,7 +30,9 @@ export default function RootLayout({
       )}
     >
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <NoxLayout>{children}</NoxLayout>
+        </ThemeProvider>
       </body>
     </html>
   )
