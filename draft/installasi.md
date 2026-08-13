@@ -117,3 +117,20 @@ export default function Page() {
 │       ├── index.mdx
 │       ├── setup.mdx
 ```
+
+4. update eslint.config.ts
+
+```ts
+import { nextJsConfig } from "@workspace/eslint-config/next-js"
+
+/** @type {import("eslint").Linter.Config} */
+export default nextJsConfig
+```
+
+5. Delete type module di package.json
+
+```json
+{
+  "type": "module"
+}
+```
