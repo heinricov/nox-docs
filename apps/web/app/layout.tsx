@@ -29,51 +29,50 @@ export const sidebarMenu: SidebarMenu[] = [
   },
 
   {
-    type: "collaps",
-    label: "Components",
+    type: "main",
+    label: "Documentation",
     items: [
       {
-        title: "Tools",
-        url: "#",
-        items: [
-          {
-            title: "Code Block",
-            url: "/components/code-block",
-          },
-          {
-            title: "Inline",
-            url: "/components/inline",
-          },
-        ],
+        title: "Introduction",
+        url: "/docs/introduction",
       },
       {
-        title: "UI",
-        url: "#",
-        items: [
-          {
-            title: "Card",
-            url: "/components/card",
-          },
-          {
-            title: "Avatar",
-            url: "/components/avatar",
-          },
-        ],
+        title: "Installation",
+        url: "/docs/installation",
+      },
+      {
+        title: "CLI",
+        url: "/docs/cli",
       },
     ],
   },
-
   {
     type: "main",
-    label: "Menus",
+    label: "Components",
     items: [
       {
-        title: "Settings",
-        url: "/setting",
+        title: "Components Preview",
+        url: "/docs/mdx/component-preview",
       },
       {
-        title: "About",
-        url: "/about",
+        title: "Code Block",
+        url: "/docs/mdx/code-block",
+      },
+      {
+        title: "Code Diff",
+        url: "/docs/mdx/code-diff",
+      },
+      {
+        title: "Package Manager Tabs",
+        url: "/docs/mdx/package-manager-tabs",
+      },
+      {
+        title: "Project Tree",
+        url: "/docs/mdx/project-tree",
+      },
+      {
+        title: "Terminal View",
+        url: "/docs/mdx/terminal-view",
       },
     ],
   },
