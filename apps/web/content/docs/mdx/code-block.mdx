@@ -1,0 +1,143 @@
+---
+title: "CodeBlock"
+description: "Komponen untuk menampilkan fenced code block dalam kartu — dengan label nama file dan tombol salin, atau versi inline yang ringkas"
+---
+
+# CodeBlock
+
+`CodeBlock` membungkus fenced code block dalam kartu dengan tombol **salin kode**. Kode di-render seperti tab **Code** di `ComponentPreview`: di-highlight dengan shiki (semua bahasa & syntax), diberi **nomor baris**, serta dapat di-**expand/collapse** saat kode panjang.
+
+Ada dua varian:
+
+- **Default** — kartu dengan header berisi nama file (atau label `code`) dan tombol salin.
+- **Inline** — versi ringkas tanpa header; tombol salin melayang di pojok kanan atas.
+
+## Import
+
+Di file MDX, `CodeBlock` sudah terdaftar otomatis di `MdxRenderer` — langsung bisa dipakai tanpa import (lihat [1. Penggunaan di File MDX](#1-penggunaan-di-file-mdx)).
+
+Di file React/TSX, import terlebih dahulu:
+
+<CodeBlock inline>
+  ```tsx import {CodeBlock} from "mdxui/components/common/code-block" ```
+</CodeBlock>
+
+## Props
+
+| Prop        | Tipe        | Deskripsi                                                              |
+| ----------- | ----------- | ---------------------------------------------------------------------- |
+| `filename`  | `string`    | Label nama file di header. Diabaikan pada mode `inline` (tanpa header) |
+| `inline`    | `boolean`   | Mode ringkas: tanpa header, sudut lebih kecil, tombol salin melayang   |
+| `children`  | `ReactNode` | Fenced code block (di MDX) atau string kode mentah (di React/TSX)      |
+| `className` | `string`    | Kelas tambahan untuk pembungkus kartu                                  |
+
+---
+
+## 1. Penggunaan di File MDX
+
+Berikan `children` berupa fenced code block. Bahasa kode mengikuti fence (misalnya `tsx`, `bash`, `json`) dan di-highlight seperti blok kode biasa.
+
+### 1.1 Default
+
+<ComponentPreview title="CodeBlock Default" fileName="page.mdx">
+  ````mdx
+  <CodeBlock>```tsx const greeting = "Halo, dunia!" ```</CodeBlock>
+  ````
+</ComponentPreview>
+
+### 1.2 Dengan nama file
+
+Gunakan prop `filename` untuk menampilkan label di header — misalnya nama file tujuan atau konteks dari kode tersebut.
+
+<ComponentPreview title="CodeBlock dengan Nama File" fileName="page.mdx">
+  ````mdx
+  <CodeBlock filename="page.mdx">
+    ```tsx import ComponentPreview from
+    "mdxui/components/common/component-preview" ```
+  </CodeBlock>
+  ````
+</ComponentPreview>
+
+### 1.3 Inline
+
+Mode `inline` menampilkan versi ringkas tanpa header: sudut kartu lebih kecil dan tombol salin melayang di pojok kanan atas. Cocok untuk cuplikan kode pendek di tengah alur baca.
+
+<ComponentPreview title="CodeBlock Inline" fileName="page.mdx">
+  ````mdx
+  <CodeBlock inline>
+    ```tsx import ComponentPreview from
+    "mdxui/components/common/component-preview" ```
+  </CodeBlock>
+  ````
+</ComponentPreview>
+
+### 1.4 Kode kompleks dengan JSX
+
+Konten ber-JSX (mengandung `{ ... }`) tidak dapat dievaluasi di tab **Preview** `ComponentPreview`, sehingga contoh berikut ditampilkan langsung lewat `CodeBlock`:
+
+<CodeBlock filename="profile-card.tsx">
+```tsx
+export function ProfileCard() {
+  return (
+    <article className="rounded-xl border bg-card p-5">
+      <h3 className="font-semibold">Ayu Dewi</h3>
+      <p className="text-sm text-muted-foreground">Frontend Developer</p>
+    </article>
+  )
+}
+```
+</CodeBlock>
+
+---
+
+## 2. Penggunaan di File React / TSX
+
+Di file React biasa, import `CodeBlock` terlebih dahulu. `children` berupa string kode mentah (bisa berisi fenced code block, yang akan di-strip otomatis):
+
+<CodeBlock filename="page.tsx">
+```tsx
+import { CodeBlock } from "mdxui/components/common/code-block"
+
+export function Page() {
+  return (
+    <CodeBlock filename="instalasi.sh">
+      {"```bash\npnpm install\n```"}
+    </CodeBlock>
+  )
+}
+```
+</CodeBlock>
+
+<ComponentPreview title="CodeBlock di React" fileName="page.tsx">
+```tsx
+import { CodeBlock } from "mdxui"
+
+export function Demo() {
+  return (
+    <CodeBlock filename="instalasi.sh">
+      {"```bash\npnpm install\n```"}
+    </CodeBlock>
+  )
+}
+```
+</ComponentPreview>
+
+---
+
+## 3. Cara Kerja
+
+1. Di MDX, fenced code block di dalam `<CodeBlock>` diubah oleh `rehype-pretty-code` menjadi elemen `figure` yang sudah di-highlight.
+2. `CodeBlock` mengekstrak teks kode dari children (termasuk token yang di-deduplikasi React Server Components) dan mem-_deteksi_ bahasa — dari prop `filename`, atribut `data-language`, fence, lalu fallback ke JSX.
+3. Kode di-highlight ulang di sisi client dengan shiki (`codeToTokens`) dan dirender dengan nomor baris, mengikuti pola tab **Code** di `ComponentPreview`.
+4. Jika kode lebih dari 10 baris, `CodeBlock` menampilkan tombol **Tampilkan semua / Sembunyikan sebagian**.
+5. Tombol salin menyalin teks kode mentah (tanpa nomor baris) ke clipboard.
+
+---
+
+## 4. Catatan
+
+- `CodeBlock` adalah client component — gunakan langsung di file MDX tanpa memikirkan "use client".
+- Nama file hanya **label semu** — tidak membaca file dari proyek.
+- Di mode `inline`, tombol salin melayang di pojok kanan atas dan kode diberi ruang ekstra agar tidak tertutup.
+- Bahasa dan highlight mengikuti `filename` (jika ada), lalu atribut `data-language` dari fenced code block.
+- `CodeBlock` tersedia di dalam evaluasi `ComponentPreview` (tab Preview) — `import { CodeBlock } from "mdxui"` juga bisa dipakai.

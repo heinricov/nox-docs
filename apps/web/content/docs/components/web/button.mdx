@@ -1,0 +1,59 @@
+---
+title: "Button"
+description: "Komponen tombol dengan berbagai varian dan ukuran"
+---
+
+# Button
+
+Komponen `Button` adalah elemen interaktif untuk aksi utama dan sekunder dalam aplikasi Anda.
+
+## Import
+
+```tsx
+import { Button } from "mdxui/ui/button"
+```
+
+## Varian
+
+| Varian   | Deskripsi                          |
+| -------- | ---------------------------------- |
+| `default`| Tombol utama dengan warna solid    |
+| `outline`| Tombol dengan garis tepi           |
+| `ghost`  | Tombol transparan                  |
+| `link`   | Tombol bergaya tautan              |
+
+## Ukuran
+
+- `sm` — kecil
+- `default` — sedang
+- `lg` — besar
+- `icon` — persegi untuk ikon
+
+## Contoh Penggunaan
+
+```tsx
+<Button size="lg">Get Started</Button>
+<Button variant="outline">Learn More</Button>
+<Button variant="ghost" size="icon">
+  <ArrowUpRight />
+</Button>
+```
+
+## Prop Penting
+
+```tsx
+<Button
+  variant="default"
+  size="default"
+  disabled={false}
+  onClick={() => console.log("clicked")}
+>
+  Klik Saya
+</Button>
+```
+
+- `variant` — mengubah tampilan visual
+- `size` — mengubah ukuran
+- `asChild` — merender sebagai elemen anak (misal `<Link>`)
+
+> **Tip:** gunakan `asChild` untuk merender tombol sebagai `next/link` tanpa kehilangan styling.

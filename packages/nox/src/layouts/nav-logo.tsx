@@ -1,3 +1,4 @@
+import Link from "next/link"
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -10,7 +11,7 @@ export function NavLogo({ className }: { className?: string }) {
   return (
     <SidebarMenu className={cn("", className)}>
       <SidebarMenuItem>
-        <SidebarMenuButton size="lg" render={<a href="#" />}>
+        <SidebarMenuButton size="lg" render={<Link href="/" />}>
           <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
             <TerminalIcon className="size-4" />
           </div>

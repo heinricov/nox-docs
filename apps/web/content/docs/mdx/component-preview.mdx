@@ -1,0 +1,373 @@
+---
+title: "ComponentPreview"
+description: "Komponen untuk menampilkan showcase komponen — area preview langsung plus sumber kode dengan syntax highlighting dalam satu kartu"
+---
+
+# ComponentPreview
+
+`ComponentPreview` menampilkan showcase komponen dalam satu kartu dengan dua tab:
+
+- **Preview** — hasil render komponen secara langsung.
+- **Code** — sumber kode yang otomatis diformat (Prettier), di-highlight (Shiki, tema `github-dark`), dan bisa disalin.
+
+## Fitur Utama
+
+- Dua mode `children`: **komponen langsung** atau **fenced code block**.
+- Evaluasi kode otomatis di browser untuk fenced code block — tanpa build step.
+- Import `mdxui` ter-resolve otomatis (misalnya `import { PackageManagerTabs } from "mdxui"`).
+- Deteksi bahasa kode otomatis dari `fileName` atau bahasa blok kode.
+- Tombol **salin kode**, serta **Tampilkan semua** / **Sembunyikan sebagian** untuk kode panjang.
+- Sudah terdaftar otomatis di `MdxRenderer` — tanpa import di file MDX.
+
+## Cara Kerja
+
+1. `children` diperiksa: **komponen langsung** (JSX) atau **fenced code block** (teks kode).
+2. Untuk fenced code block, sumber kode diambil dari blok kode, lalu **dievaluasi di browser** dengan Babel (`react` + `typescript` preset).
+3. Komponen hasil evaluasi dirender di tab **Preview**; sumber kode aslinya diformat ulang dan di-highlight di tab **Code**.
+4. `fileName` hanya **nama semu** — tidak membaca file dari proyek. Lihat [1.5 Ekspor dari file berbeda?](#15-ekspor-dari-file-berbeda).
+
+## Persyaratan
+
+| Konteks            | Cara pakai                                                                           |
+| ------------------ | ------------------------------------------------------------------------------------ |
+| **File MDX**       | Langsung dipakai tanpa import — `ComponentPreview` sudah terdaftar di `MdxRenderer`. |
+| **File React/TSX** | Import terlebih dahulu dari `mdxui/components/common/component-preview`.             |
+
+---
+
+## 1. Penggunaan di File MDX
+
+Ada dua cara memberi `children`, dan keduanya boleh dipakai di file yang sama:
+
+| Mode                  | Kapan dipakai                                                  | Tab Preview                | Tab Code                                              |
+| --------------------- | -------------------------------------------------------------- | -------------------------- | ----------------------------------------------------- |
+| **Komponen langsung** | Komponen sudah tersedia/terdaftar, tinggal ditampilkan         | render langsung `children` | JSX hasil serialisasi (`react-element-to-jsx-string`) |
+| **Fenced code block** | Ingin menunjukkan sumber kode lengkap yang dievaluasi otomatis | hasil evaluasi kode        | sumber kode asli (dengan highlight)                   |
+
+### 1.1 Komponen langsung
+
+Tulis JSX sebagai `children`. Cocok untuk menampilkan komponen yang sudah ada (komponen `mdxui` atau komponen yang terdaftar di halaman).
+
+<CodeBlock filename="demo-button.mdx">
+```mdx
+<ComponentPreview title="Tombol Demo" fileName="demo-button.tsx">
+  <DemoButton />
+</ComponentPreview>
+```
+</CodeBlock>
+
+<ComponentPreview title="Tombol Demo" fileName="demo-button.tsx">
+  <DemoButton />
+</ComponentPreview>
+
+### 1.2 Fenced code block
+
+Berikan `children` berupa blok kode Markdown (fenced code block) berisi sumber komponen. Kode dievaluasi di browser: komponen yang **diekspor** (`export function` / `export default function`) dipakai sebagai preview.
+
+<CodeBlock filename="alert-notice.mdx">
+````mdx
+<ComponentPreview title="Pemberitahuan" fileName="alert-notice.tsx">
+
+```tsx
+export function AlertNotice() {
+  return (
+    <div className="w-full rounded-md border border-border bg-background px-4 py-3 text-sm text-foreground">
+      <span className="font-semibold text-primary">Info:</span> Pesan berhasil
+      disimpan.
+    </div>
+  )
+}
+```
+
+</ComponentPreview>
+````
+</CodeBlock>
+
+<ComponentPreview title="Pemberitahuan" fileName="alert-notice.tsx">
+
+```tsx
+export function AlertNotice() {
+  return (
+    <div className="w-full rounded-md border border-border bg-background px-4 py-3 text-sm text-foreground">
+      <span className="font-semibold text-primary">Info:</span> Pesan berhasil
+      disimpan.
+    </div>
+  )
+}
+```
+
+</ComponentPreview>
+
+> Beri satu baris kosong sebelum dan sesudah blok kode di dalam `<ComponentPreview>` agar MDX mengenalinya sebagai fenced code block.
+
+### 1.3 Fenced code block dengan import dari "mdxui"
+
+Blok kode boleh mengimpor dari `"mdxui"` (atau subpath `mdxui/...`). Import tersebut di-resolve otomatis ke komponen `mdxui` yang tersedia — tanpa error.
+
+<CodeBlock filename="page.mdx">
+````mdx
+<ComponentPreview title="Halaman MDX" fileName="page.tsx">
+
+```tsx
+import { PackageManagerTabs } from "mdxui"
+
+export function Page() {
+  return (
+    <>
+      <PackageManagerTabs>zod</PackageManagerTabs>
+    </>
+  )
+}
+```
+
+</ComponentPreview>
+````
+</CodeBlock>
+
+<ComponentPreview title="Halaman MDX" fileName="page.tsx">
+
+```tsx
+import { PackageManagerTabs } from "mdxui"
+
+export function Page() {
+  return (
+    <>
+      <PackageManagerTabs>zod</PackageManagerTabs>
+    </>
+  )
+}
+```
+
+</ComponentPreview>
+
+### 1.4 JSX tanpa export (bare JSX)
+
+Jika blok kode tidak mengekspor komponen apa pun, isinya dibungkus otomatis menjadi `export default () => ( ... )`. Berguna untuk menampilkan markup MDX/JSX sederhana.
+
+<CodeBlock filename="instalasi.mdx">
+````mdx
+<ComponentPreview title="Instalasi" fileName="instalasi.mdx">
+
+```mdx
+<PackageManagerTabs>shadcn@latest init</PackageManagerTabs>
+```
+
+</ComponentPreview>
+````
+</CodeBlock>
+
+<ComponentPreview title="Instalasi" fileName="instalasi.mdx">
+
+```mdx
+<PackageManagerTabs>shadcn@latest init</PackageManagerTabs>
+```
+
+</ComponentPreview>
+
+### 1.5 Ekspor dari file berbeda?
+
+**Tidak lewat `fileName`.** `fileName` adalah **nama semu (virtual)** — hanya menentukan bahasa kode dan label di toolbar. `ComponentPreview` **tidak membaca file dari sistem proyek**.
+
+Contoh `fileName="profile-card.tsx"` pada bagian [5. Fitur Lainnya](#5-fitur-lainnya) **tidak** memuat file `profile-card.tsx` sungguhan. Sumber yang dievaluasi hanyalah isi blok kode di dalam `<ComponentPreview>` itu sendiri.
+
+| Yang ingin dilakukan                                             | Cara                                                                                      |
+| ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Menampilkan komponen yang sudah di-import / terdaftar            | `<ComponentPreview><DemoButton /></ComponentPreview>` (komponen langsung)                 |
+| Menunjukkan **dan** mengevaluasi sumber kode baru                | tulis kode di dalam fenced code block, beri `export function` / `export default function` |
+| Memuat file `.tsx` sungguhan dari folder proyek lewat `fileName` | tidak didukung — salin isinya ke dalam blok kode                                          |
+
+Bentuk ekspor yang didukung:
+
+<CodeBlock filename="component.tsx">
+```tsx
+// 1. Named export — dipakai sebagai preview
+export function ProfileCard() {
+  return <div>...</div>
+}
+
+// 2. Default export — diprioritaskan jika ada
+export default function StatusBadge() {
+  return <span>...</span>
+}
+```
+</CodeBlock>
+
+Jika ada beberapa `export function`, **fungsi pertama** yang dipakai sebagai preview (kecuali ada `export default`, yang selalu menang). Contoh dengan `export default`:
+
+<CodeBlock filename="status-badge.mdx">
+````mdx
+<ComponentPreview title="Badge Status" fileName="status-badge.tsx">
+
+```tsx
+export default function StatusBadge() {
+  return (
+    <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-sm font-medium text-emerald-600">
+      Aktif
+    </span>
+  )
+}
+```
+
+</ComponentPreview>
+````
+</CodeBlock>
+
+<ComponentPreview title="Badge Status" fileName="status-badge.tsx">
+
+```tsx
+export default function StatusBadge() {
+  return (
+    <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-sm font-medium text-emerald-600">
+      Aktif
+    </span>
+  )
+}
+```
+
+</ComponentPreview>
+
+---
+
+## 2. Penggunaan di File React / TSX
+
+Di file React biasa, import `ComponentPreview` terlebih dahulu. Komponen langsung sebagai `children` adalah pola utamanya — mode fenced code block khusus untuk file MDX/Markdown.
+
+<CodeBlock filename="page.tsx">
+```tsx
+import ComponentPreview from "mdxui/components/common/component-preview"
+import { PackageManagerTabs } from "mdxui"
+
+export function Page() {
+  return (
+    <ComponentPreview title="Instalasi Paket" fileName="page.tsx">
+      <PackageManagerTabs>zod</PackageManagerTabs>
+    </ComponentPreview>
+  )
+}
+```
+</CodeBlock>
+
+Jika proyek memakai alias (misalnya `@/components`), impornya bisa disesuaikan:
+
+<CodeBlock filename="page.tsx">
+```tsx
+import ComponentPreview from "@/components/component-preview"
+```
+</CodeBlock>
+
+---
+
+## 3. Props
+
+| Prop        | Tipe        | Deskripsi                                                           |
+| ----------- | ----------- | ------------------------------------------------------------------- |
+| `title`     | `string`    | Judul kartu, dipakai juga sebagai `aria-label`                      |
+| `fileName`  | `string`    | Nama file semu — menentukan bahasa kode dan ditampilkan di toolbar  |
+| `children`  | `ReactNode` | Komponen langsung **atau** fenced code block berisi sumber komponen |
+| `className` | `string`    | Kelas tambahan untuk `<section>` pembungkus                         |
+
+- Ketika `fileName` diberikan, nama file tampil di toolbar kanan.
+- Ketika `fileName` tidak diberikan, toolbar tetap ada (tab + tombol salin) tetapi tanpa nama file, dan bahasa mengikuti blok kode.
+
+<CodeBlock filename="page.mdx">
+```mdx
+<ComponentPreview>
+  <PlainNotice />
+</ComponentPreview>
+```
+</CodeBlock>
+
+<ComponentPreview>
+  <PlainNotice />
+</ComponentPreview>
+
+---
+
+## 4. Deteksi Bahasa
+
+Bahasa kode ditentukan dari ekstensi `fileName`; jika tidak ada, digunakan bahasa fenced code block.
+
+| Ekstensi                                                     | Bahasa             |
+| ------------------------------------------------------------ | ------------------ |
+| `js`, `cjs`                                                  | `javascript`       |
+| `jsx`                                                        | `jsx`              |
+| `ts`                                                         | `typescript`       |
+| `tsx`                                                        | `tsx`              |
+| `md`, `mdx`                                                  | `markdown` / `mdx` |
+| `json`, `yaml`, `yml`                                        | `json` / `yaml`    |
+| `css`, `scss`                                                | `css` / `scss`     |
+| `html`, `svg`, `xml`                                         | `html` / `xml`     |
+| `sh`                                                         | `bash`             |
+| lainnya (`py`, `go`, `rs`, `c`, `cpp`, `java`, `sql`, `vue`) | sesuai bahasa      |
+
+Ekstensi yang tidak dikenali ditampilkan sebagai teks biasa (tanpa highlight). Konten yang berisi JSX (file `mdx`/`code`) tetap di-highlight sebagai `jsx` agar markup komponen tampil berwarna.
+
+---
+
+## 5. Fitur Lainnya
+
+### Kode lebih dari 10 baris
+
+Kode panjang ditampilkan dalam area yang bisa di-scroll (atas–bawah) setinggi sekitar 10 baris. Tombol **Tampilkan semua** di bagian bawah-tengah untuk membuka seluruh kode, lalu **Sembunyikan sebagian** untuk kembali. Tombol tersebut hanya muncul di tab **Code** dan posisinya tetap di bawah kode.
+
+<ComponentPreview title="Kartu Profil" fileName="profile-card.tsx">
+
+```tsx
+export function ProfileCard() {
+  return (
+    <article className="w-full max-w-sm rounded-xl border bg-card p-5 text-card-foreground shadow-sm">
+      <div className="flex items-center gap-3">
+        <div className="flex size-10 items-center justify-center rounded-full bg-primary font-semibold text-primary-foreground">
+          AD
+        </div>
+        <div>
+          <h3 className="font-semibold">Ayu Dewi</h3>
+          <p className="text-sm text-muted-foreground">Frontend Developer</p>
+        </div>
+      </div>
+      <p className="mt-4 text-sm leading-6 text-muted-foreground">
+        Membangun pengalaman web yang cepat, mudah diakses, dan menyenangkan.
+      </p>
+      <div className="mt-4 flex gap-2">
+        <button className="rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground">
+          Ikuti
+        </button>
+        <button className="rounded-md border px-3 py-1.5 text-sm font-medium text-foreground">
+          Pesan
+        </button>
+      </div>
+      <div className="mt-5 grid grid-cols-3 gap-2 border-t pt-4 text-center">
+        <div>
+          <p className="font-semibold">128</p>
+          <p className="text-xs text-muted-foreground">Post</p>
+        </div>
+        <div>
+          <p className="font-semibold">4.8k</p>
+          <p className="text-xs text-muted-foreground">Pengikut</p>
+        </div>
+        <div>
+          <p className="font-semibold">312</p>
+          <p className="text-xs text-muted-foreground">Mengikuti</p>
+        </div>
+      </div>
+    </article>
+  )
+}
+```
+
+</ComponentPreview>
+
+### Salin kode
+
+Tombol salin di toolbar menyalin isi tab **Code** ke clipboard.
+
+---
+
+## 6. Catatan
+
+- `ComponentPreview` adalah client component — gunakan langsung di file MDX tanpa memikirkan "use client".
+- Kode ditulis ulang dengan gaya Prettier (`singleQuote`, tanpa semicolon) saat tab Code dibuka; jika parsing gagal, kode mentah ditampilkan apa adanya.
+- Hanya modul `react`, `mdxui` (dan subpath `mdxui/...`), serta `PackageManagerTabs` yang ter-resolve di dalam fenced code block; modul lain menampilkan pesan error di tab Preview.
+- Jika blok kode tidak mengekspor komponen dan juga bukan JSX yang valid, preview menampilkan pesan `Tidak ada komponen yang diekspor dari blok kode.`
+- Komponen yang gagal diserialisasi di mode **komponen langsung** menampilkan pesan `// Kode komponen tidak dapat ditampilkan.` di tab Code.
+- **Pembaruan terbaru:** ekstraksi sumber kode kini menangani token highlight yang di-deduplikasi oleh React Server Components dengan benar. Blok kode ber-JSX kompleks (misalnya yang memuat `style={{ ... }}` atau markup bertumpuk) dievaluasi tanpa error, seperti contoh Kartu Profil di atas.

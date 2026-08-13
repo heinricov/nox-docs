@@ -9,22 +9,33 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@babel/standalone": "^8.0.4",
     "@base-ui/react": "^1.7.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^1.31.0",
     "next": "16.2.6",
+    "next-mdx-remote": "^6.0.0",
     "next-themes": "^0.4.6",
+    "prettier": "^3.8.3",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "react-element-to-jsx-string": "^17.0.1",
+    "react-icons": "^5.7.0",
+    "react-is": "^19.2.8",
+    "rehype-pretty-code": "^0.14.5",
+    "remark-gfm": "^4.0.1",
     "shadcn": "^4.17.0",
+    "shiki": "^4.4.3",
     "tailwind-merge": "^3.6.0",
     "tw-animate-css": "^1.4.0",
+    "unified": "^11.0.5",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@turbo/gen": "^2.9.15",
+    "@types/babel__standalone": "^7.1.9",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -38,9 +49,11 @@
     "./globals.css": "./src/styles/globals.css",
     "./styles/*": "./src/styles/*",
     "./postcss.config": "./postcss.config.mjs",
+    "./common/*": "./src/common/*.tsx",
     "./lib/*": "./src/lib/*.ts",
     "./components/*": "./src/components/*.tsx",
     "./hooks/*": "./src/hooks/*.ts",
-    "./layouts/*": "./src/layouts/*.tsx"
+    "./layouts/*": "./src/layouts/*.tsx",
+    "./mdx-render/*": "./src/mdx-render/*.tsx"
   }
 }

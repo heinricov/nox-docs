@@ -1,0 +1,341 @@
+---
+title: "ProjectTree"
+description: ""
+---
+
+`ProjectTree` menampilkan **struktur proyek** (folder dan file) dalam satu kartu menyerupai tree di editor. Folder bisa dibuka dan ditutup, dan setiap item bisa diberi **catatan** (`noted`) — tampil sebagai teks di kanan item, atau sebagai **tooltip** saat prop `tooltip` diaktifkan.
+
+Ada empat varian:
+
+- **Dasar** — hanya nama folder dan file, folder bisa dibuka/tutup (klik).
+- **Dengan catatan** — tiap item bisa menyertakan `noted` sebagai penjelasan fungsi; teks tampil di sisi kanan item.
+- **Tooltip** — `noted` disembunyikan dari teks dan hanya tampil saat kursor berada di atas item.
+- **Ikon proyek** — prop `project` menggantikan titik indikator di kanan judul dengan ikon brand (Turborepo, Next.js, NestJS, Vite, dll.).
+
+## Import
+
+Di file MDX, `ProjectTree`, `Folder`, dan `File` sudah terdaftar otomatis di `MdxRenderer` — langsung bisa dipakai tanpa import.
+
+Di file React/TSX, import terlebih dahulu:
+
+<CodeBlock inline>
+  ```tsx import {ProjectTree, Folder, File} from "mdxui" ```
+</CodeBlock>
+
+## Props
+
+### ProjectTree
+
+| Prop       | Tipe        | Deskripsi                                                                                                            |
+| ---------- | ----------- | -------------------------------------------------------------------------------------------------------------------- |
+| `name`     | `string`    | Nama proyek, tampil di judul kartu (wajib)                                                                           |
+| `active`   | `boolean`   | Menampilkan indikator titik hijau sebagai "proyek aktif"                                                             |
+| `tooltip`  | `boolean`   | Mode tooltip: `noted` pada item tampil sebagai tooltip, bukan teks                                                   |
+| `project`  | `string`    | Menampilkan ikon brand proyek di kanan judul, menggantikan titik aktif — lihat [ikon yang didukung](#15-ikon-proyek) |
+| `children` | `ReactNode` | `<Folder>` dan `<File>` di dalam kartu                                                                               |
+
+### Folder
+
+| Prop       | Tipe        | Deskripsi                               |
+| ---------- | ----------- | --------------------------------------- |
+| `name`     | `string`    | Nama folder (wajib)                     |
+| `open`     | `boolean`   | Folder terbuka secara default           |
+| `noted`    | `string`    | Catatan/penjelasan fungsi folder        |
+| `children` | `ReactNode` | `<Folder>` dan `<File>` di dalam folder |
+
+### File
+
+| Prop    | Tipe     | Deskripsi                      |
+| ------- | -------- | ------------------------------ |
+| `name`  | `string` | Nama file (wajib)              |
+| `noted` | `string` | Catatan/penjelasan fungsi file |
+
+Ikon file menyesuaikan ekstensi: `.json` → JSON, kode (`ts`, `tsx`, `js`, `css`, dll.) → code, dokumen (`md`, `mdx`, `txt`) → text, lainnya → ikon file umum.
+
+---
+
+## 1. Penggunaan di File MDX
+
+Tulis `<ProjectTree>` dengan `<Folder>` dan `<File>` di dalamnya. MDX mendukung atribut boolean pendek, jadi `<Folder name="app" open>` berarti folder terbuka.
+
+### 1.1 Struktur dasar
+
+<CodeBlock filename="page.mdx">
+  ```mdx
+  <ProjectTree name="my-project">
+    <Folder name=".next" />
+    <Folder name="app" open>
+      <File name="page.tsx" />
+      <File name="layout.tsx" />
+    </Folder>
+    <File name="package.json" />
+  </ProjectTree>
+  ```
+</CodeBlock>
+
+<ProjectTree name="my-project">
+  <Folder name=".next" />
+  <Folder name="app" open>
+    <File name="page.tsx" />
+    <File name="layout.tsx" />
+  </Folder>
+  <File name="package.json" />
+</ProjectTree>
+
+### 1.2 Dengan catatan (`noted`)
+
+Tambahkan prop `noted` pada folder maupun file untuk menjelaskan fungsinya. Tanpa `tooltip`, teks `noted` tampil di sisi kanan item.
+
+<CodeBlock filename="page.mdx">
+  ```mdx
+  <ProjectTree name="my-project">
+    <Folder name=".next" noted="Folder hasil build Next.js" />
+    <Folder name="app" noted="Folder berisi routing aplikasi">
+      <File name="page.tsx" noted="Halaman utama aplikasi" />
+      <File name="layout.tsx" noted="Layout bersama untuk semua halaman" />
+    </Folder>
+    <File name="package.json" noted="Daftar dependensi dan skrip" />
+  </ProjectTree>
+  ```
+</CodeBlock>
+
+<ProjectTree name="my-project">
+  <Folder name=".next" noted="Folder hasil build Next.js" />
+  <Folder name="app" noted="Folder berisi routing aplikasi">
+    <File name="page.tsx" noted="Halaman utama aplikasi" />
+    <File name="layout.tsx" noted="Layout bersama untuk semua halaman" />
+  </Folder>
+  <File name="package.json" noted="Daftar dependensi dan skrip" />
+</ProjectTree>
+
+### 1.3 Mode tooltip
+
+Aktifkan `tooltip` pada `<ProjectTree>` — `noted` tidak lagi tampil sebagai teks, melainkan sebagai tooltip saat kursor berada di atas item.
+
+<CodeBlock filename="page.mdx">
+  ```mdx
+  <ProjectTree name="my-project" tooltip>
+    <Folder name=".next" noted="Folder hasil build Next.js" />
+    <Folder name="app" noted="Folder berisi routing aplikasi">
+      <Folder name="components" noted="Folder components" />
+      <File name="page.tsx" noted="Halaman utama aplikasi" />
+      <File name="layout.tsx" noted="Layout bersama untuk semua halaman" />
+    </Folder>
+    <File name="package.json" noted="Daftar dependensi dan skrip" />
+  </ProjectTree>
+  ```
+</CodeBlock>
+
+<ProjectTree name="my-project" tooltip>
+  <Folder name=".next" noted="Folder hasil build Next.js" />
+  <Folder name="app" noted="Folder berisi routing aplikasi">
+    <Folder name="components" noted="Folder components" />
+    <File name="page.tsx" noted="Halaman utama aplikasi" />
+    <File name="layout.tsx" noted="Layout bersama untuk semua halaman" />
+  </Folder>
+  <File name="package.json" noted="Daftar dependensi dan skrip" />
+</ProjectTree>
+
+### 1.4 Proyek aktif
+
+Prop `active` menandai kartu sebagai proyek aktif dengan indikator titik di kanan judul.
+
+<CodeBlock filename="page.mdx">
+  ```mdx
+  <ProjectTree name="squadra-cli" active>
+    <Folder name="apps" open>
+      <File name="web" noted="Aplikasi web" />
+      <File name="docs" noted="Dokumentasi" />
+    </Folder>
+    <Folder name="packages" open>
+      <File name="mdxui" noted="Library komponen MDX" />
+    </Folder>
+  </ProjectTree>
+  ```
+</CodeBlock>
+
+<ProjectTree name="squadra-cli" active>
+  <Folder name="apps" open>
+    <File name="web" noted="Aplikasi web" />
+    <File name="docs" noted="Dokumentasi" />
+  </Folder>
+  <Folder name="packages" open>
+    <File name="mdxui" noted="Library komponen MDX" />
+  </Folder>
+</ProjectTree>
+
+### 1.5 Ikon proyek
+
+Prop `project` menggantikan titik indikator aktif di ujung kanan judul dengan **ikon brand** proyek. Cocok untuk monorepo / multi-proyek yang ingin menandai jenis project di tiap kartu.
+
+<CodeBlock filename="page.mdx">
+  ```mdx
+  <ProjectTree name="web" project="nextjs">
+    <Folder name="app" open>
+      <File name="page.tsx" />
+      <File name="layout.tsx" />
+    </Folder>
+    <File name="package.json" />
+  </ProjectTree>
+
+  <ProjectTree name="api" project="nestjs">
+    <Folder name="src" open>
+      <File name="main.ts" />
+      <File name="app.module.ts" />
+    </Folder>
+    <File name="package.json" />
+  </ProjectTree>
+  ```
+</CodeBlock>
+
+<ProjectTree name="web" project="nextjs">
+  <Folder name="app" open>
+    <File name="page.tsx" />
+    <File name="layout.tsx" />
+  </Folder>
+  <File name="package.json" />
+</ProjectTree>
+
+<ProjectTree name="api" project="nestjs">
+  <Folder name="src" open>
+    <File name="main.ts" />
+    <File name="app.module.ts" />
+  </Folder>
+  <File name="package.json" />
+</ProjectTree>
+
+#### Ikon yang didukung
+
+Nilai `project` dibandingkan tanpa membedakan huruf besar/kecil (`nextjs`, `NextJS`, `Nextjs` sama saja). Berikut nilai yang didukung:
+
+| Nilai `project` | Ikon         |
+| --------------- | ------------ |
+| `turborepo`     | Turborepo    |
+| `nextjs`        | Next.js      |
+| `nestjs`        | NestJS       |
+| `vite`          | Vite         |
+| `react`         | React        |
+| `node`          | Node.js      |
+| `npm`           | npm          |
+| `github`        | GitHub       |
+| `vercel`        | Vercel       |
+| `tailwind`      | Tailwind CSS |
+| `typescript`    | TypeScript   |
+| `docker`        | Docker       |
+| `astro`         | Astro        |
+
+Nilai `project` yang tidak ada di daftar akan diabaikan — kartu kembali menampilkan titik aktif bila prop `active` diisi.
+
+Contoh kombinasi `project` dengan struktur monorepo:
+
+<CodeBlock filename="page.mdx">
+  ```mdx
+  <ProjectTree name="squadra-cli" project="turborepo">
+    <Folder name="apps" open>
+      <File name="web" noted="Aplikasi web" />
+      <File name="api" noted="Backend API" />
+    </Folder>
+    <Folder name="packages">
+      <File name="mdxui" />
+    </Folder>
+  </ProjectTree>
+  ```
+</CodeBlock>
+
+<ProjectTree name="squadra-cli" project="turborepo">
+  <Folder name="apps" open>
+    <File name="web" noted="Aplikasi web" />
+    <File name="api" noted="Backend API" />
+  </Folder>
+  <Folder name="packages">
+    <File name="mdxui" />
+  </Folder>
+</ProjectTree>
+
+> Catatan: `project` hanya berlaku pada `<ProjectTree>` (kartu/header).
+
+## 2. Penggunaan di File React / TSX
+
+Di file React biasa, import terlebih dahulu dari `mdxui`. Penggunaannya sama persis dengan MDX — `<Folder>` dan `<File>` adalah komponen React biasa dan bisa bersarang bebas.
+
+<ComponentPreview title="ProjectTree di React" fileName="page.tsx">
+
+```tsx
+import { ProjectTree, Folder, File } from "mdxui"
+
+export function Demo() {
+  return (
+    <ProjectTree name="my-project" active>
+      <Folder name=".next" noted="Folder hasil build Next.js" />
+      <Folder name="app" open noted="Folder berisi routing aplikasi">
+        <File name="page.tsx" noted="Halaman utama aplikasi" />
+        <File name="layout.tsx" noted="Layout bersama untuk semua halaman" />
+      </Folder>
+      <File name="package.json" noted="Daftar dependensi dan skrip" />
+    </ProjectTree>
+  )
+}
+```
+
+</ComponentPreview>
+
+<ComponentPreview title="ProjectTree Tooltip di React" fileName="page.tsx">
+
+```tsx
+import { ProjectTree, Folder, File } from "mdxui"
+
+export function Demo() {
+  return (
+    <ProjectTree name="my-project" tooltip>
+      <Folder name="app" open noted="Folder berisi routing aplikasi">
+        <File name="page.tsx" noted="Halaman utama aplikasi" />
+      </Folder>
+      <File name="package.json" noted="Daftar dependensi dan skrip" />
+    </ProjectTree>
+  )
+}
+```
+
+</ComponentPreview>
+
+<ComponentPreview title="ProjectTree Ikon Proyek di React" fileName="page.tsx">
+
+```tsx
+import { ProjectTree, Folder, File } from "mdxui"
+
+export function Demo() {
+  return (
+    <ProjectTree name="client" project="vite" active>
+      <Folder name="src" open>
+        <File name="main.tsx" />
+        <File name="App.tsx" />
+      </Folder>
+      <File name="vite.config.ts" />
+    </ProjectTree>
+  )
+}
+```
+
+</ComponentPreview>
+
+---
+
+## 3. Cara Kerja
+
+1. `ProjectTree` menyediakan state `tooltip` ke seluruh item melalui React Context.
+2. `Folder` menyimpan state buka/tutup (`open`) secara lokal; `open` pada props hanya nilai awal.
+3. Setiap item menerima `depth` dari induknya untuk menghitung indentasi, disuntikkan lewat `cloneElement`.
+4. Ikon file dipilih otomatis berdasarkan ekstensi nama file.
+5. `noted` tampil sebagai teks (mode default) atau `title` tooltip (mode `tooltip`), dan sekaligus menjadi `aria-label`.
+6. `project` di-normalisasi ke huruf kecil dan dicocokkan ke pustaka ikon brand; bila cocok, ikon menggantikan titik indikator aktif di kanan judul.
+
+---
+
+## 4. Catatan
+
+- `ProjectTree` adalah client component — gunakan langsung di file MDX tanpa memikirkan "use client".
+- Folder bersifat interaktif (klik untuk membuka/menutup); `open` hanyalah nilai awal dan tidak terkontrol.
+- `project` dan `active` bisa dipakai bersamaan: ikon proyek tampil di kanan, sedangkan `active` tetap memberi warna latar `bg-accent/60` pada header.
+- Ikon brand bersifat monokrom mengikuti warna teks (`currentColor`) agar selaras dengan tema `mdxui`.
+- Indentasi, ikon, dan label catatan mengikuti tema `mdxui` dan bisa disesuaikan lewat `className`.
+- `ProjectTree`, `Folder`, dan `File` tersedia di dalam evaluasi `ComponentPreview` — `import { ProjectTree, Folder, File } from "mdxui"` bisa dipakai.

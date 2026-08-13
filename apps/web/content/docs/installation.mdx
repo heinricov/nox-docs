@@ -1,0 +1,287 @@
+---
+title: "Installation"
+description: "Memasang Squadra CLI dan memahami perintah squad add, squad create new, serta squad list"
+---
+
+# Installation
+
+**Squadra** adalah CLI yang menyederhanakan workflow proyek monorepo (Turborepo) menjadi serangkaian perintah singkat. Halaman ini memandu Anda memasang CLI dan memahami setiap perintah yang tersedia: `squad list`, `squad create new`, dan `squad add`.
+
+## Persyaratan
+
+Pastikan Anda sudah menginstal:
+
+- **Node.js** versi `20` atau lebih baru
+- **pnpm** versi `10` atau lebih baru (untuk workspace & saat `squad` menjalankan install)
+- Git
+
+Periksa versi yang terpasang di mesin Anda:
+
+<CodeBlock filename="terminal" inline>
+  ```bash node -v && pnpm -v && git --version ```
+</CodeBlock>
+
+## 1. Instalasi CLI Secara Global
+
+Pasang package `squadra` secara global — perintahnya tersedia sebagai `squad`:
+
+<PackageManagerTabs>squadra -g</PackageManagerTabs>
+
+Setelah terpasang, verifikasi versi CLI:
+
+<CodeBlock filename="terminal" inline>
+  ```bash squad --version ```
+</CodeBlock>
+
+<TerminalView title="squad --version">
+  <Command>squad --version</Command>
+  <ResultsProcess>
+    <TerminalStep status="info">squadra/0.0.0 darwin-arm64 node-v24.19.0</TerminalStep>
+  </ResultsProcess>
+</TerminalView>
+
+Jika `squad` belum dikenali, pastikan direktori `bin` Node.js (tempat package global terpasang) sudah ada di `PATH` — bisa dijalankan dengan `corepack enable` jika menggunakan pnpm yang terpasang via Corepack.
+
+## 2. Mengetahui Semua Perintah — `squad list`
+
+Jalankan `squad list` untuk melihat daftar seluruh perintah yang tersedia beserta ringkasannya:
+
+<CodeBlock filename="terminal" inline>
+  ```bash squad list ```
+</CodeBlock>
+
+<TerminalView title="squad list">
+  <AsciiArt>{`  _____                    _           _
+ / ____|                  | |         | |
+| (___   __ _ _   _  __ _ | |__   ___ | | __ _
+ \___ \ / _\` | | | |/ _\` || '_ \ / _ \| |/ _\` |
+ ____) | (_| | |_| | (_| || | | | (_) | | (_| |
+|_____/ \__, |\__,_|\__,_||_| |_|\___/|_|\__,_|
+         __/ |
+        |___/`}</AsciiArt>
+  <strong className="text-terminal-foreground">Welcome to Squadra!</strong>
+  <span className="text-terminal-muted">
+    Workflow simplified through a series of commands.
+  </span>
+  <ResultsProcess>
+    <strong>Available squad commands:</strong>
+    <div className="pl-4">
+      <span className="terminal-cyan">squad add</span>
+      <span className="ml-5">
+        Add a new app to the current Turborepo project
+      </span>
+    </div>
+    <div className="pl-4">
+      <span className="terminal-cyan">squad create new</span>
+      <span className="ml-5">
+        Create a new Turborepo project from a template
+      </span>
+    </div>
+    <div className="pl-4">
+      <span className="terminal-cyan">squad list</span>
+      <span className="ml-5">List all available squad commands</span>
+    </div>
+  </ResultsProcess>
+</TerminalView>
+
+Berikut ringkasan perintah inti yang disediakan CLI:
+
+| Perintah                 | Ringkasan                                                       |
+| ------------------------ | --------------------------------------------------------------- |
+| `squad create new`       | Membuat proyek Turborepo baru dari template                     |
+| `squad add`              | Menambahkan app baru ke proyek Turborepo yang sudah ada         |
+| `squad list`             | Menampilkan daftar seluruh perintah `squad` yang tersedia       |
+| `squad help [COMMAND]`   | Menampilkan bantuan penggunaan perintah tertentu                |
+
+---
+
+## 3. Membuat Proyek Baru — `squad create new`
+
+`squad create new` membuat proyek Turborepo baru dari template, lengkap dengan app pilihan Anda di dalam folder `apps/`. Perintah ini wajib dijalankan **sebelum** `squad add`.
+
+### Penggunaan
+
+<CodeBlock filename="terminal" inline>
+  ```bash squad create new [nama-proyek] ```
+</CodeBlock>
+
+| Flag             | Alias | Deskripsi                                                                                |
+| ---------------- | ----- | ---------------------------------------------------------------------------------------- |
+| `[nama-proyek]`  | —     | Nama proyek; bila diisi, prompt nama proyek dilewati                                     |
+| `--apps`         | —     | App yang dibuat di `apps/` (pisahkan dengan koma, opsional `:nama`): `nextjs`, `vite-react`, `nestjs`, `blank` |
+| `--skipInstall`  | `-i`  | Lewati `pnpm install` setelah proyek dibuat                                               |
+
+### Contoh interaktif
+
+Tanpa argumen, CLI bertanya nama proyek, tipe app, dan nama tiap app satu per satu:
+
+<TerminalView title="squad create new">
+  <Command status="info">squad create new</Command>
+  <ResultsProcess>
+    <TerminalStep status="question">
+      Nama proyek?
+      <br />
+      <span className="text-terminal-muted">my-repo</span>
+    </TerminalStep>
+    <Question>Pilih tipe proyek yang dibuat di dalam folder apps:</Question>
+    <Option selected description="React framework dengan app router">
+      Next.js
+    </Option>
+    <Option>Vite React</Option>
+    <Option>NestJS</Option>
+    <Option>Blank</Option>
+    <TerminalStep status="question">
+      Nama proyek nextjs?
+      <br />
+      <span className="text-terminal-muted">web</span>
+    </TerminalStep>
+    <Process duration={10} animation="ProgresBar" label="Creating project" />
+    <Done>Proyek "my-repo" berhasil dibuat!</Done>
+  </ResultsProcess>
+</TerminalView>
+
+### Contoh non-interaktif
+
+Semua pilihan bisa diberikan lewat flag agar tidak ada prompt:
+
+<CodeBlock filename="terminal">
+  ```bash
+  squad create new my-repo --apps nextjs:web,nestjs:api
+  ```
+</CodeBlock>
+
+Proyek yang dihasilkan kurang lebih seperti ini:
+
+<ProjectTree name="my-repo">
+  <Folder name="apps" open>
+    <Folder name="web" noted="App Next.js" />
+    <Folder name="api" noted="App NestJS" />
+  </Folder>
+  <File name="package.json" noted="Workspace root (Turborepo)" />
+  <File name="pnpm-workspace.yaml" noted="Definisi workspace pnpm" />
+</ProjectTree>
+
+---
+
+## 4. Menambahkan App ke Proyek — `squad add`
+
+`squad add` menambahkan app baru (Next.js, Vite React, atau NestJS) ke folder `apps/` pada proyek Turborepo yang sudah ada. Jalankan dari **dalam** proyek hasil `squad create new`.
+
+### Penggunaan
+
+<CodeBlock filename="terminal" inline>
+  ```bash squad add [--apps <tipe:nama>] [-i] ```
+</CodeBlock>
+
+| Flag            | Alias | Deskripsi                                                                      |
+| --------------- | ----- | ------------------------------------------------------------------------------ |
+| `--apps`        | —     | App yang ditambahkan (pisahkan dengan koma, opsional `:nama`): `nextjs`, `vite-react`, `nestjs` |
+| `--skipInstall` | `-i`  | Lewati `pnpm install` setelah app ditambahkan                                  |
+
+### Contoh interaktif
+
+Tanpa `--apps`, CLI menampilkan pilihan tipe proyek dan meminta nama:
+
+<TerminalView title="squad add">
+  <Command status="info">squad add</Command>
+  <ResultsProcess>
+    <Question>Pilih tipe proyek yang ditambahkan ke dalam folder apps:</Question>
+    <Option selected description="React framework dengan app router">
+      Next.js
+    </Option>
+    <Option>Vite React</Option>
+    <Option>NestJS</Option>
+    <TerminalStep status="question">
+      Nama proyek nextjs?
+      <br />
+      <span className="text-terminal-muted">store</span>
+    </TerminalStep>
+    <Process duration={10} animation="ProgresBar" label="Memasang dependencies (pnpm install)" />
+    <Done>App berhasil ditambahkan ke dalam folder apps!</Done>
+  </ResultsProcess>
+</TerminalView>
+
+### Contoh non-interaktif
+
+<CodeBlock filename="terminal">
+  ```bash
+  squad add --apps nextjs:store
+  ```
+</CodeBlock>
+
+Output akhir menampilkan app yang baru dibuat dan langkah selanjutnya:
+
+<TerminalView title="squad add --apps nextjs:store">
+  <Command status="info">squad add --apps nextjs:store</Command>
+  <ResultsProcess>
+    <strong>App berhasil ditambahkan ke dalam folder apps!</strong>
+    <div className="pl-4">
+      <span className="terminal-cyan">apps/store</span>
+      <span className="ml-5">(nextjs)</span>
+    </div>
+    <div className="pt-2 text-terminal-muted">Langkah selanjutnya:</div>
+    <div className="pl-4">
+      <span className="terminal-cyan">pnpm dev</span>
+      <span className="ml-5"># menjalankan semua app</span>
+    </div>
+  </ResultsProcess>
+</TerminalView>
+
+---
+
+## 5. Membatalkan Proses Interaktif
+
+Semua prompt di `squad add` dan `squad create new` bisa dibatalkan kapan saja dengan `Ctrl+C` — CLI menampilkan pesan batal dan menghentikan proses:
+
+<TerminalView title="squad add (dibatalkan)">
+  <Command status="info">squad add</Command>
+  <ResultsProcess status="error">
+    <TerminalStep status="question">
+      Pilih tipe proyek yang ditambahkan ke dalam folder apps:
+      <br />
+      <span>Next.js</span>
+    </TerminalStep>
+    <Cancelled>Dibatalkan.</Cancelled>
+  </ResultsProcess>
+</TerminalView>
+
+---
+
+## 6. Menjalankan Proyek yang Sudah Dibuat
+
+Setelah proyek dibuat (dengan `squad create new`) dan app ditambahkan (dengan `squad add`), jalankan seluruh app sekaligus dari root proyek:
+
+<CodeBlock filename="terminal">
+  ```bash
+  cd my-repo
+  pnpm dev
+  ```
+</CodeBlock>
+
+Outputnya kira-kira seperti ini:
+
+<TerminalView title="pnpm dev">
+  <Command status="info">pnpm dev</Command>
+  <ResultsProcess>
+    <TerminalStep status="success">
+      apps/web:dev · Ready in 850 ms
+    </TerminalStep>
+    <TerminalStep status="success">
+      apps/api:dev · Ready in 620 ms
+    </TerminalStep>
+    <TerminalStep status="active">
+      Local: http://localhost:3000
+    </TerminalStep>
+    <Done>Dev server running.</Done>
+  </ResultsProcess>
+</TerminalView>
+
+## Penyelesaian Masalah
+
+| Masalah                                  | Solusi                                                              |
+| ---------------------------------------- | ------------------------------------------------------------------- |
+| `squad` tidak dikenali                   | Instal ulang global: `pnpm add -g squadra` atau `npm install -g squadra` |
+| `squad add` tidak berjalan               | Jalankan di dalam proyek hasil `squad create new` (bukan di folder lain) |
+| Nama app tidak valid                     | Gunakan huruf, angka, titik, strip (`-`), dan underscore (`_`)      |
+| Folder proyek sudah ada & tidak kosong   | Gunakan nama proyek lain atau bersihkan folder tersebut             |
+| Dependency tidak sinkron                 | Hapus cache lalu pasang ulang: `rm -rf node_modules && pnpm install` |

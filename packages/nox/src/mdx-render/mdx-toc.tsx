@@ -1,5 +1,5 @@
 import React from "react"
-import { cn } from "mdxui/lib/utils"
+import { cn } from "@nox/lib/utils"
 
 export type MdxSection = { id: string; title: string }
 

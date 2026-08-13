@@ -1,0 +1,333 @@
+---
+title: "CodeDiff"
+description: "Komponen untuk menampilkan perbandingan (diff) kode lama vs baru dalam satu kartu — mode berdampingan, inline, dan perubahan nama file, dengan tombol salin"
+---
+
+# CodeDiff
+
+`CodeDiff` menampilkan **perbandingan kode** (diff) antara versi lama dan baru dalam satu kartu. Baris yang berubah ditandai otomatis: **merah** untuk kode lama (dihapus) dan **hijau** untuk kode baru (ditambahkan).
+
+Ada tiga varian:
+
+- **Berdampingan (default)** — panel **Old** dan **New** sejajar, baris yang berubah di-highlight.
+- **Inline** — perubahan ditampilkan berurutan dalam satu kolom dengan penanda `-` / `+`.
+- **Ganti nama file** — lewat `<OldFile>` / `<NewFile>`, nama file tampil di header tiap panel.
+
+## Import
+
+Di file MDX, `CodeDiff`, `OldCode`, `NewCode`, `OldFile`, dan `NewFile` sudah terdaftar otomatis di `MdxRenderer` — langsung bisa dipakai tanpa import.
+
+Di file React/TSX, import terlebih dahulu:
+
+<CodeBlock inline>
+  ```tsx import {CodeDiff, OldCode, NewCode} from "mdxui" ```
+</CodeBlock>
+
+## Props
+
+| Prop       | Tipe        | Deskripsi                                                                               |
+| ---------- | ----------- | --------------------------------------------------------------------------------------- |
+| `children` | `ReactNode` | `<OldCode>` / `<NewCode>` (atau `<OldFile>` / `<NewFile>`) berisi kode lama dan baru    |
+| `filename` | `string`    | Nama file di judul kartu. Diabaikan bila `title` sudah diisi                            |
+| `title`    | `string`    | Judul kartu, dipakai juga sebagai `aria-label`                                          |
+| `inline`   | `boolean`   | Mode inline: perubahan tampil berurutan (`-` / `+`) dalam satu kolom, bukan dua panel   |
+
+### Sub-komponen
+
+| Komponen  | Tipe        | Fungsi                                              |
+| --------- | ----------- | --------------------------------------------------- |
+| `OldCode` | `ReactNode` | Menandai isi sebagai **kode lama**                  |
+| `NewCode` | `ReactNode` | Menandai isi sebagai **kode baru**                  |
+| `OldFile` | `ReactNode` | Kode lama + nama file di header panel               |
+| `NewFile` | `ReactNode` | Kode baru + nama file di header panel               |
+
+Semua sub-komponen menerima `children` (fenced code block di MDX, atau string di React) dan prop `filename`.
+
+---
+
+## 1. Penggunaan di File MDX
+
+Berikan `children` berupa **fenced code block** di dalam `<OldCode>` dan `<NewCode>`. Bahasa mengikuti fence (misalnya `tsx`, `mdx`) dan ikut di-highlight.
+
+### 1.1 Perubahan kode sederhana
+
+<CodeBlock filename="page.mdx">
+````mdx
+<CodeDiff filename="page.tsx">
+  <OldCode>
+    ```tsx
+    export default function Page() {
+      return <h1>Hello</h1>
+    }
+    ```
+  </OldCode>
+  <NewCode>
+    ```tsx
+    export default function Page() {
+      return <h1>Welcome to v0</h1>
+    }
+    ```
+  </NewCode>
+</CodeDiff>
+````
+</CodeBlock>
+
+<CodeDiff filename="page.tsx">
+<OldCode>
+```tsx
+export default function Page() {
+  return <h1>Hello</h1>
+}
+```
+</OldCode>
+<NewCode>
+```tsx
+export default function Page() {
+  return <h1>Welcome to v0</h1>
+}
+```
+</NewCode>
+</CodeDiff>
+
+### 1.2 Konten MDX dengan code block bersarang
+
+Konten yang dibandingkan boleh berisi code block lagi. Gunakan **fence lebih panjang** di bagian luar (misalnya ` ```` ` empat backtick) agar fence bagian dalam (` ``` ` tiga backtick) tidak menutupnya.
+
+<CodeBlock filename="page.mdx">
+`````mdx
+<CodeDiff filename="page.mdx">
+  <OldCode>
+    ````mdx
+    <ComponentPreview title="CodeBlock Inline" fileName="page.mdx">
+      <CodeBlock inline>
+        ```tsx
+        import ComponentPreview from "mdxui/components/common/component-preview"
+        ```
+      </CodeBlock>
+    </ComponentPreview>
+    ````
+  </OldCode>
+  <NewCode>
+    ````mdx
+    <ComponentPreview title="CodeBlock" fileName="page.mdx">
+      <CodeBlock>
+        ```tsx
+        import ComponentPreview from "mdxui/components/common/component-preview"
+        ```
+      </CodeBlock>
+    </ComponentPreview>
+    ````
+  </NewCode>
+</CodeDiff>
+`````
+</CodeBlock>
+
+<CodeDiff filename="page.mdx">
+<OldCode>
+````mdx
+<ComponentPreview title="CodeBlock Inline" fileName="page.mdx">
+  <CodeBlock inline>
+    ```tsx
+    import ComponentPreview from "mdxui/components/common/component-preview"
+    ```
+  </CodeBlock>
+</ComponentPreview>
+````
+</OldCode>
+<NewCode>
+````mdx
+<ComponentPreview title="CodeBlock" fileName="page.mdx">
+  <CodeBlock>
+    ```tsx
+    import ComponentPreview from "mdxui/components/common/component-preview"
+    ```
+  </CodeBlock>
+</ComponentPreview>
+````
+</NewCode>
+</CodeDiff>
+
+### 1.3 Perubahan nama file dan kode
+
+Gunakan `<OldFile>` / `<NewFile>` — nama file tampil di header masing-masing panel.
+
+<CodeBlock filename="page.mdx">
+````mdx
+<CodeDiff title="Ubah nama file dan kode">
+  <OldFile filename="card.tsx">
+    ```tsx
+    export function Card() {
+      return <div>Card</div>
+    }
+    ```
+  </OldFile>
+  <NewFile filename="product-card.tsx">
+    ```tsx
+    export function ProductCard() {
+      return <article>Product card</article>
+    }
+    ```
+  </NewFile>
+</CodeDiff>
+````
+</CodeBlock>
+
+<CodeDiff title="Ubah nama file dan kode">
+<OldFile filename="card.tsx">
+```tsx
+export function Card() {
+  return <div>Card</div>
+}
+```
+</OldFile>
+<NewFile filename="product-card.tsx">
+```tsx
+export function ProductCard() {
+  return <article>Product card</article>
+}
+```
+</NewFile>
+</CodeDiff>
+
+### 1.4 Inline
+
+Mode `inline` menampilkan perubahan berurutan dalam satu kolom dengan penanda `-` (merah) dan `+` (hijau); baris yang tidak berubah menjadi konteks.
+
+<CodeBlock filename="page.mdx">
+````mdx
+<CodeDiff inline filename="page.tsx" title="Inline code changes">
+  <OldCode>
+    ```tsx
+    const message = "Hello"
+    return <h1>{message}</h1>
+    ```
+  </OldCode>
+  <NewCode>
+    ```tsx
+    const message = "Welcome"
+    return <h1>{message}</h1>
+    ```
+  </NewCode>
+</CodeDiff>
+````
+</CodeBlock>
+
+<CodeDiff inline filename="page.tsx" title="Inline code changes">
+<OldCode>
+```tsx
+const message = "Hello"
+return <h1>{message}</h1>
+```
+</OldCode>
+<NewCode>
+```tsx
+const message = "Welcome"
+return <h1>{message}</h1>
+```
+</NewCode>
+</CodeDiff>
+
+---
+
+## 2. Penggunaan di File React / TSX
+
+Di file React biasa, import terlebih dahulu dari `mdxui` (atau subpath `mdxui/components/common/code-diff`). `children` berupa **string** — boleh template literal kode mentah, dengan atau tanpa fence.
+
+### 2.1 Berdampingan
+
+<ComponentPreview title="CodeDiff di React" fileName="page.tsx">
+
+```tsx
+import { CodeDiff, OldCode, NewCode } from "mdxui"
+
+export function Demo() {
+  return (
+    <CodeDiff filename="page.tsx">
+      <OldCode>
+        {`export default function Page() {
+  return <h1>Hello</h1>
+}`}
+      </OldCode>
+      <NewCode>
+        {`export default function Page() {
+  return <h1>Welcome to v0</h1>
+}`}
+      </NewCode>
+    </CodeDiff>
+  )
+}
+```
+
+</ComponentPreview>
+
+### 2.2 Inline
+
+<ComponentPreview title="CodeDiff Inline di React" fileName="page.tsx">
+
+```tsx
+import { CodeDiff, OldCode, NewCode } from "mdxui"
+
+export function Demo() {
+  return (
+    <CodeDiff inline filename="page.tsx" title="Inline code changes">
+      <OldCode>
+        {`const message = "Hello"
+return <h1>{message}</h1>`}
+      </OldCode>
+      <NewCode>
+        {`const message = "Welcome"
+return <h1>{message}</h1>`}
+      </NewCode>
+    </CodeDiff>
+  )
+}
+```
+
+</ComponentPreview>
+
+### 2.3 Ganti nama file
+
+<ComponentPreview title="CodeDiff Ganti File di React" fileName="page.tsx">
+
+```tsx
+import { CodeDiff, OldFile, NewFile } from "mdxui"
+
+export function Demo() {
+  return (
+    <CodeDiff title="Ubah nama file dan kode">
+      <OldFile filename="card.tsx">
+        {`export function Card() {
+  return <div>Card</div>
+}`}
+      </OldFile>
+      <NewFile filename="product-card.tsx">
+        {`export function ProductCard() {
+  return <article>Product card</article>
+}`}
+      </NewFile>
+    </CodeDiff>
+  )
+}
+```
+
+</ComponentPreview>
+
+---
+
+## 3. Cara Kerja
+
+1. Di MDX, fenced code block di dalam `<OldCode>` / `<NewCode>` diubah oleh `rehype-pretty-code` menjadi elemen `pre` / `figure` yang sudah di-highlight.
+2. `CodeDiff` mengekstrak teks kode dari children — termasuk token highlight hasil de-duplikasi React Server Components — dengan menelusuri elemen secara rekursif.
+3. Di React, children string yang dibungkus fence di-strip otomatis.
+4. Baris lama vs baru dibandingkan satu-per-satu; baris yang berubah di-highlight **merah** (lama) dan **hijau** (baru).
+5. Tombol salin menyalin **kode baru** (kode di panel `New`) ke clipboard.
+
+---
+
+## 4. Catatan
+
+- `CodeDiff` adalah client component — gunakan langsung di file MDX tanpa memikirkan "use client".
+- `filename` (dan `filename` pada sub-komponen) hanya **label semu** — tidak membaca file dari proyek.
+- Mode `inline` otomatis dinonaktifkan saat memakai `<OldFile>` / `<NewFile>` — mode tersebut selalu menampilkan panel berdampingan agar nama file terlihat.
+- Untuk konten yang berisi code block lagi (misalnya diff file `.mdx`), gunakan fence **lebih panjang** di bagian luar agar fence bagian dalam tidak menutupnya.
+- `CodeDiff` dan sub-komponennya tersedia di dalam evaluasi `ComponentPreview` — `import { CodeDiff, OldCode, NewCode } from "mdxui"` bisa dipakai.

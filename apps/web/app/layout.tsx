@@ -22,8 +22,8 @@ export const sidebarMenu: SidebarMenu[] = [
         url: "/docs",
       },
       {
-        title: "Blogs",
-        url: "/blogs",
+        title: "Installation",
+        url: "/docs/installation",
       },
     ],
   },
@@ -46,7 +46,6 @@ export const sidebarMenu: SidebarMenu[] = [
           },
         ],
       },
-
       {
         title: "UI",
         url: "#",
@@ -103,7 +102,7 @@ export default function RootLayout({
     >
       <body>
         <ThemeProvider>
-          <NoxLayout targetDir={["/"]} menu={sidebarMenu}>
+          <NoxLayout targetDir={["/docs"]} menu={sidebarMenu}>
             {children}
           </NoxLayout>
         </ThemeProvider>

@@ -1,0 +1,115 @@
+---
+title: "PackageManagerTabs"
+description: "Komponen untuk menampilkan perintah instalasi paket yang otomatis menyesuaikan dengan package manager (npm, pnpm, yarn, bun)"
+---
+
+# PackageManagerTabs
+
+`PackageManagerTabs` menampilkan perintah instalasi paket dalam kartu dengan dropdown untuk memilih package manager. Perintah otomatis diformat sesuai package manager yang dipilih — misalnya `npm install` menjadi `pnpm add` atau `yarn add`.
+
+## Import
+
+<CodeBlock filename="package-manager-tabs.tsx">
+```tsx
+import { PackageManagerTabs } from "mdxui/components/common/package-manager-tabs"
+```
+</CodeBlock>
+
+Untuk pemakaian di file MDX, `PackageManagerTabs` sudah terdaftar otomatis di `MdxRenderer`, jadi langsung bisa dipakai tanpa import:
+
+<CodeBlock filename="page.mdx">
+```mdx
+<PackageManagerTabs>shadcn@latest init</PackageManagerTabs>
+```
+</CodeBlock>
+
+## Props
+
+| Prop        | Tipe        | Deskripsi                                                      |
+| ----------- | ----------- | -------------------------------------------------------------- |
+| `children`  | `ReactNode` | Teks perintah instalasi (misalnya `zod`, `shadcn@latest init`) |
+| `className` | `string`    | Kelas tambahan untuk pembungkus                                |
+
+`children` harus berupa teks string berisi perintah yang ingin ditampilkan. Spasi di awal dan akhir akan diabaikan.
+
+## Cara Kerja
+
+Komponen ini menerima teks perintah mentah dan mengubahnya otomatis berdasarkan package manager yang dipilih:
+
+| Perintah mentah      | npm                      | pnpm                          | yarn                          | bun                             |
+| -------------------- | ------------------------ | ----------------------------- | ----------------------------- | ------------------------------- |
+| `zod`                | `npm install zod`        | `pnpm add zod`                | `yarn add zod`                | `bun add zod`                   |
+| `shadcn@latest init` | `npx shadcn@latest init` | `pnpm dlx shadcn@latest init` | `yarn dlx shadcn@latest init` | `bunx --bun shadcn@latest init` |
+
+Perintah yang mengandung `init` secara otomatis menggunakan runner (`npx`, `pnpm dlx`, `yarn dlx`, `bunx --bun`) bukan `install`/`add`.
+
+## Fitur
+
+- **Dropdown package manager** — pilih antara npm, pnpm, yarn, atau bun
+- **Salin perintah** — tombol clipboard untuk menyalin perintah yang sudah diformat
+- **Deteksi `init` otomatis** — perintah dengan kata `init` menggunakan runner yang sesuai
+- **Client component** — bisa langsung digunakan di MDX tanpa konfigurasi tambahan
+
+## Contoh Penggunaan
+
+### 1. Perintah instalasi sederhana
+
+<ComponentPreview fileName="page.mdx">
+  ```mdx
+  <PackageManagerTabs>zod</PackageManagerTabs>
+  ```
+</ComponentPreview>
+
+<ComponentPreview fileName="page.tsx">
+
+```tsx
+import {PackageManagerTabs} from "mdxui"
+
+export function Page() {
+return (
+  <>
+    <PackageManagerTabs>zod</PackageManagerTabs>
+  </>
+)
+}
+```
+
+</ComponentPreview>
+
+### 2. Perintah init
+
+<ComponentPreview>
+
+```mdx
+<PackageManagerTabs>shadcn@latest init</PackageManagerTabs>
+```
+
+</ComponentPreview>
+
+### 3. Versi paket tertentu
+
+<ComponentPreview>
+  ```mdx
+  <PackageManagerTabs>react@18.3.1</PackageManagerTabs>
+  ```
+</ComponentPreview>
+
+### 4. Banyak paket sekaligus
+
+<ComponentPreview>
+  ```mdx
+  <PackageManagerTabs>zod lucide-react clsx tailwind-merge</PackageManagerTabs>
+  ```
+</ComponentPreview>
+
+### 5. Perintah dev dependency
+
+<ComponentPreview>
+  <PackageManagerTabs>typescript @types/react</PackageManagerTabs>
+</ComponentPreview>
+
+## Catatan
+
+- `PackageManagerTabs` adalah client component — gunakan langsung di file MDX tanpa memikirkan "use client".
+- Teks `children` di-trim sebelum diproses, jadi spasi awal/akhir tidak mempengaruhi hasil.
+- Pilihan package manager disimpan di state lokal (per komponen), bukan global.
