@@ -23,16 +23,11 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
 
 const data = {
   versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
 }
 export function AppSidebar({ menu, ...props }: AppSidebarProps) {
   return (
     <Sidebar
-      className="top-(--header-height) h-[calc(100svh-var(--header-height))]!"
+      className="top-(--header-height) h-[calc(100svh-var(--header-height))]! bg-gray-900 pl-4"
       {...props}
     >
       <SidebarHeader>
