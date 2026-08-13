@@ -15,9 +15,9 @@ export function NavLogo({ className }: { className?: string }) {
         <TerminalIcon className="size-4" />
       </div>
       <div className="grid text-left text-sm leading-tight">
-        <span className="truncate font-medium">Acme Inc</span>
+        <span className="truncate font-medium">Nox</span>
         <span className="truncate text-xs text-muted-foreground">
-          Enterprise
+          Version 0.0.1
         </span>
       </div>
     </Link>

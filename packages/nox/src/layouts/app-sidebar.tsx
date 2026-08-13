@@ -27,14 +27,14 @@ const data = {
 export function AppSidebar({ menu, ...props }: AppSidebarProps) {
   return (
     <Sidebar
-      className="top-(--header-height) h-[calc(100svh-var(--header-height))]! bg-gray-900 pl-4"
+      className="top-(--header-height) h-[calc(100svh-var(--header-height))]! pl-4"
       {...props}
     >
       <SidebarHeader>
-        <GroupSwitcher
+        {/* <GroupSwitcher
           versions={data.versions}
           defaultVersion={data.versions[0] || ""}
-        />
+        /> */}
       </SidebarHeader>
 
       <SidebarContent>
