@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { cn } from "@nox/lib/utils"
-import { TerminalIcon } from "lucide-react"
+import { BookText } from "lucide-react"
 
 export function NavLogo({ className }: { className?: string }) {
   return (
@@ -12,7 +12,7 @@ export function NavLogo({ className }: { className?: string }) {
       )}
     >
       <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-        <TerminalIcon className="size-4" />
+        <BookText className="size-4" />
       </div>
       <div className="grid text-left text-sm leading-tight">
         <span className="truncate font-medium">Nox</span>
