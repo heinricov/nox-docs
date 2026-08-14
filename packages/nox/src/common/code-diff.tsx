@@ -1,8 +1,14 @@
 "use client"
 
-import { Children, isValidElement, useState } from "react"
+import { Children, isValidElement, useEffect, useMemo, useState } from "react"
 import { Check, Copy, FileCode2, Minus, Plus } from "lucide-react"
 import { cn } from "@nox/lib/utils"
+import {
+  cleanCode,
+  getLanguageFromFilename,
+  nodeToText,
+} from "@nox/lib/code-notation"
+import { formatCode } from "@nox/lib/code-format"
 
 type CodeBlockProps = { children?: React.ReactNode; filename?: string }
 type CodeDiffProps = {
@@ -12,47 +18,6 @@ type CodeDiffProps = {
   inline?: boolean
 }
 type ParsedSection = { type: "old" | "new"; filename?: string; code: string }
-
-const REACT_LAZY_TYPE =
-  typeof Symbol === "function" && Symbol.for ? Symbol.for("react.lazy") : 0xead
-
-function resolveLazyNode(node: React.ReactNode): React.ReactNode {
-  if (node && typeof node === "object") {
-    const lazy = node as {
-      $$typeof?: unknown
-      _init?: (payload: unknown) => React.ReactNode
-      _payload?: unknown
-    }
-    if (lazy.$$typeof === REACT_LAZY_TYPE && typeof lazy._init === "function") {
-      try {
-        return lazy._init(lazy._payload)
-      } catch {
-        return ""
-      }
-    }
-  }
-  return node
-}
-
-function getText(children: React.ReactNode): string {
-  if (children === null || children === undefined || typeof children === "boolean")
-    return ""
-  if (typeof children === "string" || typeof children === "number")
-    return String(children)
-  if (Array.isArray(children)) return children.map(getText).join("")
-  const resolved = resolveLazyNode(children)
-  if (resolved !== children) return getText(resolved)
-  if (isValidElement<{ children?: React.ReactNode }>(children)) {
-    return getText(children.props.children)
-  }
-  return ""
-}
-
-function cleanCode(value: string) {
-  const trimmed = value.replace(/^\n/, "").replace(/\n\s*$/, "")
-  const fenced = trimmed.match(/^```[^\n]*\n([\s\S]*?)\n```$/)
-  return fenced ? (fenced[1] ?? "") : trimmed
-}
 
 function Section({ children }: CodeBlockProps) {
   return <>{children}</>
@@ -64,52 +29,77 @@ export function CodeDiff({
   title,
   inline = false,
 }: CodeDiffProps) {
-  const nodes = Children.toArray(children)
-  const sections: ParsedSection[] = nodes.flatMap((node, index) => {
-    if (!isValidElement<CodeBlockProps>(node)) return []
-    const element = node
-    const props = element.props
-    const componentType = element.type as {
-      kind?: string
-      displayName?: string
-      name?: string
+  const rawSections: ParsedSection[] = useMemo(
+    () =>
+      Children.toArray(children).flatMap((node, index) => {
+        if (!isValidElement<CodeBlockProps>(node)) return []
+        const element = node
+        const props = element.props
+        const componentType = element.type as {
+          kind?: string
+          displayName?: string
+          name?: string
+        }
+        const label =
+          componentType.kind || componentType.displayName || componentType.name
+        const kind =
+          componentType === OldCode || label === "OldCode" || label === "old"
+            ? "old"
+            : componentType === NewCode ||
+                label === "NewCode" ||
+                label === "new"
+              ? "new"
+              : componentType === OldFile ||
+                  label === "OldFile" ||
+                  label === "old-file"
+                ? "old-file"
+                : componentType === NewFile ||
+                    label === "NewFile" ||
+                    label === "new-file"
+                  ? "new-file"
+                  : index === 0
+                    ? "old"
+                    : index === 1
+                      ? "new"
+                      : undefined
+        const type =
+          kind === "old-file"
+            ? "old"
+            : kind === "new-file"
+              ? "new"
+              : (kind as ParsedSection["type"])
+        return kind
+          ? [
+              {
+                type,
+                filename: props.filename,
+                code: cleanCode(nodeToText(props.children)),
+              },
+            ]
+          : []
+      }),
+    [children]
+  )
+  const [sections, setSections] = useState(rawSections)
+
+  useEffect(() => {
+    let active = true
+    Promise.all(
+      rawSections.map(async (section) => {
+        const language = section.filename
+          ? getLanguageFromFilename(section.filename)
+          : "code"
+        const code = await formatCode(section.code, language)
+        return { ...section, code }
+      })
+    ).then((formatted) => {
+      if (active) setSections(formatted)
+    })
+    return () => {
+      active = false
     }
-    const label =
-      componentType.kind || componentType.displayName || componentType.name
-    const kind =
-      componentType === OldCode || label === "OldCode" || label === "old"
-        ? "old"
-        : componentType === NewCode || label === "NewCode" || label === "new"
-          ? "new"
-          : componentType === OldFile ||
-              label === "OldFile" ||
-              label === "old-file"
-            ? "old-file"
-            : componentType === NewFile ||
-                label === "NewFile" ||
-                label === "new-file"
-              ? "new-file"
-              : index === 0
-                ? "old"
-                : index === 1
-                  ? "new"
-                  : undefined
-    const type =
-      kind === "old-file"
-        ? "old"
-        : kind === "new-file"
-          ? "new"
-          : (kind as ParsedSection["type"])
-    return kind
-      ? [
-          {
-            type,
-            filename: props.filename,
-            code: cleanCode(getText(props.children)),
-          },
-        ]
-      : []
-  })
+  }, [rawSections])
+  const nodes = Children.toArray(children)
   const hasFileChange = nodes.some((node) => {
     if (!node || typeof node !== "object" || !("type" in node)) return false
     if (!isValidElement(node)) return false

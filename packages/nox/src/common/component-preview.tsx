@@ -4,18 +4,19 @@ import type { ReactElement, ReactNode } from "react"
 import { Children, isValidElement, useEffect, useMemo, useState } from "react"
 import React from "react"
 import elementToJSXString from "react-element-to-jsx-string"
-import prettier from "prettier/standalone"
-import babelParser from "prettier/plugins/babel"
-import estreeParser from "prettier/plugins/estree"
-import markdownParser from "prettier/plugins/markdown"
-import postcssParser from "prettier/plugins/postcss"
-import typescriptParser from "prettier/plugins/typescript"
-import { codeToTokens } from "shiki"
-import type { BundledLanguage, SpecialLanguage } from "shiki"
 import { cn } from "@nox/lib/utils"
 import { CodeBlock } from "@nox/common/code-block"
 import { PackageManagerTabs } from "@nox/common/package-manager-tabs"
 import { previewRegistry } from "@nox/lib/preview-registry"
+import {
+  findDataLanguage,
+  highlightCode,
+  nodeToText,
+  resolveCodeLanguage,
+  resolveLazyNode,
+  type HighlightToken,
+} from "@nox/lib/code-notation"
+import { formatCode } from "@nox/lib/code-format"
 import {
   Check,
   Clipboard,
@@ -35,111 +36,6 @@ type CodeBlockSource = {
   language?: string
 }
 
-const languageByExtension: Record<string, string> = {
-  c: "c",
-  cjs: "javascript",
-  cpp: "cpp",
-  css: "css",
-  go: "go",
-  html: "html",
-  java: "java",
-  js: "javascript",
-  json: "json",
-  jsx: "jsx",
-  md: "markdown",
-  mdx: "mdx",
-  py: "python",
-  rs: "rust",
-  scss: "scss",
-  sh: "bash",
-  sql: "sql",
-  svg: "xml",
-  ts: "typescript",
-  tsx: "tsx",
-  vue: "vue",
-  xml: "xml",
-  yaml: "yaml",
-  yml: "yaml",
-}
-
-function getLanguage(title: string) {
-  const extension = title.split(".").pop()?.toLowerCase() ?? ""
-  return languageByExtension[extension] ?? "code"
-}
-
-function getHighlightLanguage(
-  language: string
-): BundledLanguage | SpecialLanguage {
-  if (language === "mdx" || language === "code") return "jsx"
-  return language as BundledLanguage | SpecialLanguage
-}
-
-function getPrettierParser(language: string) {
-  if (language === "typescript" || language === "tsx") return "typescript"
-  if (language === "javascript" || language === "jsx") return "babel"
-  if (language === "json") return "json"
-  if (language === "markdown" || language === "mdx") return "markdown"
-  if (language === "css" || language === "scss") return "css"
-  return null
-}
-
-async function formatCode(code: string, language: string) {
-  const parser = getPrettierParser(language)
-  if (!parser) return code
-
-  try {
-    return await prettier.format(code, {
-      parser,
-      plugins: [
-        babelParser,
-        estreeParser,
-        markdownParser,
-        postcssParser,
-        typescriptParser,
-      ],
-      singleQuote: true,
-      semi: false,
-    })
-  } catch {
-    return code
-  }
-}
-
-const REACT_LAZY_TYPE =
-  typeof Symbol === "function" && Symbol.for ? Symbol.for("react.lazy") : 0xead
-
-function resolveLazyNode(node: ReactNode): ReactNode {
-  if (node && typeof node === "object") {
-    const lazy = node as {
-      $$typeof?: unknown
-      _init?: (payload: unknown) => ReactNode
-      _payload?: unknown
-    }
-    if (lazy.$$typeof === REACT_LAZY_TYPE && typeof lazy._init === "function") {
-      try {
-        return lazy._init(lazy._payload)
-      } catch {
-        return ""
-      }
-    }
-  }
-  return node
-}
-
-function extractText(node: ReactNode): string {
-  if (node === null || node === undefined || typeof node === "boolean")
-    return ""
-  if (typeof node === "string" || typeof node === "number") return String(node)
-  if (Array.isArray(node)) return node.map(extractText).join("")
-  const resolved = resolveLazyNode(node)
-  if (resolved !== node) return extractText(resolved)
-  if (isValidElement(node)) {
-    const props = node.props as { children?: ReactNode }
-    return extractText(props.children)
-  }
-  return ""
-}
-
 function findCodeElement(node: ReactNode): ReactElement | null {
   const resolved = resolveLazyNode(node)
   if (resolved !== node) return findCodeElement(resolved)
@@ -153,18 +49,6 @@ function findCodeElement(node: ReactNode): ReactElement | null {
     if (found) return found
   }
   return null
-}
-
-function elementLanguage(node: ReactNode): string | undefined {
-  if (!isValidElement(node)) return undefined
-  const props = node.props as { children?: ReactNode } & Record<string, unknown>
-  if (typeof props["data-language"] === "string") return props["data-language"]
-  const children = Children.toArray(props.children)
-  for (const child of children) {
-    const language = elementLanguage(child)
-    if (language) return language
-  }
-  return undefined
 }
 
 function isLineElement(node: ReactNode): boolean {
@@ -192,12 +76,12 @@ function extractCodeBlock(children: ReactNode): CodeBlockSource | null {
   )
   const lines =
     raw.length && raw.every(isLineElement)
-      ? raw.map((line) => extractText(line).replace(/\n+$/, "")).join("\n")
-      : extractText(raw)
+      ? raw.map((line) => nodeToText(line).replace(/\n+$/, "")).join("\n")
+      : nodeToText(raw)
 
   const source = lines.replace(/\n$/, "")
   if (!source.trim()) return null
-  return { source, language: elementLanguage(first) }
+  return { source, language: findDataLanguage(first) }
 }
 
 async function evaluateComponent(source: string) {
@@ -329,12 +213,14 @@ export function ComponentPreview({
     [children, codeBlock]
   )
   const [code, setCode] = useState(rawCode)
-  const [highlightedLines, setHighlightedLines] = useState<
-    Array<Array<{ content: string; color?: string; fontStyle?: number }>>
-  >([])
-  const language = fileName
-    ? getLanguage(fileName)
-    : (codeBlock?.language ?? "code")
+  const [highlightedLines, setHighlightedLines] = useState<HighlightToken[][]>(
+    []
+  )
+  const language = resolveCodeLanguage({
+    filename: fileName,
+    text: rawCode,
+    dataLanguage: codeBlock?.language,
+  })
   const lines = code.split("\n")
   const isLongCode = mounted && lines.length > 10
 
@@ -375,16 +261,9 @@ export function ComponentPreview({
 
   useEffect(() => {
     let active = true
-    codeToTokens(code, {
-      lang: getHighlightLanguage(language),
-      theme: "github-dark",
+    highlightCode(code, language).then((tokens) => {
+      if (active) setHighlightedLines(tokens)
     })
-      .then(({ tokens }) => {
-        if (active) setHighlightedLines(tokens)
-      })
-      .catch(() => {
-        if (active) setHighlightedLines([])
-      })
     return () => {
       active = false
     }
