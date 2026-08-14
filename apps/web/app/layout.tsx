@@ -1,12 +1,11 @@
 import { Geist_Mono, Oxanium } from "next/font/google"
 import "@workspace/ui/globals.css"
 const oxanium = Oxanium({ subsets: ["latin"], variable: "--font-sans" })
-
-import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@workspace/ui/lib/utils"
+import { ThemeProvider } from "@/components/theme-provider"
 
-import { NoxLayout } from "@nox/layouts/nox-layout"
-import type { SidebarMenu } from "@nox/layouts/sidebar"
+import { NoxLayout } from "@nox/layouts"
+import type { SidebarMenu } from "@nox/layouts"
 
 export const sidebarMenu: SidebarMenu[] = [
   {

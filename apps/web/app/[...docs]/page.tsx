@@ -1,4 +1,4 @@
-import { MdxLayout } from "@nox/mdx-render/mdx-layout"
+import { NoxRender } from "@nox/render"
 import { DemoButton } from "@/components/examples/demo-button"
 import { PlainNotice } from "@/components/examples/plain-notice"
 
@@ -15,5 +15,11 @@ export default async function DocsPage({
   const { docs = [] } = await params
   const segments = docs[0] === "docs" ? docs.slice(1) : docs
 
-  return <MdxLayout dir="/docs" slug={segments.join("/")} components={mdxComponents} />
+  return (
+    <NoxRender
+      dir="/docs"
+      slug={segments.join("/")}
+      components={mdxComponents}
+    />
+  )
 }

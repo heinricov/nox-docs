@@ -20,7 +20,7 @@ import {
 
 import { ChevronRightIcon } from "lucide-react"
 
-import type { NavCollapsItem } from "@nox/layouts/sidebar"
+import type { NavCollapsItem } from "@nox/layouts/"
 
 type NavCollapsProps = {
   label?: string | null

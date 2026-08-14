@@ -48,7 +48,7 @@ function findPrevNext(
   }
 }
 
-export async function MdxLayout({
+export async function NoxRender({
   dir = "/docs",
   slug = "",
   components,

@@ -2,7 +2,7 @@
 import type { ReactNode } from "react"
 import { usePathname } from "next/navigation"
 import { useMediaQuery } from "@nox/hooks/use-media-query"
-import type { SidebarMenu } from "@nox/layouts/sidebar"
+import type { SidebarMenu } from "@nox/layouts/"
 import { SidebarInset, SidebarProvider } from "@nox/components/sidebar"
 import { SiteHeader } from "@nox/layouts/site-header"
 import { TooltipProvider } from "@nox/components/tooltip"

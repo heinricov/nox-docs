@@ -15,7 +15,7 @@ import {
 import { GroupSwitcher } from "@nox/layouts/group-switcher"
 import { NavLogo } from "@nox/layouts/nav-logo"
 
-import type { SidebarMenu } from "@nox/layouts/sidebar"
+import type { SidebarMenu } from "@nox/layouts/"
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   menu: SidebarMenu[]

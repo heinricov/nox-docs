@@ -31,7 +31,7 @@ Tipe `SidebarMenu` terdiri dari dua varian:
 
 <CodeBlock filename="sidebar-menu.ts">
 ```ts
-import type { SidebarMenu } from "@nox/layouts/sidebar"
+import type { SidebarMenu } from "@nox/layouts/"
 
 const menu: SidebarMenu[] = [
 {
@@ -73,8 +73,8 @@ Bungkus seluruh aplikasi di `app/layout.tsx`. Contoh:
 
 <CodeBlock filename="app/layout.tsx">
 ```tsx
-import type { SidebarMenu } from "@nox/layouts/sidebar"
-import { NoxLayout } from "@nox/layouts/nox-layout"
+import type { SidebarMenu } from "@nox/layouts/"
+import { NoxLayout } from "@nox/layouts/"
 import { sidebarMenu } from "@/lib/sidebar-menu"
 
 export default function RootLayout({

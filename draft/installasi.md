@@ -54,8 +54,8 @@ const oxanium = Oxanium({ subsets: ["latin"], variable: "--font-sans" })
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@workspace/ui/lib/utils"
 
-import { NoxLayout } from "@nox/layouts/nox-layout"
-import type { SidebarMenu } from "@nox/layouts/sidebar"
+import { NoxLayout } from "@nox/layouts/"
+import type { SidebarMenu } from "@nox/layouts/"
 
 export const sidebarMenu: SidebarMenu[] = [
   {

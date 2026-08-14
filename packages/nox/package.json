@@ -52,6 +52,8 @@
     "./lib/*": "./src/lib/*.ts",
     "./components/*": "./src/components/*.tsx",
     "./hooks/*": "./src/hooks/*.ts",
+    "./layouts": "./src/layouts/index.ts",
+    "./layouts/": "./src/layouts/index.ts",
     "./layouts/*": "./src/layouts/*.tsx",
     "./mdx-render/*": "./src/mdx-render/*.tsx"
   }
