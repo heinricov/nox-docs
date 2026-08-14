@@ -3,8 +3,6 @@ title: "ComponentPreview"
 description: "Komponen untuk menampilkan showcase komponen — area preview langsung plus sumber kode dengan syntax highlighting dalam satu kartu"
 ---
 
-# ComponentPreview
-
 `ComponentPreview` menampilkan showcase komponen dalam satu kartu dengan dua tab:
 
 - **Preview** — hasil render komponen secara langsung.
@@ -49,11 +47,11 @@ Ada dua cara memberi `children`, dan keduanya boleh dipakai di file yang sama:
 Tulis JSX sebagai `children`. Cocok untuk menampilkan komponen yang sudah ada (komponen `mdxui` atau komponen yang terdaftar di halaman).
 
 <CodeBlock filename="demo-button.mdx">
-```mdx
-<ComponentPreview title="Tombol Demo" fileName="demo-button.tsx">
-  <DemoButton />
-</ComponentPreview>
-```
+  ```mdx
+  <ComponentPreview title="Tombol Demo" fileName="demo-button.tsx">
+    <DemoButton />
+  </ComponentPreview>
+  ```
 </CodeBlock>
 
 <ComponentPreview title="Tombol Demo" fileName="demo-button.tsx">
@@ -187,9 +185,10 @@ export function ProfileCard() {
 
 // 2. Default export — diprioritaskan jika ada
 export default function StatusBadge() {
-  return <span>...</span>
+return <span>...</span>
 }
-```
+
+`````
 </CodeBlock>
 
 Jika ada beberapa `export function`, **fungsi pertama** yang dipakai sebagai preview (kecuali ada `export default`, yang selalu menang). Contoh dengan `export default`:
@@ -250,9 +249,7 @@ export function Page() {
 Jika proyek memakai alias (misalnya `@/components`), impornya bisa disesuaikan:
 
 <CodeBlock filename="page.tsx">
-```tsx
-import ComponentPreview from "@/components/component-preview"
-```
+  ```tsx import ComponentPreview from "@/components/component-preview" ```
 </CodeBlock>
 
 ---
@@ -270,11 +267,11 @@ import ComponentPreview from "@/components/component-preview"
 - Ketika `fileName` tidak diberikan, toolbar tetap ada (tab + tombol salin) tetapi tanpa nama file, dan bahasa mengikuti blok kode.
 
 <CodeBlock filename="page.mdx">
-```mdx
-<ComponentPreview>
-  <PlainNotice />
-</ComponentPreview>
-```
+  ```mdx
+  <ComponentPreview>
+    <PlainNotice />
+  </ComponentPreview>
+  ```
 </CodeBlock>
 
 <ComponentPreview>

@@ -1,0 +1,66 @@
+---
+title: "Introduction"
+description: "Pengenalan framework, struktur proyek, dan konsep dasarnya"
+---
+
+Selamat datang di dokumentasi **nox**. Halaman ini menjelaskan apa itu nox, teknologi yang mendasarinya, dan bagaimana Anda bisa mulai menggunakannya.
+
+## Apa itu nox?
+
+**nox** adalah framework untuk membangun situs dokumentasi modern dengan cepat. Alih-alih menyusun layout, sidebar, dan rendering MDX dari nol, Anda cukup menulis konten sebagai file `.mdx` di dalam folder `content/`, dan nox akan merender sisanya.
+
+nox dibangun di atas ekosistem terbaik yang sudah ada:
+
+- **Next.js** — App Router, Server Components, dan routing bawaan
+- **shadcn/ui** — komponen UI yang dapat disalin dan dikustomisasi
+- **next-mdx-remote** — rendering MDX secara remote/RSC dengan `compileMDX`
+
+## Fitur Utama
+
+- Server Component secara default
+- Sidebar otomatis dari struktur folder `content/`
+- Rendering MDX dengan dukungan GFM (tabel, daftar, kutipan)
+- Syntax highlighting dengan `rehype-pretty-code` + `shiki`
+- Komponen dokumentasi siap pakai (CodeBlock, TerminalView, ComponentPreview, dll.)
+- Dark mode dan theming
+
+## Dependensi yang Digunakan
+
+nox bergantung pada pustaka berikut:
+
+| Dependensi                 | Kegunaan                                   |
+| -------------------------- | ------------------------------------------ |
+| `next`                     | Framework utama (App Router + RSC)         |
+| `react` / `react-dom`      | Runtime UI                                 |
+| `next-mdx-remote`          | Rendering MDX/MDX Remote                   |
+| `remark-gfm`               | Dukungan GFM (tabel, strikethrough, dll.)  |
+| `rehype-pretty-code`       | Syntax highlighting kode                   |
+| `shiki`                    | Mesin highlighting                         |
+| `shadcn`                   | Komponen UI + CLI                          |
+| `@base-ui/react`           | Primitive interaksi (tooltip, sheet, dll.) |
+| `tailwindcss`              | Styling utilitas                           |
+| `lucide-react`             | Ikon                                       |
+| `class-variance-authority` | Variasi komponen                           |
+| `tailwind-merge`           | Penggabungan class Tailwind                |
+| `zod`                      | Validasi skema                             |
+
+## Mulai Menggunakan
+
+Untuk memulai, jalankan:
+
+```bash
+pnpm install
+pnpm dev
+```
+
+Lalu buka halaman dokumentasi di `localhost:3000/docs`.
+
+> Dokumentasi yang baik adalah fondasi dari produk yang baik.
+
+## Alur Penulisan Konten
+
+1. Buat folder di dalam `apps/docs/content/`
+2. Tambahkan file `meta.ts` untuk mengatur label dan urutan
+3. Tulis file `.mdx` untuk setiap halaman
+
+---

@@ -10,7 +10,7 @@ import type { SidebarMenu } from "@nox/layouts/sidebar"
 
 export const sidebarMenu: SidebarMenu[] = [
   {
-    type: "main",
+    type: "main-mobile",
     label: "Menus",
     items: [
       {
@@ -21,10 +21,6 @@ export const sidebarMenu: SidebarMenu[] = [
         title: "Documentation",
         url: "/docs",
       },
-      {
-        title: "Installation",
-        url: "/docs/installation",
-      },
     ],
   },
 
@@ -34,11 +30,19 @@ export const sidebarMenu: SidebarMenu[] = [
     items: [
       {
         title: "Introduction",
-        url: "/docs/introduction",
+        url: "/docs/index",
       },
       {
         title: "Installation",
         url: "/docs/installation",
+      },
+      {
+        title: "Nox Layout",
+        url: "/docs/nox-layout",
+      },
+      {
+        title: "Mdx Layout",
+        url: "/docs/mdx-layout",
       },
       {
         title: "CLI",
@@ -63,7 +67,7 @@ export const sidebarMenu: SidebarMenu[] = [
         url: "/docs/mdx/code-diff",
       },
       {
-        title: "Package Manager Tabs",
+        title: "Package Manager",
         url: "/docs/mdx/package-manager-tabs",
       },
       {

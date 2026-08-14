@@ -1,0 +1,136 @@
+---
+title: "MdxLayout"
+description: "Layout halaman dokumentasi MDX: breadcrumb, header, renderer, TOC, dan pagination"
+---
+
+# MdxLayout
+
+`MdxLayout` adalah komponen server yang merender satu halaman dokumentasi dari file `.mdx` di dalam folder `content/`. Ia membaca file berdasarkan `dir` + `slug`, lalu menyusun halaman lengkap: **breadcrumb**, **header**, **isi MDX**, **TOC**, dan **pagination** sebelumnya/sesudahnya.
+
+## Fitur Utama
+
+- **MdxBreadcrumb** — jejak navigasi otomatis dari struktur path file
+- **MdxHeader** — judul & deskripsi dari frontmatter, plus tanggal dibuat/diperbarui dari metadata file
+- **MdxRenderer** — render MDX via `next-mdx-remote/rsc` (`compileMDX`) dengan dukungan GFM, syntax highlighting, dan komponen bawaan nox
+- **MdxToc** — daftar isi dari heading `##`/`###` (tampil di layar besar)
+- **MdxPagination** — link halaman sebelumnya & berikutnya, dihitung otomatis dari urutan navigasi konten
+- **Komponen kustom** — daftar komponen MDX tambahan lewat prop `components`
+- **Fallback** — `index.mdx` dipakai untuk path root folder; redirect otomatis atau `notFound()` bila file tidak ada
+
+## Props
+
+| Prop         | Tipe                      | Default  | Deskripsi                                                        |
+| ------------ | ------------------------- | -------- | ---------------------------------------------------------------- |
+| `dir`        | `string`                  | `"/docs"`| Folder konten di dalam `content/`                                |
+| `slug`       | `string`                  | `""`     | Path halaman relatif terhadap `dir`, tanpa ekstensi `.mdx`       |
+| `components` | `MDXRemoteProps["components"]` | —     | Komponen MDX tambahan (dicampur dengan komponen bawaan)          |
+
+## Struktur Konten
+
+Konten disimpan di folder `content/` (atau `apps/docs/content/`). Contoh:
+
+<CodeBlock filename="content/docs/introduction.mdx">
+```mdx
+---
+title: "Introduction"
+description: "Pengenalan framework"
+---
+
+# Introduction
+
+Selamat datang di dokumentasi nox.
+```
+</CodeBlock>
+
+File `meta.ts` di dalam folder mengatur label dan urutan navigasi (dipakai juga oleh pagination):
+
+<CodeBlock filename="content/docs/meta.ts">
+```ts
+;({
+  docs: {
+    label: "Documentation",
+    type: "main",
+    order: ["introduction", "installation", "squad-mdxui", "cli"],
+  },
+})
+```
+</CodeBlock>
+
+## Penggunaan
+
+### 1. Buat route tangkap-semua `[...docs]`
+
+Buat folder `app/[...docs]` dan file `page.tsx`:
+
+<CodeBlock filename="app/[...docs]/page.tsx">
+```tsx
+import { MdxLayout } from "@nox/mdx-render/mdx-layout"
+
+export default async function DocsPage({
+  params,
+}: {
+  params: Promise<{ docs?: string[] }>
+}) {
+  const { docs = [] } = await params
+  const segments = docs[0] === "docs" ? docs.slice(1) : docs
+
+  return <MdxLayout dir="/docs" slug={segments.join("/")} />
+}
+```
+</CodeBlock>
+
+`slug` mengikuti URL: `/docs/introduction` → `slug="introduction"`, sedangkan `/docs/mdx/code-block` → `slug="mdx/code-block"`.
+
+### 2. Tambahkan komponen kustom
+
+Komponen yang dipakai langsung di file MDX (misalnya `<DemoButton />`) harus didaftarkan lewat `components`:
+
+<CodeBlock filename="app/[...docs]/page.tsx">
+```tsx
+import { MdxLayout } from "@nox/mdx-render/mdx-layout"
+import { DemoButton } from "@/components/examples/demo-button"
+import { PlainNotice } from "@/components/examples/plain-notice"
+
+const mdxComponents = {
+  DemoButton,
+  PlainNotice,
+}
+
+export default async function DocsPage({
+  params,
+}: {
+  params: Promise<{ docs?: string[] }>
+}) {
+  const { docs = [] } = await params
+  const segments = docs[0] === "docs" ? docs.slice(1) : docs
+
+  return (
+    <MdxLayout
+      dir="/docs"
+      slug={segments.join("/")}
+      components={mdxComponents}
+    />
+  )
+}
+```
+</CodeBlock>
+
+### 3. Kelola index halaman
+
+- `/docs` (slug kosong) mencari `content/docs/index.mdx`
+- Jika `index.mdx` tidak ada, MdxLayout me-redirect ke halaman pertama pada urutan navigasi
+- Jika file tidak ditemukan, menampilkan `notFound()`
+- Sub-folder juga mendukung `index.mdx` sebagai halaman awal folder
+
+## Penjelasan Alur
+
+1. `slug` dipecah menjadi segmen; slug kosong menandakan halaman index
+2. `readContentMdx(dir, relPath)` membaca file `.mdx` dari `content/` berikut metadata tanggal
+3. Jika file tidak ada dan bukan index, dicoba `relPath/index`; gagal → redirect (index) atau `notFound()`
+4. `getContentSections` membaca struktur navigasi (termasuk `meta.ts`) untuk menghitung halaman **previous** dan **next**
+5. Frontmatter diekstrak untuk judul/deskripsi; heading diekstrak untuk TOC
+6. Halaman dirender: breadcrumb → header → `MdxRenderer` (dengan komponen kustom) → pagination, plus TOC di samping (layar besar)
+
+---
+
+`MdxLayout` biasanya dipasangkan dengan `NoxLayout` — lihat [NoxLayout](/docs/nox-layout) untuk layout kerangka halaman secara keseluruhan.

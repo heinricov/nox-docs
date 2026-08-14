@@ -5,7 +5,7 @@ import AnimatedGridPattern from "./animated-grid-pattern"
 
 export function Hero() {
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-6">
+    <div className="relative flex max-h-svh items-center justify-center overflow-hidden px-6 py-20 sm:py-24 lg:py-32">
       <AnimatedGridPattern
         className={cn(
           "mask-[radial-gradient(500px_circle_at_center,white,transparent)]",

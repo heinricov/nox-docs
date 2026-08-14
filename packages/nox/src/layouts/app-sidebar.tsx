@@ -49,6 +49,16 @@ export function AppSidebar({ menu, ...props }: AppSidebarProps) {
                 />
               )
 
+            case "main-mobile":
+              return (
+                <div key={`${item.type}-${item.label}-${index}`} className="md:hidden">
+                  <NavMain
+                    label={item.label}
+                    items={item.items}
+                  />
+                </div>
+              )
+
             case "collaps":
               return (
                 <NavCollaps

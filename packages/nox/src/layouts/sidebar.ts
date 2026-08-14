@@ -23,10 +23,16 @@ export type NavMainMenu = {
   items: NavMainItem[]
 }
 
+export type NavMainMobileMenu = {
+  type: "main-mobile"
+  label?: string
+  items: NavMainItem[]
+}
+
 export type NavCollapsMenu = {
   type: "collaps"
   label?: string
   items: NavCollapsItem[]
 }
 
-export type SidebarMenu = NavMainMenu | NavCollapsMenu
+export type SidebarMenu = NavMainMenu | NavMainMobileMenu | NavCollapsMenu

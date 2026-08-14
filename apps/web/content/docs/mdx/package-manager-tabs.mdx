@@ -3,24 +3,21 @@ title: "PackageManagerTabs"
 description: "Komponen untuk menampilkan perintah instalasi paket yang otomatis menyesuaikan dengan package manager (npm, pnpm, yarn, bun)"
 ---
 
-# PackageManagerTabs
-
 `PackageManagerTabs` menampilkan perintah instalasi paket dalam kartu dengan dropdown untuk memilih package manager. Perintah otomatis diformat sesuai package manager yang dipilih — misalnya `npm install` menjadi `pnpm add` atau `yarn add`.
 
 ## Import
 
 <CodeBlock filename="package-manager-tabs.tsx">
-```tsx
-import { PackageManagerTabs } from "mdxui/components/common/package-manager-tabs"
-```
+  ```tsx import {PackageManagerTabs} from
+  "mdxui/components/common/package-manager-tabs" ```
 </CodeBlock>
 
 Untuk pemakaian di file MDX, `PackageManagerTabs` sudah terdaftar otomatis di `MdxRenderer`, jadi langsung bisa dipakai tanpa import:
 
 <CodeBlock filename="page.mdx">
-```mdx
-<PackageManagerTabs>shadcn@latest init</PackageManagerTabs>
-```
+  ```mdx
+  <PackageManagerTabs>shadcn@latest init</PackageManagerTabs>
+  ```
 </CodeBlock>
 
 ## Props
