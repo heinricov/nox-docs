@@ -71,10 +71,6 @@ export const sidebarMenu: NoxSidebarMenu[] = [
         title: "Mdx Layout",
         url: "/docs/mdx-layout",
       },
-      {
-        title: "CLI",
-        url: "/docs/cli",
-      },
     ],
   },
   {
