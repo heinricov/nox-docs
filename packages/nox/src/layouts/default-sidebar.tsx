@@ -13,9 +13,9 @@ import {
 } from "@nox/core/components/sidebar"
 
 import { GroupSwitcher } from "@nox/core/layouts/group-switcher"
-import { NavLogo } from "@nox/core/layouts/nav-logo"
 
 import type { NoxSidebarMenu } from "@nox/core/layouts"
+import { SideLogo } from "./side-logo"
 
 type DefaultSidebarProps = React.ComponentProps<typeof Sidebar> & {
   menu: NoxSidebarMenu[]
@@ -51,11 +51,11 @@ export function DefaultSidebar({ menu, ...props }: DefaultSidebarProps) {
 
             case "main-mobile":
               return (
-                <div key={`${item.type}-${item.label}-${index}`} className="md:hidden">
-                  <NavMain
-                    label={item.label}
-                    items={item.items}
-                  />
+                <div
+                  key={`${item.type}-${item.label}-${index}`}
+                  className="md:hidden"
+                >
+                  <NavMain label={item.label} items={item.items} />
                 </div>
               )
 
@@ -72,7 +72,7 @@ export function DefaultSidebar({ menu, ...props }: DefaultSidebarProps) {
       </SidebarContent>
 
       <SidebarFooter>
-        <NavLogo className="rounded-md border sm:hidden" />
+        <SideLogo className="rounded-md border sm:hidden" />
       </SidebarFooter>
     </Sidebar>
   )
