@@ -1,11 +1,11 @@
 import type { LucideIcon } from "lucide-react"
 import {
-  ChartBar,
-  ChartLine,
-  Flashlight,
-  LayoutGrid,
-  Settings,
-  ShieldCheck,
+  Blocks,
+  Braces,
+  FileText,
+  FolderTree,
+  LayoutTemplate,
+  MoonStar,
 } from "lucide-react"
 
 import {
@@ -23,34 +23,34 @@ type Feature = {
 
 const features: Feature[] = [
   {
-    icon: Flashlight,
-    title: "Lightning fast",
-    copy: "Ship in milliseconds with an edge-first runtime tuned for speed.",
+    icon: FileText,
+    title: "MDX native",
+    copy: "Tulis dokumentasi sebagai file .mdx dengan frontmatter, dan nox merender sisanya.",
   },
   {
-    icon: ShieldCheck,
-    title: "Secure by default",
-    copy: "Encryption, audit logs, and granular access baked into every layer.",
+    icon: LayoutTemplate,
+    title: "Layout terpadu",
+    copy: "NoxLayout menyusun header, sidebar, konten, dan footer dalam satu komponen responsif.",
   },
   {
-    icon: LayoutGrid,
-    title: "Composable blocks",
-    copy: "Drop in sharp, accessible components and compose them your way.",
+    icon: FolderTree,
+    title: "Sidebar otomatis",
+    copy: "Navigasi dibangun dari struktur folder content/ dan meta.ts, tanpa konfigurasi manual.",
   },
   {
-    icon: ChartBar,
-    title: "Real-time insights",
-    copy: "Track usage and performance the moment events happen.",
+    icon: Braces,
+    title: "Syntax highlighting",
+    copy: "Blok kode dirender dengan rehype-pretty-code dan shiki, lengkap dengan baris yang disorot.",
   },
   {
-    icon: ChartLine,
-    title: "Scales with you",
-    copy: "From first user to millions without re-architecting a thing.",
+    icon: Blocks,
+    title: "Komponen siap pakai",
+    copy: "CodeBlock, TerminalView, ComponentPreview, ProjectTree, dan lainnya langsung dipakai di MDX.",
   },
   {
-    icon: Settings,
-    title: "Fully configurable",
-    copy: "Tune defaults, theming, and workflows to fit your team.",
+    icon: MoonStar,
+    title: "Dark mode",
+    copy: "Theming terintegrasi dengan tombol tema bawaan di header dan palet warna yang konsisten.",
   },
 ]
 
@@ -63,10 +63,11 @@ export default function FeatureSection() {
             Features
           </span>
           <h2 className="mt-3 font-heading text-3xl font-bold tracking-tight sm:text-4xl">
-            Everything you need to build
+            Segalanya untuk membangun situs dokumentasi
           </h2>
           <p className="mt-3 text-muted-foreground">
-            A focused toolkit that gets out of your way so you can move fast.
+            Fokus pada konten, dan biarkan nox mengurus layout, navigasi, dan
+            rendering MDX.
           </p>
         </div>
 

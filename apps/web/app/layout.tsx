@@ -131,7 +131,7 @@ export default function RootLayout({
           <NoxLayout
             // navheader={<NavHeader />}
             // navfooter={<NavFooter />}
-            githubUrl="https://github.com/nox-docs/nox-docs"
+            githubUrl="https://github.com/nox-docs"
             twitterUrl="https://twitter.com/nox_docs"
             logo={<MyLogo />}
             targetDir={["/docs"]}
