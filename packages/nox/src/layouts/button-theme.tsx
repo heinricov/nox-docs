@@ -29,7 +29,11 @@ export function ButtonTheme() {
       onClick={toggleTheme}
       size="icon"
     >
-      {resolvedTheme === "dark" ? <SunIcon /> : <MoonIcon />}
+      {resolvedTheme === "dark" ? (
+        <SunIcon className="h-5 w-5" />
+      ) : (
+        <MoonIcon className="h-5 w-5" />
+      )}
     </Button>
   )
 }

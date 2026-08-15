@@ -111,8 +111,10 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           <NoxLayout
-            navheader={<NavHeader />}
-            navfooter={<NavFooter />}
+            // navheader={<NavHeader />}
+            // navfooter={<NavFooter />}
+            githubUrl="https://github.com/nox-docs/nox-docs"
+            twitterUrl="https://twitter.com/nox_docs"
             targetDir={["/docs"]}
             menu={sidebarMenu}
           >

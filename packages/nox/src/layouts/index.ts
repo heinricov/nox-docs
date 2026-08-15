@@ -1,6 +1,6 @@
 export { AppFooter } from "./app-footer"
-export { AppSidebar } from "./app-sidebar"
 export { ButtonTheme } from "./button-theme"
+export { DefaultSidebar } from "./default-sidebar"
 export { GroupSwitcher } from "./group-switcher"
 export { NavCollaps } from "./nav-collaps"
 export { NavLogo } from "./nav-logo"

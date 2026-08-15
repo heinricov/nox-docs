@@ -1,5 +1,6 @@
 "use client"
 
+import type { ReactNode } from "react"
 import Link from "next/link"
 
 import { RiTwitterXFill } from "react-icons/ri"
@@ -26,12 +27,25 @@ const links = [
   },
 ]
 
-const socials = [
-  { title: "Twitter / X", href: "/", icon: RiTwitterXFill },
-  { title: "GitHub", href: "/", icon: FaGithub },
-]
-
-export function DefaultFooter() {
+export function DefaultFooter({
+  githubUrl,
+  twitterUrl,
+  copyRight,
+  logo,
+}: {
+  githubUrl?: string
+  twitterUrl?: string
+  copyRight?: string
+  logo?: ReactNode
+}) {
+  const socials = [
+    ...(twitterUrl
+      ? [{ title: "Twitter / X", href: twitterUrl, icon: RiTwitterXFill }]
+      : []),
+    ...(githubUrl
+      ? [{ title: "GitHub", href: githubUrl, icon: FaGithub }]
+      : []),
+  ]
   return (
     <footer
       className={cn(
@@ -41,7 +55,7 @@ export function DefaultFooter() {
       <div className="max-w-container mx-auto w-full divide-y">
         <div className="flex flex-col items-center justify-between gap-4 px-2 pt-3 pb-5 sm:flex-row">
           <div className="flex w-full items-center justify-between gap-4 sm:w-auto sm:justify-normal">
-            <NavLogo />
+            {logo ?? <NavLogo />}
 
             <ul className="flex items-center gap-4 sm:hidden">
               {socials.map(({ title, href, icon: Icon }) => (
@@ -64,8 +78,8 @@ export function DefaultFooter() {
         </div>
         <div className="flex flex-col-reverse items-center justify-between gap-4 px-2 pt-4 pb-2 sm:flex-row">
           <p className="text-sm font-medium text-muted-foreground">
-            Copyright &copy; {new Date().getFullYear()} Bloxxee. All rights
-            reserved.
+            {copyRight ??
+              `Copyright © ${new Date().getFullYear()} Nox Docs. All rights reserved.`}
           </p>
 
           <ul className="hidden items-center gap-4 sm:flex">

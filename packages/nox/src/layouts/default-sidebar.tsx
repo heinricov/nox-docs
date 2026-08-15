@@ -17,14 +17,14 @@ import { NavLogo } from "@nox/core/layouts/nav-logo"
 
 import type { NoxSidebarMenu } from "@nox/core/layouts"
 
-type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
+type DefaultSidebarProps = React.ComponentProps<typeof Sidebar> & {
   menu: NoxSidebarMenu[]
 }
 
 const data = {
   versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
 }
-export function AppSidebar({ menu, ...props }: AppSidebarProps) {
+export function DefaultSidebar({ menu, ...props }: DefaultSidebarProps) {
   return (
     <Sidebar
       className="top-(--header-height) h-[calc(100svh-var(--header-height))]! pl-4"

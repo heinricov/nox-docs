@@ -5,7 +5,7 @@ import { useMediaQuery } from "@nox/core/hooks/use-media-query"
 import type { NoxSidebarMenu } from "@nox/core/layouts"
 import { SidebarInset, SidebarProvider } from "@nox/core/components/sidebar"
 import { TooltipProvider } from "@nox/core/components/tooltip"
-import { AppSidebar } from "./app-sidebar"
+import { DefaultSidebar } from "./default-sidebar"
 import { DefaultFooter } from "./default-footer"
 import { DefaultHeader } from "./default-header"
 
@@ -16,15 +16,34 @@ type NoxLayoutProps = {
   children: ReactNode
   targetDir?: string | string[]
   navheader?: ReactNode
+  navside?: ReactNode
   navfooter?: ReactNode
+  githubUrl?: string
+  twitterUrl?: string
+  copyRight?: string
+  logo?: ReactNode
 }
 
 export function NoxLayout({
   menu,
   children,
   targetDir,
-  navheader = <DefaultHeader />,
-  navfooter = <DefaultFooter />,
+  githubUrl,
+  twitterUrl,
+  copyRight,
+  logo,
+  navheader = (
+    <DefaultHeader githubUrl={githubUrl} twitterUrl={twitterUrl} logo={logo} />
+  ),
+  navside = <DefaultSidebar menu={menu} />,
+  navfooter = (
+    <DefaultFooter
+      githubUrl={githubUrl}
+      twitterUrl={twitterUrl}
+      copyRight={copyRight}
+      logo={logo}
+    />
+  ),
 }: NoxLayoutProps) {
   const pathname = usePathname()
 
@@ -43,7 +62,7 @@ export function NoxLayout({
         <SidebarProvider className="flex flex-col">
           {navheader}
           <div className="flex flex-1">
-            {showSidebar && <AppSidebar menu={menu} />}
+            {showSidebar && navside}
             <SidebarInset>
               <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
             </SidebarInset>

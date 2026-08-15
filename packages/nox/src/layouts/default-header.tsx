@@ -1,5 +1,6 @@
 "use client"
 
+import type { ReactNode } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { PanelLeftIcon } from "lucide-react"
@@ -11,15 +12,36 @@ import { cn } from "@nox/core/lib/utils"
 import { SearchForm } from "@nox/core/layouts/search-form"
 import { NavLogo } from "./nav-logo"
 import { ButtonTheme } from "./button-theme"
+import { RiTwitterXFill } from "react-icons/ri"
+import { FaGithub } from "react-icons/fa"
 
 const navItems = [
   { title: "Home", href: "/" },
   { title: "Documentation", href: "/docs" },
 ]
 
-export function DefaultHeader() {
+type DefaultHeaderProps = {
+  githubUrl?: string
+  twitterUrl?: string
+  logo?: ReactNode
+}
+
+export function DefaultHeader({
+  githubUrl,
+  twitterUrl,
+  logo,
+}: DefaultHeaderProps) {
   const { toggleSidebar } = useSidebar()
   const pathname = usePathname()
+
+  const socials = [
+    ...(twitterUrl
+      ? [{ title: "Twitter / X", href: twitterUrl, icon: RiTwitterXFill }]
+      : []),
+    ...(githubUrl
+      ? [{ title: "GitHub", href: githubUrl, icon: FaGithub }]
+      : []),
+  ]
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href)
@@ -42,7 +64,7 @@ export function DefaultHeader() {
         />
 
         <div className="flex min-w-0 items-center gap-1 sm:gap-10">
-          <NavLogo />
+          {logo ?? <NavLogo />}
           <nav className="hidden items-center sm:flex">
             <ol className="flex items-center gap-0.5">
               {navItems.map((item) => (
@@ -66,8 +88,17 @@ export function DefaultHeader() {
         </div>
 
         <div className="ml-auto flex shrink-0 items-center gap-1.5">
-          {/* <SearchForm className="hidden lg:block" /> */}
+          <SearchForm className="hidden lg:block" />
           <ButtonTheme />
+          <ul className="flex items-center gap-4">
+            {socials.map(({ title, href, icon: Icon }) => (
+              <li key={title}>
+                <Link href={href} aria-label={title}>
+                  <Icon className="h-5 w-5 text-muted-foreground" />
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </header>
