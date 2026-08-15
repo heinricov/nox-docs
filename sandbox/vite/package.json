@@ -1,0 +1,26 @@
+{
+  "name": "sandbox-vite",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@nox/core": "file:../../packages/nox/nox-core-0.0.1.tgz",
+    "@nox/layouts": "file:../../packages/layouts/nox-layouts-0.0.1.tgz",
+    "@nox/render": "file:../../packages/render/nox-render-0.0.1.tgz",
+    "nox": "file:../../apps/cli/nox-0.0.1.tgz"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^5",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "typescript": "^5",
+    "vite": "^7"
+  }
+}

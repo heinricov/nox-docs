@@ -5,24 +5,24 @@ import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
 import { cva, type VariantProps } from "class-variance-authority"
 
-import { useIsMobile } from "@nox/hooks/use-mobile"
-import { cn } from "@nox/lib/utils"
-import { Button } from "@nox/components/button"
-import { Input } from "@nox/components/input"
-import { Separator } from "@nox/components/separator"
+import { useIsMobile } from "@nox/core/hooks/use-mobile"
+import { cn } from "@nox/core/lib/utils"
+import { Button } from "@nox/core/components/button"
+import { Input } from "@nox/core/components/input"
+import { Separator } from "@nox/core/components/separator"
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "@nox/components/sheet"
-import { Skeleton } from "@nox/components/skeleton"
+} from "@nox/core/components/sheet"
+import { Skeleton } from "@nox/core/components/skeleton"
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@nox/components/tooltip"
+} from "@nox/core/components/tooltip"
 import { PanelLeftIcon } from "lucide-react"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"

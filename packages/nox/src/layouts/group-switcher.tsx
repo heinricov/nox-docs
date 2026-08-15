@@ -8,12 +8,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "@nox/components/dropdown-menu"
+} from "@nox/core/components/dropdown-menu"
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@nox/components/sidebar"
+} from "@nox/core/components/sidebar"
 
 export function GroupSwitcher({
   versions,

@@ -14,5 +14,5 @@ export type {
   NavMainItem,
   NavMainMenu,
   NavMainMobileMenu,
-  SidebarMenu,
+  NoxSidebarMenu,
 } from "./sidebar"

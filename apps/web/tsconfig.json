@@ -4,7 +4,7 @@
     "paths": {
       "@/*": ["./*"],
       "@workspace/ui/*": ["../../packages/ui/src/*"],
-      "@nox/*": ["../../packages/nox/src/*"]
+      "@nox/core/*": ["../../packages/nox/src/*"]
     },
     "plugins": [
       {

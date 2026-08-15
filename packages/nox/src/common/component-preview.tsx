@@ -4,10 +4,10 @@ import type { ReactElement, ReactNode } from "react"
 import { Children, isValidElement, useEffect, useMemo, useState } from "react"
 import React from "react"
 import elementToJSXString from "react-element-to-jsx-string"
-import { cn } from "@nox/lib/utils"
-import { CodeBlock } from "@nox/common/code-block"
-import { PackageManagerTabs } from "@nox/common/package-manager-tabs"
-import { previewRegistry } from "@nox/lib/preview-registry"
+import { cn } from "@nox/core/lib/utils"
+import { CodeBlock } from "@nox/core/common/code-block"
+import { PackageManagerTabs } from "@nox/core/common/package-manager-tabs"
+import { previewRegistry } from "@nox/core/lib/preview-registry"
 import {
   findDataLanguage,
   highlightCode,
@@ -15,8 +15,8 @@ import {
   resolveCodeLanguage,
   resolveLazyNode,
   type HighlightToken,
-} from "@nox/lib/code-notation"
-import { formatCode } from "@nox/lib/code-format"
+} from "@nox/core/lib/code-notation"
+import { formatCode } from "@nox/core/lib/code-format"
 import {
   Check,
   Clipboard,

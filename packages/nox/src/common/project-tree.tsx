@@ -11,8 +11,8 @@ import {
   FolderOpen,
   type LucideIcon,
 } from "lucide-react"
-import { cn } from "@nox/lib/utils"
-import { projectIcons, type ProjectKey } from "@nox/common/project-icons"
+import { cn } from "@nox/core/lib/utils"
+import { projectIcons, type ProjectKey } from "@nox/core/common/project-icons"
 import {
   Children,
   cloneElement,

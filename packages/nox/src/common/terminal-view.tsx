@@ -1,6 +1,6 @@
 "use client"
 
-import { cn } from "@nox/lib/utils"
+import { cn } from "@nox/core/lib/utils"
 import { useEffect, useMemo, useState } from "react"
 
 type ProcessAnimation = "progressBar" | "ProgresBar" | "spinner" | "none"

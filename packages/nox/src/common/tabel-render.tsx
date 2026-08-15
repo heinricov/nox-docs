@@ -12,8 +12,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@nox/components/table"
-import { cn } from "@nox/lib/utils"
+} from "@nox/core/components/table"
+import { cn } from "@nox/core/lib/utils"
 
 type TableNodeProps = {
   children?: ReactNode

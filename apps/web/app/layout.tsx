@@ -5,9 +5,9 @@ import { cn } from "@workspace/ui/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider"
 
 import { NoxLayout } from "@nox/layouts"
-import type { SidebarMenu } from "@nox/layouts"
+import type { NoxSidebarMenu } from "@nox/layouts"
 
-export const sidebarMenu: SidebarMenu[] = [
+export const sidebarMenu: NoxSidebarMenu[] = [
   {
     type: "main-mobile",
     label: "Menus",
@@ -34,6 +34,10 @@ export const sidebarMenu: SidebarMenu[] = [
       {
         title: "Installation",
         url: "/docs/installation",
+      },
+      {
+        title: "Manual",
+        url: "/docs/manual",
       },
       {
         title: "Nox Layout",

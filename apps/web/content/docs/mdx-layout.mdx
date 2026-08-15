@@ -1,11 +1,11 @@
 ---
-title: "MdxLayout"
+title: "NoxRender"
 description: "Layout halaman dokumentasi MDX: breadcrumb, header, renderer, TOC, dan pagination"
 ---
 
-# MdxLayout
+# NoxRender
 
-`MdxLayout` adalah komponen server yang merender satu halaman dokumentasi dari file `.mdx` di dalam folder `content/`. Ia membaca file berdasarkan `dir` + `slug`, lalu menyusun halaman lengkap: **breadcrumb**, **header**, **isi MDX**, **TOC**, dan **pagination** sebelumnya/sesudahnya.
+`NoxRender` adalah komponen server yang merender satu halaman dokumentasi dari file `.mdx` di dalam folder `content/`. Ia membaca file berdasarkan `dir` + `slug`, lalu menyusun halaman lengkap: **breadcrumb**, **header**, **isi MDX**, **TOC**, dan **pagination** sebelumnya/sesudahnya.
 
 ## Fitur Utama
 
@@ -50,7 +50,7 @@ File `meta.ts` di dalam folder mengatur label dan urutan navigasi (dipakai juga 
   docs: {
     label: "Documentation",
     type: "main",
-    order: ["introduction", "installation", "squad-mdxui", "cli"],
+    order: ["introduction", "installation", "manual", "squad-mdxui", "cli"],
   },
 })
 ```
@@ -64,7 +64,7 @@ Buat folder `app/[...docs]` dan file `page.tsx`:
 
 <CodeBlock filename="app/[...docs]/page.tsx">
 ```tsx
-import { MdxLayout } from "@nox/mdx-render/mdx-layout"
+import { NoxRender } from "@nox/render"
 
 export default async function DocsPage({
   params,
@@ -74,7 +74,7 @@ export default async function DocsPage({
   const { docs = [] } = await params
   const segments = docs[0] === "docs" ? docs.slice(1) : docs
 
-  return <MdxLayout dir="/docs" slug={segments.join("/")} />
+  return <NoxRender dir="/docs" slug={segments.join("/")} />
 }
 ```
 </CodeBlock>
@@ -87,7 +87,7 @@ Komponen yang dipakai langsung di file MDX (misalnya `<DemoButton />`) harus did
 
 <CodeBlock filename="app/[...docs]/page.tsx">
 ```tsx
-import { MdxLayout } from "@nox/mdx-render/mdx-layout"
+import { NoxRender } from "@nox/render"
 import { DemoButton } from "@/components/examples/demo-button"
 import { PlainNotice } from "@/components/examples/plain-notice"
 
@@ -105,7 +105,7 @@ export default async function DocsPage({
   const segments = docs[0] === "docs" ? docs.slice(1) : docs
 
   return (
-    <MdxLayout
+    <NoxRender
       dir="/docs"
       slug={segments.join("/")}
       components={mdxComponents}
@@ -118,7 +118,7 @@ export default async function DocsPage({
 ### 3. Kelola index halaman
 
 - `/docs` (slug kosong) mencari `content/docs/index.mdx`
-- Jika `index.mdx` tidak ada, MdxLayout me-redirect ke halaman pertama pada urutan navigasi
+- Jika `index.mdx` tidak ada, NoxRender me-redirect ke halaman pertama pada urutan navigasi
 - Jika file tidak ditemukan, menampilkan `notFound()`
 - Sub-folder juga mendukung `index.mdx` sebagai halaman awal folder
 
@@ -133,4 +133,4 @@ export default async function DocsPage({
 
 ---
 
-`MdxLayout` biasanya dipasangkan dengan `NoxLayout` — lihat [NoxLayout](/docs/nox-layout) untuk layout kerangka halaman secara keseluruhan.
+`NoxRender` biasanya dipasangkan dengan `NoxLayout` — lihat [NoxLayout](/docs/nox-layout) untuk layout kerangka halaman secara keseluruhan.

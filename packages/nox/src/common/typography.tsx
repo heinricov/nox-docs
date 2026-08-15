@@ -1,5 +1,5 @@
 import React from "react"
-import { slugify } from "@nox/lib/mdx"
+import { slugify } from "@nox/core/lib/mdx"
 
 export const mdxTypographyComponents = {
   h1: ({ children }: { children?: React.ReactNode }) => (

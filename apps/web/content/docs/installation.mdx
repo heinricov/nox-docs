@@ -76,19 +76,31 @@ Sebelum deploy, dua hal perlu diperhatikan:
 
 ## Use Manual
 
-1. Masuk ke folder project:
+1. Install `nox`:
 
    <CodeBlock filename="terminal">
      ```bash
-     cd nama-project
+     npm install nox
      ```
    </CodeBlock>
 
-2. Jalankan perintah init:
+   Perintah ini menginstal `nox` beserta paket `@nox` secara transitif, sehingga import berikut langsung tersedia:
 
-   <CodeBlock filename="terminal">
-     ```bash
-     npx nox@latest init
+   ```ts
+   import { NoxLayout } from "@nox/layouts"
+   import type { NoxSidebarMenu } from "@nox/layouts"
+   import { NoxRender } from "@nox/render"
+   ```
+
+2. **Tambahkan paket ke `transpilePackages`** di `next.config.ts`:
+
+   <CodeBlock filename="next.config.ts">
+     ```ts
+     const nextConfig = {
+       transpilePackages: ["@nox/core", "@nox/layouts", "@nox/render"],
+     }
+
+     export default nextConfig
      ```
    </CodeBlock>
 
@@ -96,64 +108,30 @@ Sebelum deploy, dua hal perlu diperhatikan:
 
    <CodeBlock filename="app/layout.tsx">
      ```tsx
-     import { Geist_Mono, Oxanium } from "next/font/google"
-     import "@workspace/ui/globals.css"
-     const oxanium = Oxanium({ subsets: ["latin"], variable: "--font-sans" })
+     import type { ReactNode } from "react"
+     import { NoxLayout } from "@nox/layouts"
+     import type { NoxSidebarMenu } from "@nox/layouts"
 
-     import { ThemeProvider } from "@/components/theme-provider"
-     import { cn } from "@workspace/ui/lib/utils"
-
-     import { NoxLayout } from "@nox/layouts/"
-     import type { SidebarMenu } from "@nox/layouts/"
-
-     export const sidebarMenu: SidebarMenu[] = [
+     export const sidebarMenu: NoxSidebarMenu[] = [
        {
          type: "main",
-         label: "Menus",
+         label: "Documentation",
          items: [
            {
-             title: "Home",
-             url: "/",
-           },
-           {
-             title: "Documentation",
-             url: "/docs",
-           },
-           {
-             title: "Blogs",
-             url: "/blogs",
+             title: "Introduction",
+             url: "/docs/index",
            },
          ],
        },
      ]
 
-     const fontMono = Geist_Mono({
-       subsets: ["latin"],
-       variable: "--font-mono",
-     })
-
-     export default function RootLayout({
-       children,
-     }: Readonly<{
-       children: React.ReactNode
-     }>) {
+     export default function RootLayout({ children }: { children: ReactNode }) {
        return (
-         <html
-           lang="en"
-           suppressHydrationWarning
-           className={cn(
-             "antialiased",
-             fontMono.variable,
-             "font-sans",
-             oxanium.variable
-           )}
-         >
+         <html lang="en">
            <body>
-             <ThemeProvider>
-               <NoxLayout targetDir={["/"]} menu={sidebarMenu}>
-                 {children}
-               </NoxLayout>
-             </ThemeProvider>
+             <NoxLayout targetDir={["/docs"]} menu={sidebarMenu}>
+               {children}
+             </NoxLayout>
            </body>
          </html>
        )
@@ -161,11 +139,11 @@ Sebelum deploy, dua hal perlu diperhatikan:
      ```
    </CodeBlock>
 
-4. **Buat `[...docs]/page.tsx` & `[...blogs]/page.tsx`** — route tangkap-semua untuk merender MDX:
+4. **Buat `[...docs]/page.tsx`** — route tangkap-semua yang merender `NoxRender`:
 
    <CodeBlock filename="app/[...docs]/page.tsx">
      ```tsx
-     import { MdxLayout } from "@nox/mdx-render/mdx-layout"
+     import { NoxRender } from "@nox/render"
 
      export default async function DocsPage({
        params,
@@ -175,41 +153,23 @@ Sebelum deploy, dua hal perlu diperhatikan:
        const { docs = [] } = await params
        const segments = docs[0] === "docs" ? docs.slice(1) : docs
 
-       return <MdxLayout dir="/docs" slug={segments.join("/")} />
+       return <NoxRender dir="/docs" slug={segments.join("/")} />
      }
      ```
    </CodeBlock>
 
-   Jika ada folder `blogs`, perbaharui seperti berikut:
-
-   <CodeBlock filename="app/[...blogs]/page.tsx">
-     ```tsx
-     import { MdxLayout } from "@nox/mdx-render/mdx-layout"
-
-     export default async function DocsPage({
-       params,
-     }: {
-       params: Promise<{ blogs?: string[] }>
-     }) {
-       const { blogs = [] } = await params
-       const segments = blogs[0] === "blogs" ? blogs.slice(1) : blogs
-
-       return <MdxLayout dir="/blogs" slug={segments.join("/")} />
-     }
-     ```
-   </CodeBlock>
-
-5. **Buat folder penyimpanan file MDX** — `content` dan `content/docs`; jika butuh, buat juga folder `content/blogs`:
+5. **Buat folder penyimpanan file MDX** — `content` dan `content/docs`, lengkap dengan `meta.ts`:
 
    <ProjectTree name="project">
      <Folder name="content" open>
        <Folder name="docs" open>
+         <File name="meta.ts" />
          <File name="index.mdx" />
-         <File name="setup.mdx" />
-       </Folder>
-       <Folder name="blogs" open>
-         <File name="index.mdx" />
-         <File name="setup.mdx" />
+         <File name="manual.mdx" />
        </Folder>
      </Folder>
    </ProjectTree>
+
+6. **Siapkan Tailwind** — pastikan `app/globals.css` mengimpor Tailwind dan dependensinya; `NoxLayout` mengimpor tema `@nox/core` secara otomatis.
+
+Panduan lengkap langkah demi langkah tersedia di halaman [Manual](/docs/manual).

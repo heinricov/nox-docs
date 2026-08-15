@@ -1,18 +1,18 @@
 "use client"
 import type { ReactNode } from "react"
 import { usePathname } from "next/navigation"
-import { useMediaQuery } from "@nox/hooks/use-media-query"
-import type { SidebarMenu } from "@nox/layouts/"
-import { SidebarInset, SidebarProvider } from "@nox/components/sidebar"
-import { SiteHeader } from "@nox/layouts/site-header"
-import { TooltipProvider } from "@nox/components/tooltip"
+import { useMediaQuery } from "@nox/core/hooks/use-media-query"
+import type { NoxSidebarMenu } from "@nox/core/layouts"
+import { SidebarInset, SidebarProvider } from "@nox/core/components/sidebar"
+import { SiteHeader } from "@nox/core/layouts/site-header"
+import { TooltipProvider } from "@nox/core/components/tooltip"
 import { AppSidebar } from "./app-sidebar"
 
-import "@nox/styles/globals.css"
+import "@nox/core/styles/globals.css"
 import { AppFooter } from "./app-footer"
 
 type NoxLayoutProps = {
-  menu: SidebarMenu[]
+  menu: NoxSidebarMenu[]
   children: ReactNode
   targetDir?: string | string[]
 }

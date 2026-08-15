@@ -3,19 +3,19 @@ import type { MDXRemoteProps } from "next-mdx-remote/rsc"
 import rehypePrettyCode from "rehype-pretty-code"
 import remarkGfm from "remark-gfm"
 import type { Pluggable } from "unified"
-import { mdxTypographyComponents } from "@nox/common/typography"
-import { CodeBlock } from "@nox/common/code-block"
+import { mdxTypographyComponents } from "@nox/core/common/typography"
+import { CodeBlock } from "@nox/core/common/code-block"
 import {
   CodeDiff,
   NewCode,
   NewFile,
   OldCode,
   OldFile,
-} from "@nox/common/code-diff"
-import { ComponentPreview } from "@nox/common/component-preview"
-import { PackageManagerTabs } from "@nox/common/package-manager-tabs"
-import { File, Folder, ProjectTree } from "@nox/common/project-tree"
-import { mdxTableComponents } from "@nox/common/tabel-render"
+} from "@nox/core/common/code-diff"
+import { ComponentPreview } from "@nox/core/common/component-preview"
+import { PackageManagerTabs } from "@nox/core/common/package-manager-tabs"
+import { File, Folder, ProjectTree } from "@nox/core/common/project-tree"
+import { mdxTableComponents } from "@nox/core/common/tabel-render"
 import {
   AsciiArt,
   Cancelled,
@@ -28,7 +28,7 @@ import {
   ResultsProcess,
   TerminalStep,
   TerminalView,
-} from "@nox/common/terminal-view"
+} from "@nox/core/common/terminal-view"
 
 const prettyCode: Pluggable = [
   rehypePrettyCode,

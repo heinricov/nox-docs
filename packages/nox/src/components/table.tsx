@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { cn } from "@nox/lib/utils"
+import { cn } from "@nox/core/lib/utils"
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (

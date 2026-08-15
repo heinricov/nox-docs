@@ -3,7 +3,7 @@
 import { Tabs as TabsPrimitive } from "@base-ui/react/tabs"
 import { cva, type VariantProps } from "class-variance-authority"
 
-import { cn } from "@nox/lib/utils"
+import { cn } from "@nox/core/lib/utils"
 
 const tabsListVariants = cva(
   "inline-flex items-center justify-center gap-1 rounded-lg bg-muted p-0.5",

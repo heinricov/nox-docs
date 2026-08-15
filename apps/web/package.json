@@ -11,7 +11,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@nox": "workspace:*",
+    "@nox/core": "workspace:*",
+    "@nox/layouts": "workspace:*",
+    "@nox/render": "workspace:*",
     "@workspace/ui": "workspace:*",
     "lucide-react": "^1.31.0",
     "motion": "^13.1.0",

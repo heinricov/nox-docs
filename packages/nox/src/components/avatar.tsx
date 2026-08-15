@@ -3,7 +3,7 @@
 import * as React from "react"
 import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar"
 
-import { cn } from "@nox/lib/utils"
+import { cn } from "@nox/core/lib/utils"
 
 function Avatar({
   className,

@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ThemeProvider as NoxThemeProvider, useTheme } from "@nox/lib/theme"
+import { ThemeProvider as NoxThemeProvider, useTheme } from "@nox/core/lib/theme"
 
 function ThemeProvider({
   children,

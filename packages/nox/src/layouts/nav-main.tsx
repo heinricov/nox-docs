@@ -6,8 +6,8 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@nox/components/sidebar"
-import type { NavMainItem } from "@nox/layouts/"
+} from "@nox/core/components/sidebar"
+import type { NavMainItem } from "@nox/core/layouts"
 
 type NavMainProps = {
   label?: string

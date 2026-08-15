@@ -2,23 +2,23 @@
 
 import * as React from "react"
 
-import { NavCollaps } from "@nox/layouts/nav-collaps"
-import { NavMain } from "@nox/layouts/nav-main"
+import { NavCollaps } from "@nox/core/layouts/nav-collaps"
+import { NavMain } from "@nox/core/layouts/nav-main"
 
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-} from "@nox/components/sidebar"
+} from "@nox/core/components/sidebar"
 
-import { GroupSwitcher } from "@nox/layouts/group-switcher"
-import { NavLogo } from "@nox/layouts/nav-logo"
+import { GroupSwitcher } from "@nox/core/layouts/group-switcher"
+import { NavLogo } from "@nox/core/layouts/nav-logo"
 
-import type { SidebarMenu } from "@nox/layouts/"
+import type { NoxSidebarMenu } from "@nox/core/layouts"
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
-  menu: SidebarMenu[]
+  menu: NoxSidebarMenu[]
 }
 
 const data = {

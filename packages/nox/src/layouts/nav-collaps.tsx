@@ -4,7 +4,7 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@nox/components/collapsible"
+} from "@nox/core/components/collapsible"
 
 import {
   SidebarGroup,
@@ -16,11 +16,11 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@nox/components/sidebar"
+} from "@nox/core/components/sidebar"
 
 import { ChevronRightIcon } from "lucide-react"
 
-import type { NavCollapsItem } from "@nox/layouts/"
+import type { NavCollapsItem } from "@nox/core/layouts"
 
 type NavCollapsProps = {
   label?: string | null

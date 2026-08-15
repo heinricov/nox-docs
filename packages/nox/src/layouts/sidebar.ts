@@ -35,4 +35,4 @@ export type NavCollapsMenu = {
   items: NavCollapsItem[]
 }
 
-export type SidebarMenu = NavMainMenu | NavMainMobileMenu | NavCollapsMenu
+export type NoxSidebarMenu = NavMainMenu | NavMainMobileMenu | NavCollapsMenu

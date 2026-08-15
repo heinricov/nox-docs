@@ -1,25 +1,37 @@
-# NOX DOCS - Framework Documentation
+# nox — Documentation Framework
 
-Ada 3 cara instal:
+Starter untuk situs dokumentasi berbasis MDX untuk Next.js dan Vite React.
 
-1. template (nextjs/vite/tanstack + shadcn & nox)
-2. Manual (nextjs/vite/tanstack + shadcn & nox)
-3. Shadcn create (nextjs/vite/tanstack + nox)
+## Instalasi
 
-Template:
+```bash
+npm install nox
+```
 
-- npx nox@latest templates
-- Pilih (nextjs/vite/tanstack)
+Perintah di atas menginstal `nox` beserta paket `@nox` secara transitif,
+sehingga Anda bisa langsung memakai import berikut:
 
-Manual :
+```ts
+import { NoxLayout } from "@nox/layouts"
+import type { NoxSidebarMenu } from "@nox/layouts"
+import { NoxRender } from "@nox/render"
+```
 
-- Install framework (nextjs/vite/tanstackroute)
-- npm install nox@latest
-- Import NoxLayout dari @nox/layouts di rootlayout
-- Buat folder content di root project
-- Buat halaman untuk directory dokumentasi dengan file .mdx misalnya content/docs/index.mdx
-- Import NoxRenderMdx dari @nox/docs di nesting slug page.tsx, panggil directory docs dari folder content di props targetDir
+## Setup manual
 
-Shadcn create :
+1. `npm install nox`
+2. Next.js: tambahkan paket ke `transpilePackages` di `next.config.ts`
 
-- npx shadcn@latest init --preset b5KIUwOLw --template next --monorepo --pointer
+   ```ts
+   const nextConfig = {
+     transpilePackages: ["@nox/core", "@nox/layouts", "@nox/render"],
+   }
+   ```
+
+3. Edit root layout (`app/layout.tsx`) dengan `NoxLayout` dan menu
+   bertipe `NoxSidebarMenu[]`
+4. Buat route dokumentasi (`app/[...docs]/page.tsx`) yang merender
+   `NoxRender` dengan `targetDir` dan slug dari URL
+5. Buat folder `content` dan file MDX (mis. `content/docs/index.mdx`)
+
+Panduan lengkap tersedia di situs dokumentasi nox.

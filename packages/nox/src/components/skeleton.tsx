@@ -1,4 +1,4 @@
-import { cn } from "@nox/lib/utils"
+import { cn } from "@nox/core/lib/utils"
 
 function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
   return (

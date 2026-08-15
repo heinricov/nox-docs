@@ -1,19 +1,32 @@
 {
   "name": "nox",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "Nox - starter untuk situs dokumentasi berbasis MDX",
+  "type": "module",
+  "bin": {
+    "nox": "dist/index.js"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -p tsconfig.json",
+    "prepack": "npm run build",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
     "start": "tsx src/index.ts"
   },
-  "keywords": [],
+  "keywords": [
+    "nox",
+    "documentation",
+    "mdx",
+    "cli"
+  ],
   "author": "",
   "license": "ISC",
-  "type": "module",
   "dependencies": {
-    "@clack/core": "^1.4.3",
-    "@clack/prompts": "^1.7.0"
+    "@nox/layouts": "workspace:*",
+    "@nox/render": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^26.2.0",
