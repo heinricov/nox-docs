@@ -3,15 +3,9 @@ title: "Manual"
 description: "Memasang nox dengan `npm install nox` dan menyiapkan dokumentasi secara manual"
 ---
 
-# Manual Installation
-
 Cara termudah memakai nox adalah dengan satu perintah:
 
-<CodeBlock filename="terminal">
-  ```bash
-  npm install nox
-  ```
-</CodeBlock>
+<PackageManagerTabs>nox</PackageManagerTabs>
 
 Perintah di atas menginstal paket `nox` beserta paket `@nox` secara transitif, sehingga Anda langsung bisa memakai import berikut:
 
@@ -35,8 +29,9 @@ Karena paket `@nox` didistribusikan sebagai source TypeScript, tambahkan ke `tra
     transpilePackages: ["@nox/core", "@nox/layouts", "@nox/render"],
   }
 
-  export default nextConfig
-  ```
+export default nextConfig
+
+````
 </CodeBlock>
 
 ### 2. Siapkan Tailwind
@@ -44,11 +39,12 @@ Karena paket `@nox` didistribusikan sebagai source TypeScript, tambahkan ke `tra
 Pastikan `app/globals.css` mengimpor Tailwind dan dependensinya:
 
 <CodeBlock filename="app/globals.css">
-  ```css
-  @import "tailwindcss";
-  @import "tw-animate-css";
-  @import "shadcn/tailwind.css";
-  ```
+```css
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+````
+
 </CodeBlock>
 
 `NoxLayout` mengimpor tema `@nox/core` secara otomatis, jadi Anda tidak perlu menambahkan import CSS nox secara manual.
@@ -63,31 +59,32 @@ Ganti isi `app/layout.tsx` dengan `NoxLayout`, dan definisikan menu sidebar bert
   import { NoxLayout } from "@nox/layouts"
   import type { NoxSidebarMenu } from "@nox/layouts"
 
-  export const sidebarMenu: NoxSidebarMenu[] = [
-    {
-      type: "main",
-      label: "Documentation",
-      items: [
-        {
-          title: "Introduction",
-          url: "/docs/index",
-        },
-      ],
-    },
-  ]
+export const sidebarMenu: NoxSidebarMenu[] = [
+{
+type: "main",
+label: "Documentation",
+items: [
+{
+title: "Introduction",
+url: "/docs/index",
+},
+],
+},
+]
 
-  export default function RootLayout({ children }: { children: ReactNode }) {
-    return (
-      <html lang="en">
-        <body>
-          <NoxLayout targetDir={["/docs"]} menu={sidebarMenu}>
-            {children}
-          </NoxLayout>
-        </body>
-      </html>
-    )
-  }
-  ```
+export default function RootLayout({ children }: { children: ReactNode }) {
+return (
+<html lang="en">
+<body>
+<NoxLayout targetDir={["/docs"]} menu={sidebarMenu}>
+{children}
+</NoxLayout>
+</body>
+</html>
+)
+}
+
+````
 </CodeBlock>
 
 ### 4. Buat route tangkap-semua
@@ -95,20 +92,21 @@ Ganti isi `app/layout.tsx` dengan `NoxLayout`, dan definisikan menu sidebar bert
 Buat `app/[...docs]/page.tsx` yang merender `NoxRender` dengan `dir` dan `slug` dari URL:
 
 <CodeBlock filename="app/[...docs]/page.tsx">
-  ```tsx
-  import { NoxRender } from "@nox/render"
+```tsx
+import { NoxRender } from "@nox/render"
 
-  export default async function DocsPage({
-    params,
-  }: {
-    params: Promise<{ docs?: string[] }>
-  }) {
-    const { docs = [] } = await params
-    const segments = docs[0] === "docs" ? docs.slice(1) : docs
+export default async function DocsPage({
+  params,
+}: {
+  params: Promise<{ docs?: string[] }>
+}) {
+  const { docs = [] } = await params
+  const segments = docs[0] === "docs" ? docs.slice(1) : docs
 
-    return <NoxRender dir="/docs" slug={segments.join("/")} />
-  }
-  ```
+  return <NoxRender dir="/docs" slug={segments.join("/")} />
+}
+````
+
 </CodeBlock>
 
 ### 5. Buat folder konten MDX
@@ -134,18 +132,20 @@ Buat folder `content` dan `content/docs`, lengkap dengan `meta.ts` untuk label d
   description: "Pengenalan framework"
   ---
 
-  # Introduction
+# Introduction
 
-  Selamat datang di dokumentasi nox.
-  ```
+Selamat datang di dokumentasi nox.
+
+````
 </CodeBlock>
 
 ### 6. Jalankan
 
 <CodeBlock filename="terminal">
-  ```bash
-  npm run dev
-  ```
+```bash
+npm run dev
+````
+
 </CodeBlock>
 
 Buka `/docs` — halaman dokumentasi lengkap dengan sidebar, breadcrumb, TOC, dan pagination sudah siap.

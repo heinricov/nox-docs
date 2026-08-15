@@ -1,4 +1,5 @@
 import { Geist_Mono, Oxanium } from "next/font/google"
+import type { Metadata } from "next"
 import "@workspace/ui/globals.css"
 const oxanium = Oxanium({ subsets: ["latin"], variable: "--font-sans" })
 import { cn } from "@workspace/ui/lib/utils"
@@ -8,6 +9,27 @@ import { NoxLayout } from "@nox/layouts"
 import type { NoxSidebarMenu } from "@nox/layouts"
 import { NavHeader } from "@/components/nav-header"
 import { NavFooter } from "@/components/nav-footer"
+import { MyLogo } from "@/components/logo"
+import icon from "./icon.png"
+
+export const metadata: Metadata = {
+  title: {
+    default: "Nox Docs",
+    template: "%s | Nox Docs",
+  },
+  description: "Nox — starter untuk situs dokumentasi berbasis MDX.",
+  applicationName: "Nox",
+  keywords: ["nox", "dokumentasi", "mdx", "nextjs", "docs"],
+  icons: {
+    icon: icon.src,
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Nox Docs",
+    title: "Nox Docs",
+    description: "Nox — starter untuk situs dokumentasi berbasis MDX.",
+  },
+}
 
 export const sidebarMenu: NoxSidebarMenu[] = [
   {
@@ -115,6 +137,7 @@ export default function RootLayout({
             // navfooter={<NavFooter />}
             githubUrl="https://github.com/nox-docs/nox-docs"
             twitterUrl="https://twitter.com/nox_docs"
+            logo={<MyLogo />}
             targetDir={["/docs"]}
             menu={sidebarMenu}
           >
