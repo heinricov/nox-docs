@@ -17,8 +17,8 @@ export function SideLogo({ className }: { className?: string }) {
         className
       )}
     >
-      <div className="relative flex aspect-square size-8 items-center justify-center overflow-hidden rounded-lg bg-primary text-primary-foreground">
-        {hasIcon ? (
+      {hasIcon ? (
+        <div className="relative flex size-6 items-center justify-center overflow-hidden">
           <Image
             src="/icon.png"
             alt="Nox"
@@ -26,10 +26,12 @@ export function SideLogo({ className }: { className?: string }) {
             className="object-cover"
             onError={() => setHasIcon(false)}
           />
-        ) : (
+        </div>
+      ) : (
+        <div className="relative flex aspect-square size-8 items-center justify-center overflow-hidden rounded-lg bg-primary text-primary-foreground">
           <BookText className="size-4" />
-        )}
-      </div>
+        </div>
+      )}
       <div className="grid text-left text-sm leading-tight">
         <span className="truncate font-medium">Nox</span>
         <span className="truncate text-xs text-muted-foreground">
