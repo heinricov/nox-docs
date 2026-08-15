@@ -6,6 +6,8 @@ import { ThemeProvider } from "@/components/theme-provider"
 
 import { NoxLayout } from "@nox/layouts"
 import type { NoxSidebarMenu } from "@nox/layouts"
+import { NavHeader } from "@/components/nav-header"
+import { NavFooter } from "@/components/nav-footer"
 
 export const sidebarMenu: NoxSidebarMenu[] = [
   {
@@ -108,7 +110,12 @@ export default function RootLayout({
     >
       <body>
         <ThemeProvider>
-          <NoxLayout targetDir={["/docs"]} menu={sidebarMenu}>
+          <NoxLayout
+            navheader={<NavHeader />}
+            navfooter={<NavFooter />}
+            targetDir={["/docs"]}
+            menu={sidebarMenu}
+          >
             {children}
           </NoxLayout>
         </ThemeProvider>
