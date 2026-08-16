@@ -44,7 +44,7 @@ export function NavGroup({
   }
 
   return (
-    <SidebarMenu className="w-full rounded-md border">
+    <SidebarMenu className="mt-2 w-full rounded-md border">
       <SidebarMenuItem className="w-full">
         <DropdownMenu>
           <SidebarMenuButton
@@ -53,11 +53,13 @@ export function NavGroup({
             className="w-full data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
           >
             <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-              <GalleryVerticalEnd className="size-4" />
+              {selected?.icon}
             </div>
             <div className="flex flex-col gap-0.5 leading-none">
-              <span className="font-medium">Documentation</span>
-              <span className="">{selected?.title || activeVersion}</span>
+              <span className="font-medium">
+                {selected?.title || activeVersion}
+              </span>
+              <span className="">{selected?.description || activeVersion}</span>
             </div>
             <ChevronsUpDown className="ml-auto" />
           </SidebarMenuButton>
@@ -80,9 +82,7 @@ export function NavGroup({
                     {item.description}
                   </span>
                 </div>
-                {item.title === activeVersion && (
-                  <Check className="ml-auto" />
-                )}
+                {item.title === activeVersion && <Check className="ml-auto" />}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>

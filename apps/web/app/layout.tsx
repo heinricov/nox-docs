@@ -86,8 +86,8 @@ const sidebarMenu: NoxSidebarMenu[] = [
         group: "Core Concept",
       },
       {
-        title: "Mdx Layout",
-        url: "/docs/mdx-layout",
+        title: "Nox Sidebar",
+        url: "/docs/nox-sidebar",
         group: "Core Concept",
       },
     ],

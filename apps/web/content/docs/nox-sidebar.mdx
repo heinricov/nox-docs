@@ -1,0 +1,310 @@
+---
+title: "Nox Sidebar"
+description: "Mengatur menu sidebar: tipe menu, pengelompokan per group, dan group switcher"
+---
+
+Sidebar di-render oleh `DefaultSidebar` dan dikonfigurasi lewat dua props `NoxLayout`: **`menu`** untuk daftar navigasi, dan **`groupmenu`** (opsional) untuk group switcher di bagian atas sidebar.
+
+```
+┌─────────────────────────┐
+│  ▢ Documentation  v1.0  │ ← NavGroup (groupmenu)
+├─────────────────────────┤
+│  MENUS                  │
+│  Home                   │ ← main-mobile
+│  Documentation          │
+│                         │
+│  DOCUMENTATION          │ ← main (per-item group)
+│  Introduction           │
+│  Installation           │
+│                         │
+│  FRAMEWORK              │ ← main (group blok)
+│  Nextjs                 │
+└─────────────────────────┘
+```
+
+## Props Sidebar
+
+| Prop        | Tipe                 | Deskripsi                                                      |
+| ----------- | -------------------- | -------------------------------------------------------------- |
+| `menu`      | `NoxSidebarMenu[]`   | Daftar menu yang dirender di sidebar (wajib)                   |
+| `groupmenu` | `GroupMenuItem[]`    | Group yang tersedia di group switcher; kosongkan untuk menyembunyikan switcher (opsional) |
+
+Kedua prop dikirim ke `NoxLayout`:
+
+<CodeBlock filename="app/layout.tsx">
+```tsx
+<NoxLayout
+  targetDir={["/docs"]}
+  menu={sidebarMenu}
+  groupmenu={groupmenu}
+>
+  {children}
+</NoxLayout>
+```
+</CodeBlock>
+
+## Tipe Menu
+
+Tipe `NoxSidebarMenu` punya tiga varian:
+
+| Varian          | Deskripsi                                                   |
+| --------------- | ----------------------------------------------------------- |
+| `main`          | Menu datar berisi item `title`, `url`, `icon` opsional, dan `group` opsional |
+| `main-mobile`   | Menu datar yang hanya tampil di layar kecil (`md:hidden`)    |
+| `collaps`       | Menu berisi item yang bisa di-expand, tiap item boleh punya sub-item `items` |
+
+### Menu datar (`main`)
+
+<CodeBlock filename="sidebar-menu.ts">
+```ts
+import type { NoxSidebarMenu } from "@nox/layouts"
+
+const sidebarMenu: NoxSidebarMenu[] = [
+  {
+    type: "main",
+    label: "Documentation",
+    items: [
+      { title: "Introduction", url: "/docs/index" },
+      { title: "Installation", url: "/docs/installation" },
+    ],
+  },
+]
+```
+</CodeBlock>
+
+### Menu khusus mobile (`main-mobile`)
+
+Item tanpa group selalu tampil di semua group, sehingga menu ini muncul di sidebar pada layar kecil:
+
+<CodeBlock filename="sidebar-menu.ts">
+```ts
+{
+  type: "main-mobile",
+  label: "Menus",
+  items: [
+    { title: "Home", url: "/" },
+    { title: "Documentation", url: "/docs" },
+  ],
+}
+```
+</CodeBlock>
+
+### Menu collapsible (`collaps`)
+
+Tiap item boleh membuka sub-item:
+
+<CodeBlock filename="sidebar-menu.ts">
+```ts
+{
+  type: "collaps",
+  label: "Components",
+  items: [
+    {
+      title: "Tools",
+      url: "#",
+      items: [
+        { title: "Code Block", url: "/docs/mdx/code-block" },
+        { title: "Project Tree", url: "/docs/mdx/project-tree" },
+      ],
+    },
+  ],
+}
+```
+</CodeBlock>
+
+## Group Switcher (`groupmenu`)
+
+Group adalah "versi" atau "kategori" yang bisa dipilih user lewat dropdown di bagian atas sidebar. Data group didefinisikan dengan tipe `GroupMenuItem`:
+
+```ts
+type GroupMenuItem = {
+  title: string
+  icon: React.ReactNode
+  description: string
+}
+```
+
+> **Catatan:** `icon` bertipe `ReactNode` (elemen), bukan referensi komponen. Gunakan `<Notebook />`, bukan `Notebook`. Ikon yang dikirim sebagai referensi komponen tidak bisa diserialisasi dari Server Component ke Client Component dan memicu error "Functions cannot be passed directly to Client Components".
+
+<CodeBlock filename="app/layout.tsx">
+```tsx
+import type { GroupMenuItem } from "@nox/layouts"
+import { Cpu, Notebook } from "lucide-react"
+
+const groupmenu: GroupMenuItem[] = [
+  {
+    title: "Basic Concept",
+    icon: <Notebook className="size-4" />,
+    description: "Basic concept",
+  },
+  {
+    title: "Core Concept",
+    icon: <Cpu className="size-4" />,
+    description: "Core concept",
+  },
+]
+```
+</CodeBlock>
+
+Jika `groupmenu` tidak dikirim atau kosong, group switcher tidak ditampilkan sama sekali.
+
+## Aturan Pengelompokan
+
+Menu difilter berdasarkan **group aktif** yang dipilih user di group switcher. Aturannya:
+
+| Kondisi                                         | Perilaku                                          |
+| ----------------------------------------------- | ------------------------------------------------- |
+| Tidak ada `group` di blok maupun item           | Tampil di **semua** group                         |
+| `group` di **blok** menu                        | Seluruh blok tampil **hanya** saat group aktif cocok |
+| `group` di tiap **item**                        | Tiap item tampil sesuai group aktif; blok tersembunyi jika tidak ada item yang cocok |
+
+### 1. Tanpa group — tampil di semua group
+
+Menu seperti "Components" di bawah ini selalu tampil, apa pun group aktif:
+
+<CodeBlock filename="sidebar-menu.ts">
+```ts
+{
+  type: "main",
+  label: "Components",
+  items: [
+    { title: "Code Block", url: "/docs/mdx/code-block" },
+    { title: "Code Diff", url: "/docs/mdx/code-diff" },
+  ],
+}
+```
+</CodeBlock>
+
+### 2. Group per item — item tampil sesuai group aktif
+
+Satu blok "Documentation" yang item-nya tersebar di beberapa group. Saat group "Basic Concept" aktif, hanya `Introduction`, `Installation`, dan `Manual` yang muncul. Saat "Core Concept" aktif, hanya `Nox Layout` dan `Nox Sidebar`:
+
+<CodeBlock filename="sidebar-menu.ts">
+```ts
+{
+  type: "main",
+  label: "Documentation",
+  items: [
+    { title: "Introduction", url: "/docs/index", group: "Basic Concept" },
+    { title: "Installation", url: "/docs/installation", group: "Basic Concept" },
+    { title: "Manual", url: "/docs/manual", group: "Basic Concept" },
+    { title: "Nox Layout", url: "/docs/nox-layout", group: "Core Concept" },
+    { title: "Nox Sidebar", url: "/docs/nox-sidebar", group: "Core Concept" },
+  ],
+}
+```
+</CodeBlock>
+
+### 3. Group di level blok — satu blok untuk satu group
+
+Blok "Framework" hanya tampil saat group "Core Concept" aktif. Item di dalamnya tidak perlu diberi `group` lagi — mereka mewarisi group blok:
+
+<CodeBlock filename="sidebar-menu.ts">
+```ts
+{
+  type: "main",
+  label: "Framework",
+  group: "Core Concept",
+  items: [
+    { title: "Nextjs", url: "/docs/nextjs" },
+    { title: "Vite React", url: "/docs/vite-react" },
+  ],
+}
+```
+</CodeBlock>
+
+> Group pada blok dan item boleh dicampur dalam satu `NoxSidebarMenu[]`. Item tanpa `group` di blok yang punya `group` otomatis mengikuti group blok.
+
+## Contoh Lengkap
+
+Gabungan `groupmenu`, menu tanpa group, group per item, dan group per blok:
+
+<CodeBlock filename="app/layout.tsx">
+```tsx
+import type { GroupMenuItem, NoxSidebarMenu } from "@nox/layouts"
+import { NoxLayout } from "@nox/layouts"
+import { Cpu, Notebook } from "lucide-react"
+
+const groupmenu: GroupMenuItem[] = [
+  {
+    title: "Basic Concept",
+    icon: <Notebook className="size-4" />,
+    description: "Konsep dasar",
+  },
+  {
+    title: "Core Concept",
+    icon: <Cpu className="size-4" />,
+    description: "Konsep inti",
+  },
+]
+
+const sidebarMenu: NoxSidebarMenu[] = [
+  {
+    type: "main-mobile",
+    label: "Menus",
+    items: [
+      { title: "Home", url: "/" },
+      { title: "Documentation", url: "/docs" },
+    ],
+  },
+  {
+    type: "main",
+    label: "Documentation",
+    items: [
+      { title: "Introduction", url: "/docs/index", group: "Basic Concept" },
+      { title: "Installation", url: "/docs/installation", group: "Basic Concept" },
+      { title: "Manual", url: "/docs/manual", group: "Basic Concept" },
+      { title: "Nox Layout", url: "/docs/nox-layout", group: "Core Concept" },
+      { title: "Nox Sidebar", url: "/docs/nox-sidebar", group: "Core Concept" },
+    ],
+  },
+  {
+    type: "main",
+    label: "Framework",
+    group: "Core Concept",
+    items: [
+      { title: "Nextjs", url: "/docs/nextjs" },
+      { title: "Vite React", url: "/docs/vite-react" },
+    ],
+  },
+  {
+    type: "main",
+    label: "Components",
+    items: [
+      { title: "Code Block", url: "/docs/mdx/code-block" },
+      { title: "Code Diff", url: "/docs/mdx/code-diff" },
+    ],
+  },
+]
+
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <html lang="en">
+      <body>
+        <NoxLayout
+          targetDir={["/docs"]}
+          menu={sidebarMenu}
+          groupmenu={groupmenu}
+        >
+          {children}
+        </NoxLayout>
+      </body>
+    </html>
+  )
+}
+```
+</CodeBlock>
+
+Perilaku contoh di atas:
+
+- **Semua group** — "Menus" (mobile) dan "Components" selalu tampil
+- **Group "Basic Concept" aktif** — hanya `Introduction`, `Installation`, `Manual`
+- **Group "Core Concept" aktif** — `Nox Layout`, `Nox Sidebar`, dan seluruh blok "Framework"
+
+## Catatan
+
+- Menu dikelompokkan berdasarkan **judul** `GroupMenuItem` — pastikan nilai `group` pada menu sama persis dengan `title` pada `groupmenu`.
+- Jika `groupmenu` tidak dikirim, jangan pakai `group` pada menu; semua item akan dianggap milik group kosong dan disembunyikan.
+- Konten MDX otomatis tersusun sebagai navigasi pagination berdasarkan file di folder `content/docs` dan urutan pada `content/docs/meta.ts`; menu sidebar itu sendiri tetap dikendalikan penuh lewat prop `menu`.
