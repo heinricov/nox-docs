@@ -15,14 +15,33 @@ import {
   SidebarMenuItem,
 } from "@nox/core/components/sidebar"
 
-export function GroupSwitcher({
-  versions,
-  defaultVersion,
-}: {
-  versions: string[]
+export type GroupMenuItem = {
+  title: string
+  icon: React.ReactNode
+  description: string
+}
+
+export type NavGroupProps = {
+  groupmenu: GroupMenuItem[]
   defaultVersion: string
-}) {
+  value?: string
+  onValueChange?: (value: string) => void
+}
+
+export function NavGroup({
+  groupmenu,
+  defaultVersion,
+  value,
+  onValueChange,
+}: NavGroupProps) {
   const [selectedVersion, setSelectedVersion] = React.useState(defaultVersion)
+  const activeVersion = value ?? selectedVersion
+  const selected = groupmenu.find((item) => item.title === activeVersion)
+
+  const handleSelect = (title: string) => {
+    setSelectedVersion(title)
+    onValueChange?.(title)
+  }
 
   return (
     <SidebarMenu className="w-full rounded-md border">
@@ -38,7 +57,7 @@ export function GroupSwitcher({
             </div>
             <div className="flex flex-col gap-0.5 leading-none">
               <span className="font-medium">Documentation</span>
-              <span className="">v{selectedVersion}</span>
+              <span className="">{selected?.title || activeVersion}</span>
             </div>
             <ChevronsUpDown className="ml-auto" />
           </SidebarMenuButton>
@@ -46,13 +65,24 @@ export function GroupSwitcher({
             className="w-(--anchor-width) min-w-(--anchor-width)"
             align="start"
           >
-            {versions.map((version) => (
+            {groupmenu.map((item) => (
               <DropdownMenuItem
-                key={version}
-                onSelect={() => setSelectedVersion(version)}
+                key={item.title}
+                onClick={() => handleSelect(item.title)}
+                className="mt-1 flex items-center gap-3 border-primary px-4 py-1 hover:border"
               >
-                v{version}{" "}
-                {version === selectedVersion && <Check className="ml-auto" />}
+                {item.icon}
+                <div className="flex min-w-0 flex-1 flex-col gap-0.5 leading-none">
+                  <span className="text-sm/relaxed font-medium">
+                    {item.title}
+                  </span>
+                  <span className="block truncate text-muted-foreground">
+                    {item.description}
+                  </span>
+                </div>
+                {item.title === activeVersion && (
+                  <Check className="ml-auto" />
+                )}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>

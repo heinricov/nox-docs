@@ -12,33 +12,63 @@ import {
   SidebarHeader,
 } from "@nox/core/components/sidebar"
 
-import { GroupSwitcher } from "@nox/core/layouts/group-switcher"
+import { NavGroup } from "@nox/core/layouts/nav-group"
+import type { GroupMenuItem } from "@nox/core/layouts/nav-group"
 
-import type { NoxSidebarMenu } from "@nox/core/layouts"
+import type { NavCollapsItem, NavMainItem, NoxSidebarMenu } from "@nox/core/layouts"
 import { SideLogo } from "./side-logo"
 
 type DefaultSidebarProps = React.ComponentProps<typeof Sidebar> & {
   menu: NoxSidebarMenu[]
+  groupmenu?: GroupMenuItem[]
 }
 
-const data = {
-  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
+type GroupableItem = NavMainItem | NavCollapsItem
+
+function filterMenuItems<T extends GroupableItem>(
+  items: T[],
+  group: string | undefined,
+  activeGroup: string
+): T[] {
+  const hasGroup = Boolean(group) || items.some((item) => item.group)
+  if (!hasGroup) return items
+  return items.filter((item) => (item.group ?? group) === activeGroup)
 }
-export function DefaultSidebar({ menu, ...props }: DefaultSidebarProps) {
+
+export function DefaultSidebar({
+  menu,
+  groupmenu = [],
+  ...props
+}: DefaultSidebarProps) {
+  const [activeGroup, setActiveGroup] = React.useState(
+    groupmenu[0]?.title ?? ""
+  )
+
+  const filteredMenu = menu
+    .map((entry) => ({
+      ...entry,
+      items: filterMenuItems(entry.items, entry.group, activeGroup),
+    }))
+    .filter((entry) => entry.items.length > 0)
+
   return (
     <Sidebar
       className="top-(--header-height) h-[calc(100svh-var(--header-height))]! pl-4"
       {...props}
     >
       <SidebarHeader>
-        {/* <GroupSwitcher
-          versions={data.versions}
-          defaultVersion={data.versions[0] || ""}
-        /> */}
+        {groupmenu.length > 0 && (
+          <NavGroup
+            groupmenu={groupmenu}
+            defaultVersion={groupmenu[0]?.title || ""}
+            value={activeGroup}
+            onValueChange={setActiveGroup}
+          />
+        )}
       </SidebarHeader>
 
       <SidebarContent>
-        {menu.map((item, index) => {
+        {filteredMenu.map((item, index) => {
           switch (item.type) {
             case "main":
               return (

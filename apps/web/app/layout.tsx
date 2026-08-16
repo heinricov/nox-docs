@@ -6,11 +6,12 @@ import { cn } from "@workspace/ui/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider"
 
 import { NoxLayout } from "@nox/layouts"
-import type { NoxSidebarMenu } from "@nox/layouts"
+import type { GroupMenuItem, NoxSidebarMenu } from "@nox/layouts"
 import { NavHeader } from "@/components/nav-header"
 import { NavFooter } from "@/components/nav-footer"
 import { MyLogo } from "@/components/logo"
 import icon from "./icon.png"
+import { Cpu, Notebook } from "lucide-react"
 
 export const metadata: Metadata = {
   title: {
@@ -31,7 +32,20 @@ export const metadata: Metadata = {
   },
 }
 
-export const sidebarMenu: NoxSidebarMenu[] = [
+const groupmenu: GroupMenuItem[] = [
+  {
+    title: "Basic Concept",
+    icon: <Notebook className="size-4" />,
+    description: "Basic concept",
+  },
+  {
+    title: "Core Concept",
+    icon: <Cpu className="size-4" />,
+    description: "Core concept",
+  },
+]
+
+const sidebarMenu: NoxSidebarMenu[] = [
   {
     type: "main-mobile",
     label: "Menus",
@@ -54,22 +68,42 @@ export const sidebarMenu: NoxSidebarMenu[] = [
       {
         title: "Introduction",
         url: "/docs/index",
+        group: "Basic Concept",
       },
       {
         title: "Installation",
         url: "/docs/installation",
+        group: "Basic Concept",
       },
       {
         title: "Manual",
         url: "/docs/manual",
+        group: "Basic Concept",
       },
       {
         title: "Nox Layout",
         url: "/docs/nox-layout",
+        group: "Core Concept",
       },
       {
         title: "Mdx Layout",
         url: "/docs/mdx-layout",
+        group: "Core Concept",
+      },
+    ],
+  },
+  {
+    type: "main",
+    label: "Framework",
+    group: "Core Concept",
+    items: [
+      {
+        title: "Nextjs",
+        url: "/docs/nextjs",
+      },
+      {
+        title: "Vite React",
+        url: "/docs/vite-react",
       },
     ],
   },
@@ -136,6 +170,7 @@ export default function RootLayout({
             logo={<MyLogo />}
             targetDir={["/docs"]}
             menu={sidebarMenu}
+            groupmenu={groupmenu}
           >
             {children}
           </NoxLayout>
