@@ -16,18 +16,19 @@ description: "Layout utama noxkit: header, sidebar, konten, dan footer dalam sat
 
 ## Props
 
-| Prop         | Tipe                 | Deskripsi                                                        |
-| ------------ | -------------------- | ---------------------------------------------------------------- |
-| `menu`       | `NoxSidebarMenu[]`   | Daftar menu yang dirender di sidebar (wajib)                     |
-| `children`   | `ReactNode`          | Konten halaman yang dibungkus di dalam area konten (wajib)       |
-| `targetDir`  | `string \| string[]` | Prefix path dokumentasi; sidebar ikut tampil di path tersebut    |
-| `navheader`  | `ReactNode`          | Konten header; default `DefaultHeader` dari `default-header.tsx` |
-| `navside`    | `ReactNode`          | Konten sidebar; default `DefaultSidebar` dari `default-sidebar.tsx` |
-| `navfooter`  | `ReactNode`          | Konten footer; default `DefaultFooter` dari `default-footer.tsx` |
-| `githubUrl`  | `string`             | URL akun GitHub user; menampilkan ikon GitHub di header & footer (opsional) |
-| `twitterUrl` | `string`             | URL akun Twitter/X user; menampilkan ikon Twitter/X di header & footer (opsional) |
-| `copyRight`  | `string`             | Teks copyright di footer; default `Copyright © {tahun} Bloxxee. All rights reserved.` |
-| `logo`       | `ReactNode`          | Logo kustom di header & footer; default `NavLogo` dari `nav-logo.tsx` |
+| Prop         | Tipe                 | Default  | Deskripsi                                                        |
+| ------------ | -------------------- | -------- | ---------------------------------------------------------------- |
+| `menu`       | `NoxSidebarMenu[]`   | —        | Daftar menu yang dirender di sidebar (wajib)                     |
+| `children`   | `ReactNode`          | —        | Konten halaman yang dibungkus di dalam area konten (wajib)       |
+| `targetDir`  | `string \| string[]` | —        | Prefix path dokumentasi; sidebar ikut tampil di path tersebut    |
+| `defaultTheme` | `"light" \| "dark" \| "system"` | `"system"` | Theme default saat pertama kali load; user bisa toggle dengan menekan `D` |
+| `navheader`  | `ReactNode`          | `DefaultHeader` | Konten header |
+| `navside`    | `ReactNode`          | `DefaultSidebar` | Konten sidebar |
+| `navfooter`  | `ReactNode`          | `DefaultFooter` | Konten footer |
+| `githubUrl`  | `string`             | —        | URL akun GitHub user; menampilkan ikon GitHub di header & footer (opsional) |
+| `twitterUrl` | `string`             | —        | URL akun Twitter/X user; menampilkan ikon Twitter/X di header & footer (opsional) |
+| `copyRight`  | `string`             | —        | Teks copyright di footer |
+| `logo`       | `ReactNode`          | `NavLogo` | Logo kustom di header & footer |
 
 ## Struktur Menu
 

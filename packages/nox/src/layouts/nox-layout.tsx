@@ -18,6 +18,7 @@ type NoxLayoutProps = {
   groupmenu?: GroupMenuItem[]
   children: ReactNode
   targetDir?: string | string[]
+  defaultTheme?: "light" | "dark" | "system"
   navheader?: ReactNode
   navside?: ReactNode
   navfooter?: ReactNode
@@ -32,6 +33,7 @@ export function NoxLayout({
   groupmenu,
   children,
   targetDir,
+  defaultTheme = "system",
   githubUrl,
   twitterUrl,
   copyRight,
@@ -61,7 +63,7 @@ export function NoxLayout({
 
   const showSidebar = !isDesktop || isTargetPath
   return (
-    <ThemeProvider>
+    <ThemeProvider defaultTheme={defaultTheme}>
       <TooltipProvider>
         <div className="[--header-height:calc(--spacing(14))]">
           <SidebarProvider className="flex flex-col">
