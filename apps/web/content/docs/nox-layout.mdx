@@ -88,7 +88,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
         <NoxLayout targetDir={["/docs"]} menu={sidebarMenu}>
           {children}
@@ -100,6 +100,8 @@ export default function RootLayout({
 ````
 
 </CodeBlock>
+
+> **Penting:** Tambahkan `suppressHydrationWarning` di `<html>` agar tidak ada hydration mismatch error dari ThemeProvider.
 
 ### 3. Bungkus provider lain di luar NoxLayout
 
@@ -255,7 +257,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
         <NoxLayout
           targetDir={["/docs"]}

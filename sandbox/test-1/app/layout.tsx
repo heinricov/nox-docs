@@ -17,7 +17,7 @@ export const sidebarMenu: NoxSidebarMenu[] = [
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
         <NoxLayout targetDir={["/docs"]} menu={sidebarMenu}>
           {children}

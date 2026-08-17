@@ -3,7 +3,6 @@ import type { Metadata } from "next"
 import "@workspace/ui/globals.css"
 const oxanium = Oxanium({ subsets: ["latin"], variable: "--font-sans" })
 import { cn } from "@workspace/ui/lib/utils"
-import { ThemeProvider } from "@/components/theme-provider"
 
 import { NoxLayout } from "noxkit"
 import type { GroupMenuItem, NoxSidebarMenu } from "noxkit"
@@ -161,7 +160,6 @@ export default function RootLayout({
       )}
     >
       <body>
-        <ThemeProvider>
           <NoxLayout
             // navheader={<NavHeader />}
             // navfooter={<NavFooter />}
@@ -174,7 +172,6 @@ export default function RootLayout({
           >
             {children}
           </NoxLayout>
-        </ThemeProvider>
       </body>
     </html>
   )

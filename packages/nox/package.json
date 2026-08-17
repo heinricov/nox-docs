@@ -1,6 +1,6 @@
 {
   "name": "noxkit",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "description": "Nox - documentation site starter with MDX support",
   "type": "module",
   "files": [
@@ -52,6 +52,8 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@turbo/gen": "^2.9.15",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
     "eslint": "^9",
