@@ -1,4 +1,4 @@
-import { NoxRender } from "nox"
+import { NoxRender } from "noxkit"
 
 export default async function DocsPage({
   params,

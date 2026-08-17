@@ -64,7 +64,7 @@ Buat folder `app/[...docs]` dan file `page.tsx`:
 
 <CodeBlock filename="app/[...docs]/page.tsx">
 ```tsx
-import { NoxRender } from "@nox/render"
+import { NoxRender } from "noxkit"
 
 export default async function DocsPage({
   params,
@@ -87,7 +87,7 @@ Komponen yang dipakai langsung di file MDX (misalnya `<DemoButton />`) harus did
 
 <CodeBlock filename="app/[...docs]/page.tsx">
 ```tsx
-import { NoxRender } from "@nox/render"
+import { NoxRender } from "noxkit"
 import { DemoButton } from "@/components/examples/demo-button"
 import { PlainNotice } from "@/components/examples/plain-notice"
 

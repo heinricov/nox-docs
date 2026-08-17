@@ -1,18 +1,34 @@
-# Nox Cli
+# Noxkit CLI
 
 ## Manual Setup
 
-### [x] nox cli memiliki printah "npm install nox"
+### [x] noxkit CLI memiliki perintah "npm install noxkit"
 
-- [x] perintah ini membuat user yang menginstall nox bisa import `import { NoxLayout } from "@nox/layouts"` sperti di @apps/web/app/layout.tsx
-- [x] perintah ini membuat user yang menginstall nox bisa import `import type { NoxSidebarMenu } from "@nox/layouts"` sperti di @apps/web/app/layout.tsx
+- [x] perintah ini membuat user yang menginstall noxkit bisa import dari satu paket:
+  ```ts
+  import { NoxLayout, NoxRender } from "noxkit"
+  import type { NoxSidebarMenu, GroupMenuItem } from "noxkit"
+  ```
+- [x] paket `@nox/layouts` dan `@nox/render` telah dihapus, semua export ada di `noxkit`
+- [x] CLI package di-rename menjadi `@nox/cli` (tidak konflik dengan library `noxkit`)
 
-  > Catatan: task asli menulis `from "@nox"`, tapi `@nox` (scope tanpa nama) bukan nama paket npm yang valid (npm menolak EINVALIDPACKAGENAME). Disepakati memakai `@nox/layouts`, sesuai import asli di apps/web/app/layout.tsx.
+### [x] Upload ke npm
 
-- [x] perintah ini membuat user yang menginstall nox bisa import `import { NoxRender } from "@nox/render"` sperti di @apps/web/app/[...docs]/.page.tsx
+- [ ] Login ke npm: `npm login`
+- [ ] Build CLI: `cd apps/cli && npm run build`
+- [ ] Publish library: `cd packages/nox && npm publish`
+- [ ] Publish CLI: `cd apps/cli && npm publish`
+- [ ] Verifikasi: `npm install -g @nox/cli && noxkit --version`
+
+### [x] Update setelah perubahan file
+
+- [ ] Edit file di `packages/nox/src/`
+- [ ] Bump version di `packages/nox/package.json`
+- [ ] Publish: `cd packages/nox && npm publish`
+- [ ] Untuk CLI: edit di `apps/cli/src/`, bump version, lalu `cd apps/cli && npm publish`
 
 ## Verifikasi
 
-- [x] `npm install nox` dari tarball di sandbox/nextjs → typecheck + `next build` sukses
-- [x] `npm install nox` dari tarball di sandbox/vite → typecheck sukses
-- [x] Paket transitif: `nox` → `@nox/layouts` + `@nox/render` → `@nox/core`
+- [x] `npm install noxkit` dari tarball di sandbox/nextjs → typecheck + `next build` sukses
+- [x] `npm install noxkit` dari tarball di sandbox/vite → typecheck sukses
+- [x] Semua export dari satu paket `noxkit` (layouts, render, components, lib, hooks)

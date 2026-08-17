@@ -1,9 +1,9 @@
 ---
 title: "NoxLayout"
-description: "Layout utama nox: header, sidebar, konten, dan footer dalam satu komponen"
+description: "Layout utama noxkit: header, sidebar, konten, dan footer dalam satu komponen"
 ---
 
-`NoxLayout` adalah komponen layout utama nox yang menyusun **header**, **sidebar**, **area konten**, dan **footer** dalam satu kerangka responsif. Cukup bungkus halaman aplikasi Anda dengannya, dan struktur dokumentasi siap dipakai.
+`NoxLayout` adalah komponen layout utama noxkit yang menyusun **header**, **sidebar**, **area konten**, dan **footer** dalam satu kerangka responsif. Cukup bungkus halaman aplikasi Anda dengannya, dan struktur dokumentasi siap dipakai.
 
 ## Fitur Utama
 
@@ -38,7 +38,7 @@ Tipe `NoxSidebarMenu` terdiri dari dua varian:
 
 <CodeBlock filename="sidebar-menu.ts">
 ```ts
-import type { NoxSidebarMenu } from "@nox/layouts"
+import type { NoxSidebarMenu } from "noxkit"
 
 const menu: NoxSidebarMenu[] = [
 {
@@ -80,8 +80,8 @@ Bungkus seluruh aplikasi di `app/layout.tsx`. Contoh:
 
 <CodeBlock filename="app/layout.tsx">
 ```tsx
-import type { NoxSidebarMenu } from "@nox/layouts"
-import { NoxLayout } from "@nox/layouts"
+import type { NoxSidebarMenu } from "noxkit"
+import { NoxLayout } from "noxkit"
 import { sidebarMenu } from "@/lib/sidebar-menu"
 
 export default function RootLayout({
@@ -146,7 +146,7 @@ Selama props tidak diberikan, `NoxLayout` otomatis memakai komponen default-nya 
 
 ### Custom Header
 
-Buat komponen header Anda sendiri, lalu kirim lewat prop `navheader`. Header default menggunakan `useSidebar` dari `@nox/core/components/sidebar`, jadi Anda bisa memakainya juga untuk tombol toggle sidebar:
+Buat komponen header Anda sendiri, lalu kirim lewat prop `navheader`. Header default menggunakan `useSidebar` dari `noxkit/components/sidebar`, jadi Anda bisa memakainya juga untuk tombol toggle sidebar:
 
 <CodeBlock filename="components/site-header.tsx">
 ```tsx
@@ -156,8 +156,8 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { PanelLeftIcon } from "lucide-react"
 
-import { Button } from "@nox/core/components/button"
-import { useSidebar } from "@nox/core/components/sidebar"
+import { Button } from "noxkit/components/button"
+import { useSidebar } from "noxkit/components/sidebar"
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar()
@@ -203,19 +203,19 @@ export function SiteFooter() {
 
 ### Custom Sidebar
 
-Buat komponen sidebar sendiri, lalu kirim lewat prop `navside`. Sidebar default memakai `Sidebar`, `SidebarContent`, dan `NavMain`/`NavCollaps` dari `@nox/core`, jadi Anda bisa menyusunnya ulang sesuka hati:
+Buat komponen sidebar sendiri, lalu kirim lewat prop `navside`. Sidebar default memakai `Sidebar`, `SidebarContent`, dan `NavMain`/`NavCollaps` dari `noxkit`, jadi Anda bisa menyusunnya ulang sesuka hati:
 
 <CodeBlock filename="components/site-sidebar.tsx">
 ```tsx
-import { NavCollaps } from "@nox/core/layouts/nav-collaps"
-import { NavMain } from "@nox/core/layouts/nav-main"
+import { NavCollaps } from "noxkit/layouts/nav-collaps"
+import { NavMain } from "noxkit/layouts/nav-main"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-} from "@nox/core/components/sidebar"
-import type { NoxSidebarMenu } from "@nox/layouts"
+} from "noxkit/components/sidebar"
+import type { NoxSidebarMenu } from "noxkit"
 
 export function SiteSidebar({ menu }: { menu: NoxSidebarMenu[] }) {
   return (
@@ -245,7 +245,7 @@ export function SiteSidebar({ menu }: { menu: NoxSidebarMenu[] }) {
 
 <CodeBlock filename="app/layout.tsx">
 ```tsx
-import { NoxLayout } from "@nox/layouts"
+import { NoxLayout } from "noxkit"
 import { sidebarMenu } from "@/lib/sidebar-menu"
 import { SiteHeader } from "@/components/site-header"
 import { SiteSidebar } from "@/components/site-sidebar"

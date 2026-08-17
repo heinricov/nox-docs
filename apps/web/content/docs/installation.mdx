@@ -76,20 +76,19 @@ Sebelum deploy, dua hal perlu diperhatikan:
 
 ## Use Manual
 
-1. Install `nox`:
+1. Install `noxkit`:
 
    <CodeBlock filename="terminal">
      ```bash
-     npm install nox
+     npm install noxkit
      ```
    </CodeBlock>
 
-   Perintah ini menginstal `nox` beserta paket `@nox` secara transitif, sehingga import berikut langsung tersedia:
+   Perintah ini menginstal `noxkit`, sehingga import berikut langsung tersedia:
 
    ```ts
-   import { NoxLayout } from "@nox/layouts"
-   import type { NoxSidebarMenu } from "@nox/layouts"
-   import { NoxRender } from "@nox/render"
+   import { NoxLayout, NoxRender } from "noxkit"
+   import type { NoxSidebarMenu } from "noxkit"
    ```
 
 2. **Tambahkan paket ke `transpilePackages`** di `next.config.ts`:
@@ -97,7 +96,7 @@ Sebelum deploy, dua hal perlu diperhatikan:
    <CodeBlock filename="next.config.ts">
      ```ts
      const nextConfig = {
-       transpilePackages: ["@nox/core", "@nox/layouts", "@nox/render"],
+        transpilePackages: ["noxkit"],
      }
 
      export default nextConfig
@@ -109,8 +108,8 @@ Sebelum deploy, dua hal perlu diperhatikan:
    <CodeBlock filename="app/layout.tsx">
      ```tsx
      import type { ReactNode } from "react"
-     import { NoxLayout } from "@nox/layouts"
-     import type { NoxSidebarMenu } from "@nox/layouts"
+      import { NoxLayout } from "noxkit"
+      import type { NoxSidebarMenu } from "noxkit"
 
      export const sidebarMenu: NoxSidebarMenu[] = [
        {
@@ -143,7 +142,7 @@ Sebelum deploy, dua hal perlu diperhatikan:
 
    <CodeBlock filename="app/[...docs]/page.tsx">
      ```tsx
-     import { NoxRender } from "@nox/render"
+      import { NoxRender } from "noxkit"
 
      export default async function DocsPage({
        params,
@@ -170,6 +169,6 @@ Sebelum deploy, dua hal perlu diperhatikan:
      </Folder>
    </ProjectTree>
 
-6. **Siapkan Tailwind** — pastikan `app/globals.css` mengimpor Tailwind dan dependensinya; `NoxLayout` mengimpor tema `@nox/core` secara otomatis.
+6. **Siapkan Tailwind** — pastikan `app/globals.css` mengimpor Tailwind dan dependensinya; `NoxLayout` mengimpor tema `noxkit` secara otomatis.
 
 Panduan lengkap langkah demi langkah tersedia di halaman [Manual](/docs/manual).

@@ -1,32 +1,32 @@
 ---
 title: "Manual"
-description: "Memasang nox dengan `npm install nox` dan menyiapkan dokumentasi secara manual"
+description: "Memasang noxkit dengan `npm install noxkit` dan menyiapkan dokumentasi secara manual"
 ---
 
-Cara termudah memakai nox adalah dengan satu perintah:
+Cara termudah memakai noxkit adalah dengan satu perintah:
 
-<PackageManagerTabs>nox</PackageManagerTabs>
+<PackageManagerTabs>noxkit</PackageManagerTabs>
 
-Perintah di atas menginstal paket `nox` beserta paket `@nox` secara transitif, sehingga Anda langsung bisa memakai import berikut:
+Perintah di atas menginstal paket `noxkit`, sehingga Anda langsung bisa memakai import berikut:
 
-- `NoxLayout` dari `@nox/layouts`
-- `NoxSidebarMenu` (tipe) dari `@nox/layouts`
-- `NoxRender` dari `@nox/render`
+- `NoxLayout` dari `noxkit`
+- `NoxSidebarMenu` (tipe) dari `noxkit`
+- `NoxRender` dari `noxkit`
 
 ## Prasyarat
 
-nox dibangun di atas **Next.js (App Router)** dan **Tailwind CSS v4**. Pastikan proyek Anda sudah memakai keduanya. Vite + React juga didukung untuk pemakaian pada level tipe dan komponen.
+noxkit dibangun di atas **Next.js (App Router)** dan **Tailwind CSS v4**. Pastikan proyek Anda sudah memakai keduanya. Vite + React juga didukung untuk pemakaian pada level tipe dan komponen.
 
 ## Setup
 
 ### 1. Tambahkan paket ke transpilePackages
 
-Karena paket `@nox` didistribusikan sebagai source TypeScript, tambahkan ke `transpilePackages` di `next.config.ts`:
+Karena paket `noxkit` didistribusikan sebagai source TypeScript, tambahkan ke `transpilePackages` di `next.config.ts`:
 
 <CodeBlock filename="next.config.ts">
   ```ts
   const nextConfig = {
-    transpilePackages: ["@nox/core", "@nox/layouts", "@nox/render"],
+    transpilePackages: ["noxkit"],
   }
 
 export default nextConfig
@@ -47,7 +47,7 @@ Pastikan `app/globals.css` mengimpor Tailwind dan dependensinya:
 
 </CodeBlock>
 
-`NoxLayout` mengimpor tema `@nox/core` secara otomatis, jadi Anda tidak perlu menambahkan import CSS nox secara manual.
+`NoxLayout` mengimpor tema `noxkit` secara otomatis, jadi Anda tidak perlu menambahkan import CSS noxkit secara manual.
 
 ### 3. Edit root layout
 
@@ -56,8 +56,8 @@ Ganti isi `app/layout.tsx` dengan `NoxLayout`, dan definisikan menu sidebar bert
 <CodeBlock filename="app/layout.tsx">
   ```tsx
   import type { ReactNode } from "react"
-  import { NoxLayout } from "@nox/layouts"
-  import type { NoxSidebarMenu } from "@nox/layouts"
+  import { NoxLayout } from "noxkit"
+  import type { NoxSidebarMenu } from "noxkit"
 
 export const sidebarMenu: NoxSidebarMenu[] = [
 {
@@ -93,7 +93,7 @@ Buat `app/[...docs]/page.tsx` yang merender `NoxRender` dengan `dir` dan `slug` 
 
 <CodeBlock filename="app/[...docs]/page.tsx">
 ```tsx
-import { NoxRender } from "@nox/render"
+import { NoxRender } from "noxkit"
 
 export default async function DocsPage({
   params,
@@ -134,7 +134,7 @@ Buat folder `content` dan `content/docs`, lengkap dengan `meta.ts` untuk label d
 
 # Introduction
 
-Selamat datang di dokumentasi nox.
+Selamat datang di dokumentasi noxkit.
 
 ````
 </CodeBlock>

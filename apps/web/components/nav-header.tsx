@@ -4,11 +4,11 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { PanelLeftIcon } from "lucide-react"
 
-import { Button } from "nox/components/button"
-import { Separator } from "nox/components/separator"
-import { useSidebar } from "nox/components/sidebar"
-import { cn } from "nox/lib/utils"
-import { ButtonTheme, NavLogo, SearchForm } from "nox"
+import { Button } from "noxkit/components/button"
+import { Separator } from "noxkit/components/separator"
+import { useSidebar } from "noxkit/components/sidebar"
+import { cn } from "noxkit/lib/utils"
+import { ButtonTheme, NavLogo, SearchForm } from "noxkit"
 
 const navItems = [
   { title: "Home", href: "/" },

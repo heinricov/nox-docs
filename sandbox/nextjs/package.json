@@ -7,7 +7,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "nox": "file:../../packages/nox/nox-0.0.1.tgz"
+    "noxkit": "file:../../packages/nox/noxkit-0.0.1.tgz"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

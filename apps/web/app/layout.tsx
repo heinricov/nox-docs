@@ -5,8 +5,8 @@ const oxanium = Oxanium({ subsets: ["latin"], variable: "--font-sans" })
 import { cn } from "@workspace/ui/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider"
 
-import { NoxLayout } from "nox"
-import type { GroupMenuItem, NoxSidebarMenu } from "nox"
+import { NoxLayout } from "noxkit"
+import type { GroupMenuItem, NoxSidebarMenu } from "noxkit"
 import { NavHeader } from "@/components/nav-header"
 import { NavFooter } from "@/components/nav-footer"
 import { MyLogo } from "@/components/logo"
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
   description: "Nox — starter untuk situs dokumentasi berbasis MDX.",
   applicationName: "Nox",
-  keywords: ["nox", "dokumentasi", "mdx", "nextjs", "docs"],
+  keywords: ["noxkit", "dokumentasi", "mdx", "nextjs", "docs"],
   icons: {
     icon: icon.src,
   },

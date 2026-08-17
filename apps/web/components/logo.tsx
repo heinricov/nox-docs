@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { cn } from "nox/lib/utils"
+import { cn } from "noxkit/lib/utils"
 import logoDark from "../app/logo-dark.png"
 import logoLight from "../app/logo-light.png"
 

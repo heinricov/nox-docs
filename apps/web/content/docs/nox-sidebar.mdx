@@ -57,7 +57,7 @@ Tipe `NoxSidebarMenu` punya tiga varian:
 
 <CodeBlock filename="sidebar-menu.ts">
 ```ts
-import type { NoxSidebarMenu } from "@nox/layouts"
+import type { NoxSidebarMenu } from "noxkit"
 
 const sidebarMenu: NoxSidebarMenu[] = [
   {
@@ -128,7 +128,7 @@ type GroupMenuItem = {
 
 <CodeBlock filename="app/layout.tsx">
 ```tsx
-import type { GroupMenuItem } from "@nox/layouts"
+import type { GroupMenuItem } from "noxkit"
 import { Cpu, Notebook } from "lucide-react"
 
 const groupmenu: GroupMenuItem[] = [
@@ -221,8 +221,8 @@ Gabungan `groupmenu`, menu tanpa group, group per item, dan group per blok:
 
 <CodeBlock filename="app/layout.tsx">
 ```tsx
-import type { GroupMenuItem, NoxSidebarMenu } from "@nox/layouts"
-import { NoxLayout } from "@nox/layouts"
+import type { GroupMenuItem, NoxSidebarMenu } from "noxkit"
+import { NoxLayout } from "noxkit"
 import { Cpu, Notebook } from "lucide-react"
 
 const groupmenu: GroupMenuItem[] = [

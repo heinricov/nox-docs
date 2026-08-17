@@ -3,23 +3,23 @@
 const VERSION = "0.0.1"
 
 const HELP = `
-nox - starter untuk situs dokumentasi berbasis MDX
+noxkit - starter untuk situs dokumentasi berbasis MDX
 
 Instalasi (di proyek Next.js atau Vite React):
 
-  npm install nox
+  npm install noxkit
 
-Perintah di atas menginstal nox, sehingga Anda bisa langsung memakai import berikut:
+Perintah di atas menginstal noxkit, sehingga Anda bisa langsung memakai import berikut:
 
-  import { NoxLayout, NoxRender } from "nox"
-  import type { NoxSidebarMenu } from "nox"
+  import { NoxLayout, NoxRender } from "noxkit"
+  import type { NoxSidebarMenu } from "noxkit"
 
 Setup manual:
 
-  1. Next.js: tambahkan nox ke transpilePackages di next.config.ts
+  1. Next.js: tambahkan noxkit ke transpilePackages di next.config.ts
 
      const nextConfig = {
-       transpilePackages: ["nox"],
+       transpilePackages: ["noxkit"],
      }
 
   2. Edit root layout (Next.js: app/layout.tsx) untuk memakai NoxLayout
@@ -30,35 +30,35 @@ Setup manual:
 
   4. Buat folder content dan file MDX (mis. content/docs/index.mdx).
 
-Panduan lengkap tersedia di situs dokumentasi nox.
+Panduan lengkap tersedia di situs dokumentasi noxkit.
 
 Perintah:
 
-  nox init       Tampilkan langkah-langkah setup manual
-  nox template   Buat proyek dari template (segera hadir)
-  nox --version  Tampilkan versi
-  nox --help     Tampilkan bantuan ini
+  noxkit init       Tampilkan langkah-langkah setup manual
+  noxkit template   Buat proyek dari template (segera hadir)
+  noxkit --version  Tampilkan versi
+  noxkit --help     Tampilkan bantuan ini
 `.trim()
 
 function printInit() {
   console.log(`
-Setup manual nox:
+Setup manual noxkit:
 
-1. npm install nox
-2. Next.js: setel transpilePackages: ["nox"] di next.config.ts
+1. npm install noxkit
+2. Next.js: setel transpilePackages: ["noxkit"] di next.config.ts
 3. Edit root layout dengan NoxLayout dan NoxSidebarMenu
 4. Buat app/[...docs]/page.tsx dengan NoxRender
 5. Buat folder content dan file MDX (content/docs/*.mdx)
 
 Import yang tersedia:
-  import { NoxLayout, NoxRender } from "nox"
-  import type { NoxSidebarMenu } from "nox"
+  import { NoxLayout, NoxRender } from "noxkit"
+  import type { NoxSidebarMenu } from "noxkit"
 `.trim())
 }
 
 function printTemplate() {
   console.log(
-    "Template scaffolding belum tersedia. Gunakan setup manual dengan perintah `nox init`."
+    "Template scaffolding belum tersedia. Gunakan setup manual dengan perintah `noxkit init`."
   )
 }
 

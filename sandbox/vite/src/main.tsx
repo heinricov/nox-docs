@@ -1,6 +1,6 @@
-import { NoxLayout } from "nox"
-import { NoxRender } from "nox"
-import type { NoxSidebarMenu } from "nox"
+import { NoxLayout } from "noxkit"
+import { NoxRender } from "noxkit"
+import type { NoxSidebarMenu } from "noxkit"
 
 const menu: NoxSidebarMenu[] = [
   {

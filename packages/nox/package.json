@@ -1,10 +1,14 @@
 {
-  "name": "nox",
+  "name": "noxkit",
   "version": "0.0.1",
+  "description": "Nox - documentation site starter with MDX support",
   "type": "module",
   "files": [
     "src"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react"
 import "./globals.css"
-import { NoxLayout } from "nox"
-import type { NoxSidebarMenu } from "nox"
+import { NoxLayout } from "noxkit"
+import type { NoxSidebarMenu } from "noxkit"
 
 export const sidebarMenu: NoxSidebarMenu[] = [
   {

@@ -1,4 +1,4 @@
-import { NoxRender } from "nox"
+import { NoxRender } from "noxkit"
 import { DemoButton } from "@/components/examples/demo-button"
 import { PlainNotice } from "@/components/examples/plain-notice"
 

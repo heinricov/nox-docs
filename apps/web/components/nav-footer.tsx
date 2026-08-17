@@ -2,8 +2,8 @@
 
 import Link from "next/link"
 
-import { cn } from "nox/lib/utils"
-import { NavLogo } from "nox"
+import { cn } from "noxkit/lib/utils"
+import { NavLogo } from "noxkit"
 import { RiTwitterXFill } from "react-icons/ri"
 import { FaGithub } from "react-icons/fa"
 
