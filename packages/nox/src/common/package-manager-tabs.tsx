@@ -23,8 +23,23 @@ const managerIcons: Record<PackageManager, string> = {
   bun: "🥟",
 }
 
-function formatCommand(input: string, manager: PackageManager) {
+function formatCommand(
+  input: string,
+  manager: PackageManager,
+  forceInstall = false
+) {
   const command = input.trim()
+
+  if (forceInstall) {
+    const install = {
+      npm: "npm install",
+      pnpm: "pnpm add",
+      yarn: "yarn add",
+      bun: "bun add",
+    }[manager]
+    return `${install} ${command}`
+  }
+
   const isInit = /(^|\s)init(\s|$)/.test(command)
   const isPackageExec = /^\S+@\S+/.test(command)
 
@@ -209,9 +224,11 @@ function ColorizedCommand({ command }: { command: string }) {
 export function PackageManagerTabs({
   children,
   className,
+  install: forceInstall = false,
 }: {
   children: React.ReactNode
   className?: string
+  install?: boolean
 }) {
   const rawInput =
     typeof children === "string" ? children : String(children ?? "")
@@ -221,7 +238,7 @@ export function PackageManagerTabs({
     .split("\n")
     .map((line) => line.trim())
     .filter((line) => line.length > 0)
-    .map((line) => formatCommand(line, manager))
+    .map((line) => formatCommand(line, manager, forceInstall))
 
   const allCommands = commands.join("\n")
 
@@ -307,7 +324,7 @@ export function PackageManagerTabs({
         </pre>
 
         {/* Gradient fade for long commands */}
-        <div className="pointer-events-none absolute top-0 right-0 bottom-0 w-12 bg-gradient-to-l from-background to-transparent opacity-0 transition-opacity group-hover:opacity-100 sm:hidden" />
+        <div className="pointer-events-none absolute top-0 right-0 bottom-0 w-12 bg-linear-to-l from-background to-transparent opacity-0 transition-opacity group-hover:opacity-100 sm:hidden" />
       </div>
     </div>
   )
