@@ -5,8 +5,8 @@ const oxanium = Oxanium({ subsets: ["latin"], variable: "--font-sans" })
 import { cn } from "@workspace/ui/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider"
 
-import { NoxLayout } from "@nox/layouts"
-import type { GroupMenuItem, NoxSidebarMenu } from "@nox/layouts"
+import { NoxLayout } from "nox"
+import type { GroupMenuItem, NoxSidebarMenu } from "nox"
 import { NavHeader } from "@/components/nav-header"
 import { NavFooter } from "@/components/nav-footer"
 import { MyLogo } from "@/components/logo"

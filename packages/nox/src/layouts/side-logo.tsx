@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { cn } from "@nox/core/lib/utils"
+import { cn } from "../lib/utils"
 import { BookText } from "lucide-react"
 
 export function SideLogo({ className }: { className?: string }) {

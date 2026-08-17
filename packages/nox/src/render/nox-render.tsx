@@ -6,13 +6,13 @@ import { MdxHeader } from "./mdx-header"
 import { MdxRenderer } from "./mdx-render"
 import { MdxToc } from "./mdx-toc"
 import { MdxPagination, type MdxNavLink } from "./mdx-pagination"
-import { extractMdxFrontmatter, extractMdxHeadings } from "@nox/core/lib/mdx"
-import { readContentMdx } from "@nox/core/lib/content-mdx"
+import { extractMdxFrontmatter, extractMdxHeadings } from "../lib/mdx"
+import { readContentMdx } from "../lib/content-mdx"
 import {
   getContentSections,
   type ContentNavItem,
   type ContentSection,
-} from "@nox/core/lib/content-nav"
+} from "../lib/content-nav"
 
 function humanize(name: string): string {
   return name

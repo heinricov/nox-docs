@@ -1,7 +1,7 @@
 "use client"
 
-import { Button } from "@nox/core/components/button"
-import { useTheme } from "@nox/core/lib/theme"
+import { Button } from "../components/button"
+import { useTheme } from "../lib/theme"
 import { MoonIcon, SunIcon } from "lucide-react"
 import { useEffect, useState } from "react"
 

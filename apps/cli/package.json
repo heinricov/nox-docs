@@ -1,5 +1,5 @@
 {
-  "name": "nox",
+  "name": "@nox/cli",
   "version": "0.0.1",
   "description": "Nox - starter untuk situs dokumentasi berbasis MDX",
   "type": "module",
@@ -24,10 +24,7 @@
   ],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@nox/layouts": "workspace:*",
-    "@nox/render": "workspace:*"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/node": "^26.2.0",
     "tsx": "^4.23.12",

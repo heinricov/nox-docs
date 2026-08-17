@@ -4,7 +4,7 @@
     "module": "Preserve",
     "moduleResolution": "Bundler",
     "paths": {
-      "@nox/core/*": ["./src/*"]
+      "nox/*": ["./src/*"]
     }
   },
   "include": ["."],

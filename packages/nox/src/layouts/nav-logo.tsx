@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { cn } from "@nox/core/lib/utils"
+import { cn } from "../lib/utils"
 import { BookText } from "lucide-react"
 
 export function NavLogo({ className }: { className?: string }) {

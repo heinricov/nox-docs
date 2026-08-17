@@ -5,15 +5,15 @@ import { ChevronDownIcon } from "lucide-react"
 import { SiMdx, SiClaude, SiV0 } from "react-icons/si"
 import { FaRegCopy } from "react-icons/fa"
 
-import { Button } from "@nox/core/components/button"
-import { ButtonGroup } from "@nox/core/components/button-group"
+import { Button } from "../components/button"
+import { ButtonGroup } from "../components/button-group"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@nox/core/components/dropdown-menu"
+} from "../components/dropdown-menu"
 
 export function MdxCopyPage() {
   return (

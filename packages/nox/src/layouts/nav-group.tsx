@@ -8,12 +8,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "@nox/core/components/dropdown-menu"
+} from "../components/dropdown-menu"
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@nox/core/components/sidebar"
+} from "../components/sidebar"
 
 export type GroupMenuItem = {
   title: string

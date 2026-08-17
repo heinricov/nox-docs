@@ -1,7 +1,7 @@
 "use client"
 
-import { Label } from "@nox/core/components/label"
-import { SidebarInput } from "@nox/core/components/sidebar"
+import { Label } from "../components/label"
+import { SidebarInput } from "../components/sidebar"
 import { SearchIcon } from "lucide-react"
 
 export function SearchForm({ ...props }: React.ComponentProps<"form">) {

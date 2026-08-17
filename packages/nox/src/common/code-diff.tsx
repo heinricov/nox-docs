@@ -2,13 +2,13 @@
 
 import { Children, isValidElement, useEffect, useMemo, useState } from "react"
 import { Check, Copy, FileCode2, Minus, Plus } from "lucide-react"
-import { cn } from "@nox/core/lib/utils"
+import { cn } from "../lib/utils"
 import {
   cleanCode,
   getLanguageFromFilename,
   nodeToText,
-} from "@nox/core/lib/code-notation"
-import { formatCode } from "@nox/core/lib/code-format"
+} from "../lib/code-notation"
+import { formatCode } from "../lib/code-format"
 
 type CodeBlockProps = { children?: React.ReactNode; filename?: string }
 type CodeDiffProps = {

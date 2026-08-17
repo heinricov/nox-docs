@@ -9,19 +9,17 @@ Instalasi (di proyek Next.js atau Vite React):
 
   npm install nox
 
-Perintah di atas menginstal nox beserta paket @nox secara transitif,
-sehingga Anda bisa langsung memakai import berikut:
+Perintah di atas menginstal nox, sehingga Anda bisa langsung memakai import berikut:
 
-  import { NoxLayout } from "@nox/layouts"
-  import type { NoxSidebarMenu } from "@nox/layouts"
-  import { NoxRender } from "@nox/render"
+  import { NoxLayout, NoxRender } from "nox"
+  import type { NoxSidebarMenu } from "nox"
 
 Setup manual:
 
-  1. Next.js: tambahkan @nox/core, @nox/layouts, @nox/render ke transpilePackages di next.config.ts
+  1. Next.js: tambahkan nox ke transpilePackages di next.config.ts
 
      const nextConfig = {
-       transpilePackages: ["@nox/core", "@nox/layouts", "@nox/render"],
+       transpilePackages: ["nox"],
      }
 
   2. Edit root layout (Next.js: app/layout.tsx) untuk memakai NoxLayout
@@ -47,15 +45,14 @@ function printInit() {
 Setup manual nox:
 
 1. npm install nox
-2. Next.js: setel transpilePackages: ["@nox/core", "@nox/layouts", "@nox/render"] di next.config.ts
+2. Next.js: setel transpilePackages: ["nox"] di next.config.ts
 3. Edit root layout dengan NoxLayout dan NoxSidebarMenu
 4. Buat app/[...docs]/page.tsx dengan NoxRender
 5. Buat folder content dan file MDX (content/docs/*.mdx)
 
 Import yang tersedia:
-  import { NoxLayout } from "@nox/layouts"
-  import type { NoxSidebarMenu } from "@nox/layouts"
-  import { NoxRender } from "@nox/render"
+  import { NoxLayout, NoxRender } from "nox"
+  import type { NoxSidebarMenu } from "nox"
 `.trim())
 }
 

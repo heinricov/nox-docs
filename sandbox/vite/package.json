@@ -8,10 +8,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@nox/core": "file:../../packages/nox/nox-core-0.0.1.tgz",
-    "@nox/layouts": "file:../../packages/layouts/nox-layouts-0.0.1.tgz",
-    "@nox/render": "file:../../packages/render/nox-render-0.0.1.tgz",
-    "nox": "file:../../apps/cli/nox-0.0.1.tgz"
+    "nox": "file:../../packages/nox/nox-0.0.1.tgz"
   },
   "devDependencies": {
     "@types/node": "^20",

@@ -9,8 +9,8 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@nox/core/components/dropdown-menu"
-import { cn } from "@nox/core/lib/utils"
+} from "../components/dropdown-menu"
+import { cn } from "../lib/utils"
 
 type PackageManager = "npm" | "pnpm" | "yarn" | "bun"
 

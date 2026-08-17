@@ -4,7 +4,7 @@ import Link from "next/link"
 
 import { RiTwitterXFill } from "react-icons/ri"
 import { FaGithub } from "react-icons/fa"
-import { cn } from "@nox/core/lib/utils"
+import { cn } from "../lib/utils"
 import { NavLogo } from "./nav-logo"
 
 const links = [

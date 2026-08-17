@@ -1,5 +1,5 @@
 {
-  "name": "@nox/core",
+  "name": "nox",
   "version": "0.0.1",
   "type": "module",
   "files": [
@@ -47,7 +47,10 @@
     "tailwindcss": "^4"
   },
   "exports": {
-    ".": "./src/index.ts",
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
     "./globals.css": "./src/styles/globals.css",
     "./styles/*": "./src/styles/*",
     "./postcss.config": "./postcss.config.mjs",
@@ -55,9 +58,15 @@
     "./lib/*": "./src/lib/*.ts",
     "./components/*": "./src/components/*.tsx",
     "./hooks/*": "./src/hooks/*.ts",
-    "./layouts": "./src/layouts/index.ts",
+    "./layouts": {
+      "types": "./src/layouts/index.ts",
+      "default": "./src/layouts/index.ts"
+    },
     "./layouts/*": "./src/layouts/*.tsx",
-    "./render": "./src/render/index.ts",
+    "./render": {
+      "types": "./src/render/index.ts",
+      "default": "./src/render/index.ts"
+    },
     "./render/*": "./src/render/*.tsx",
     "./mdx-render/*": "./src/mdx-render/*.tsx"
   }

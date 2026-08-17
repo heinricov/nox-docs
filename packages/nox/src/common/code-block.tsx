@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useState, type ReactNode } from "react"
 import { Check, Copy, SquareChevronDown, SquareChevronUp } from "lucide-react"
-import { cn } from "@nox/core/lib/utils"
-import { Button } from "@nox/core/components/button"
+import { cn } from "../lib/utils"
+import { Button } from "../components/button"
 import {
   cleanCode,
   findDataLanguage,
@@ -11,8 +11,8 @@ import {
   nodeToText,
   resolveCodeLanguage,
   type HighlightToken,
-} from "@nox/core/lib/code-notation"
-import { formatCode } from "@nox/core/lib/code-format"
+} from "../lib/code-notation"
+import { formatCode } from "../lib/code-format"
 
 type CodeBlockProps = {
   filename?: string
