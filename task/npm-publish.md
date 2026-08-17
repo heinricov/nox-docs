@@ -10,7 +10,7 @@
 | Paket | Path | Nama npm | Fungsi |
 |-------|------|----------|--------|
 | Library | `packages/nox/` | `noxkit` | Semua komponen, layout, render |
-| CLI | `apps/cli/` | `@nox/cli` | Perintah `noxkit init`, `noxkit template` |
+| CLI | `apps/cli/` | `noxkit-cli` | Perintah `noxkit init`, `noxkit template` |
 
 ## Publish Pertama Kali
 
@@ -24,10 +24,10 @@ npm login
 
 ```bash
 cd packages/nox
-npm publish
+npm run release
 ```
 
-### 3. Publish CLI (@nox/cli)
+### 3. Publish CLI (noxkit-cli)
 
 ```bash
 cd apps/cli
@@ -49,51 +49,31 @@ node -e "import('noxkit').then(m => console.log(Object.keys(m)))"
 
 ## Update Setelah Perubahan File
 
-### Workflow
-
-```
-1. Edit file di packages/nox/src/
-2. Bump version
-3. Publish
-```
-
-### Langkah Detail
-
-#### 1. Edit file
-
-```bash
-# Contoh: tambah komponen baru
-vim packages/nox/src/components/new-component.tsx
-```
-
-#### 2. Bump version
+### Satu Perintah (Recommended)
 
 ```bash
 cd packages/nox
 
-# Untuk patch (0.0.1 → 0.0.2)
-npm version patch
+# Patch version (0.0.2 → 0.0.3) + publish
+npm run release
 
-# Untuk minor (0.0.1 → 0.1.0)
-npm version minor
+# Minor version (0.0.2 → 0.1.0) + publish
+npm run release:minor
 
-# Untuk major (0.0.1 → 1.0.0)
-npm version major
+# Major version (0.0.2 → 1.0.0) + publish
+npm run release:major
 ```
 
-#### 3. Publish
+Script `release` otomatis:
+1. Bump version di `package.json`
+2. Publish ke npm
 
-```bash
-npm publish
+### Workflow Lengkap
+
 ```
-
-#### 4. User update
-
-```bash
-# User update ke versi terbaru
-npm update noxkit
-# atau
-npm install noxkit@latest
+1. Edit file di packages/nox/src/
+2. npm run release
+3. Selesai
 ```
 
 ### CLI Update
@@ -104,6 +84,15 @@ cd apps/cli
 npm version patch
 npm run build
 npm publish
+```
+
+### User Update
+
+```bash
+# User update ke versi terbaru
+npm update noxkit
+# atau
+npm install noxkit@latest
 ```
 
 ## Import Pattern

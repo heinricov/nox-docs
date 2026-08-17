@@ -9,6 +9,7 @@ import { TooltipProvider } from "../components/tooltip"
 import { DefaultSidebar } from "./default-sidebar"
 import { DefaultFooter } from "./default-footer"
 import { DefaultHeader } from "./default-header"
+import { ThemeProvider } from "./theme-provider"
 
 import "../styles/globals.css"
 
@@ -60,19 +61,21 @@ export function NoxLayout({
 
   const showSidebar = !isDesktop || isTargetPath
   return (
-    <TooltipProvider>
-      <div className="[--header-height:calc(--spacing(14))]">
-        <SidebarProvider className="flex flex-col">
-          {navheader}
-          <div className="flex flex-1">
-            {showSidebar && navside}
-            <SidebarInset>
-              <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
-            </SidebarInset>
-          </div>
-          {navfooter}
-        </SidebarProvider>
-      </div>
-    </TooltipProvider>
+    <ThemeProvider>
+      <TooltipProvider>
+        <div className="[--header-height:calc(--spacing(14))]">
+          <SidebarProvider className="flex flex-col">
+            {navheader}
+            <div className="flex flex-1">
+              {showSidebar && navside}
+              <SidebarInset>
+                <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
+              </SidebarInset>
+            </div>
+            {navfooter}
+          </SidebarProvider>
+        </div>
+      </TooltipProvider>
+    </ThemeProvider>
   )
 }
