@@ -160,18 +160,19 @@ export default function RootLayout({
       )}
     >
       <body>
-          <NoxLayout
-            // navheader={<NavHeader />}
-            // navfooter={<NavFooter />}
-            githubUrl="https://github.com/nox-docs"
-            twitterUrl="https://twitter.com/nox_docs"
-            logo={<MyLogo />}
-            targetDir={["/docs"]}
-            menu={sidebarMenu}
-            groupmenu={groupmenu}
-          >
-            {children}
-          </NoxLayout>
+        <NoxLayout
+          // navheader={<NavHeader />}
+          // navfooter={<NavFooter />}
+          githubUrl="https://github.com/nox-docs"
+          twitterUrl="https://twitter.com/nox_docs"
+          logo={<MyLogo />}
+          targetDir={["/docs"]}
+          menu={sidebarMenu}
+          groupmenu={groupmenu}
+          defaultTheme="system"
+        >
+          {children}
+        </NoxLayout>
       </body>
     </html>
   )

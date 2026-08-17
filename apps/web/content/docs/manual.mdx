@@ -25,9 +25,11 @@ Karena paket `noxkit` didistribusikan sebagai source TypeScript, tambahkan ke `t
 
 <CodeBlock filename="next.config.ts">
   ```ts
-  const nextConfig = {
-    transpilePackages: ["noxkit"],
-  }
+  import type { NextConfig } from "next"
+
+const nextConfig: NextConfig = {
+transpilePackages: ["noxkit"],
+}
 
 export default nextConfig
 
@@ -76,7 +78,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 return (
 <html lang="en" suppressHydrationWarning>
 <body>
-<NoxLayout targetDir={["/docs"]} menu={sidebarMenu}>
+<NoxLayout defaultTheme="system" targetDir={["/docs"]} menu={sidebarMenu}>
 {children}
 </NoxLayout>
 </body>
