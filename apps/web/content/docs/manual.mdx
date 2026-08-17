@@ -6,11 +6,6 @@ description: "Memasang noxkit dengan `npm install noxkit` dan menyiapkan dokumen
 Cara termudah memakai noxkit adalah dengan satu perintah:
 
 <PackageManagerTabs>noxkit@latest</PackageManagerTabs>
-<PackageManagerTabs>npx create-next-app@latest</PackageManagerTabs>
-or
-<PackageManagerTabs>
-  npx shadcn@latest init --preset bdvw9FeS --template next --pointer
-</PackageManagerTabs>
 
 Perintah di atas menginstal paket `noxkit`, sehingga Anda langsung bisa memakai import berikut:
 
@@ -50,6 +45,7 @@ Pastikan `app/globals.css` mengimpor Tailwind dan dependensinya:
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "noxkit/globals.css";
 ````
 
 </CodeBlock>
@@ -61,37 +57,45 @@ Pastikan `app/globals.css` mengimpor Tailwind dan dependensinya:
 Ganti isi `app/layout.tsx` dengan `NoxLayout`, dan definisikan menu sidebar bertipe `NoxSidebarMenu`:
 
 <CodeBlock filename="app/layout.tsx">
-  ```tsx
-  import type { ReactNode } from "react"
-  import { NoxLayout } from "noxkit"
-  import type { NoxSidebarMenu } from "noxkit"
+
+```tsx
+
+import type { ReactNode } from "react"
+import { NoxLayout } from "noxkit"
+import type { NoxSidebarMenu } from "noxkit"
+import "./globals.css"
 
 export const sidebarMenu: NoxSidebarMenu[] = [
 {
-type: "main",
-label: "Documentation",
-items: [
-{
-title: "Introduction",
-url: "/docs/index",
-},
-],
+  type: "main",
+  label: "Documentation",
+  items: [
+    {
+      title: "Introduction",
+      url: "/docs/index",
+    },
+  ],
 },
 ]
 
 export default function RootLayout({ children }: { children: ReactNode }) {
 return (
-<html lang="en" suppressHydrationWarning>
-<body>
-<NoxLayout defaultTheme="system" targetDir={["/docs"]} menu={sidebarMenu}>
-{children}
-</NoxLayout>
-</body>
-</html>
+  <html lang="en" suppressHydrationWarning>
+    <body>
+      <NoxLayout
+        defaultTheme="system"
+        targetDir={["/docs"]}
+        menu={sidebarMenu}
+      >
+        {children}
+      </NoxLayout>
+    </body>
+  </html>
 )
 }
 
-````
+```
+
 </CodeBlock>
 
 > **Penting:** Tambahkan `suppressHydrationWarning` di `<html>` agar tidak ada hydration mismatch error dari ThemeProvider.
@@ -112,8 +116,9 @@ export default async function DocsPage({
   const { docs = [] } = await params
   const segments = docs[0] === "docs" ? docs.slice(1) : docs
 
-  return <NoxRender dir="/docs" slug={segments.join("/")} />
+return <NoxRender dir="/docs" slug={segments.join("/")} />
 }
+
 ````
 
 </CodeBlock>
@@ -146,6 +151,7 @@ Buat folder `content` dan `content/docs`, lengkap dengan `meta.ts` untuk label d
 Selamat datang di dokumentasi noxkit.
 
 ````
+
 </CodeBlock>
 
 ### 6. Jalankan
