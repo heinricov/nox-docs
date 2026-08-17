@@ -5,7 +5,9 @@ description: "Memasang noxkit dengan `npm install noxkit` dan menyiapkan dokumen
 
 Cara termudah memakai noxkit adalah dengan satu perintah:
 
-<PackageManagerTabs>noxkit@latest</PackageManagerTabs>
+<TabsSection>
+  <TabsContent value="nextjs">
+    <PackageManagerTabs>noxkit@latest</PackageManagerTabs>
 
 Perintah di atas menginstal paket `noxkit`, sehingga Anda langsung bisa memakai import berikut:
 
@@ -160,6 +162,167 @@ Selamat datang di dokumentasi noxkit.
 ```bash
 npm run dev
 ````
+
+  </TabsContent>
+  <TabsContent value="shadcn">
+   <PackageManagerTabs>noxkit@latest</PackageManagerTabs>
+
+Perintah di atas menginstal paket `noxkit`, sehingga Anda langsung bisa memakai import berikut:
+
+- `NoxLayout` dari `noxkit`
+- `NoxSidebarMenu` (tipe) dari `noxkit`
+- `NoxRender` dari `noxkit`
+
+## Prasyarat
+
+noxkit dibangun di atas **Next.js (App Router)** dan **Tailwind CSS v4**. Pastikan proyek Anda sudah memakai keduanya. Vite + React juga didukung untuk pemakaian pada level tipe dan komponen.
+
+## Setup
+
+### 1. Tambahkan paket ke transpilePackages
+
+Karena paket `noxkit` didistribusikan sebagai source TypeScript, tambahkan ke `transpilePackages` di `next.config.ts`:
+
+<CodeBlock filename="next.config.ts">
+  ```ts
+  import type { NextConfig } from "next"
+
+const nextConfig: NextConfig = {
+transpilePackages: ["noxkit"],
+}
+
+export default nextConfig
+
+````
+</CodeBlock>
+
+### 2. Siapkan Tailwind
+
+Pastikan `app/globals.css` mengimpor Tailwind dan dependensinya:
+
+<CodeBlock filename="app/globals.css">
+```css
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "noxkit/globals.css";
+````
+
+</CodeBlock>
+
+`NoxLayout` mengimpor tema `noxkit` secara otomatis, jadi Anda tidak perlu menambahkan import CSS noxkit secara manual.
+
+### 3. Edit root layout
+
+Ganti isi `app/layout.tsx` dengan `NoxLayout`, dan definisikan menu sidebar bertipe `NoxSidebarMenu`:
+
+<CodeBlock filename="app/layout.tsx">
+
+```tsx
+
+import type { ReactNode } from "react"
+import { NoxLayout } from "noxkit"
+import type { NoxSidebarMenu } from "noxkit"
+import "./globals.css"
+
+export const sidebarMenu: NoxSidebarMenu[] = [
+{
+  type: "main",
+  label: "Documentation",
+  items: [
+    {
+      title: "Introduction",
+      url: "/docs/index",
+    },
+  ],
+},
+]
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+return (
+  <html lang="en" suppressHydrationWarning>
+    <body>
+      <NoxLayout
+        defaultTheme="system"
+        targetDir={["/docs"]}
+        menu={sidebarMenu}
+      >
+        {children}
+      </NoxLayout>
+    </body>
+  </html>
+)
+}
+
+```
+
+</CodeBlock>
+
+> **Penting:** Tambahkan `suppressHydrationWarning` di `<html>` agar tidak ada hydration mismatch error dari ThemeProvider.
+
+### 4. Buat route tangkap-semua
+
+Buat `app/[...docs]/page.tsx` yang merender `NoxRender` dengan `dir` dan `slug` dari URL:
+
+<CodeBlock filename="app/[...docs]/page.tsx">
+```tsx
+import { NoxRender } from "noxkit"
+
+export default async function DocsPage({
+  params,
+}: {
+  params: Promise<{ docs?: string[] }>
+}) {
+  const { docs = [] } = await params
+  const segments = docs[0] === "docs" ? docs.slice(1) : docs
+
+return <NoxRender dir="/docs" slug={segments.join("/")} />
+}
+
+````
+
+</CodeBlock>
+
+### 5. Buat folder konten MDX
+
+Buat folder `content` dan `content/docs`, lengkap dengan `meta.ts` untuk label dan urutan navigasi:
+
+<CodeBlock filename="content/docs/meta.ts">
+  ```ts
+  ;({
+    docs: {
+      label: "Documentation",
+      type: "main",
+      order: ["introduction", "manual"],
+    },
+  })
+  ```
+</CodeBlock>
+
+<CodeBlock filename="content/docs/index.mdx">
+  ```mdx
+  ---
+  title: "Introduction"
+  description: "Pengenalan framework"
+  ---
+
+# Introduction
+
+Selamat datang di dokumentasi noxkit.
+
+````
+
+</CodeBlock>
+
+### 6. Jalankan
+
+<CodeBlock filename="terminal">
+```bash
+npm run dev
+````
+
+  </TabsContent>
+</TabsSection>
 
 </CodeBlock>
 
