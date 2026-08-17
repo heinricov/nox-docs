@@ -135,6 +135,10 @@ const sidebarMenu: NoxSidebarMenu[] = [
         title: "Terminal View",
         url: "/docs/mdx/terminal-view",
       },
+      {
+        title: "Tabs Section",
+        url: "/docs/mdx/tabs-section",
+      },
     ],
   },
 ]

@@ -8,6 +8,7 @@
       "component-preview",
       "package-manager-tabs",
       "project-tree",
+      "tabs-section",
       "terminal-view",
     ],
   },

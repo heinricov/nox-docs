@@ -1,0 +1,183 @@
+---
+title: "TabsSection"
+description: "Komponen tabs otomatis untuk MDX — tentukan tab lewat children, label di-generate dari value"
+---
+
+`TabsSection` adalah komponen tabs yang dirancang untuk kemudahan penggunaan di file MDX. Cukup berikan `TabsContent` sebagai children, dan komponen ini akan otomatis membuat **TabsList** berdasarkan `value` dari setiap child.
+
+## Import
+
+Di file MDX, `TabsSection` dan `TabsContent` sudah terdaftar otomatis di `MdxRenderer` — langsung bisa dipakai tanpa import:
+
+```mdx
+<TabsSection>
+  <TabsContent value="overview">
+    <div>Overview</div>
+  </TabsContent>
+  <TabsContent value="analytics">
+    <div>Analytics</div>
+  </TabsContent>
+</TabsSection>
+```
+
+<TabsSection>
+  <TabsContent value="overview">
+    <div>Overview</div>
+  </TabsContent>
+  <TabsContent value="analytics">
+    <div>Analytics</div>
+  </TabsContent>
+</TabsSection>
+
+Di file React/TSX, import terlebih dahulu:
+
+<CodeBlock inline>
+```tsx
+import { TabsSection, TabsContent } from "noxkit/common/tabs-section"
+```
+</CodeBlock>
+
+## Props
+
+### TabsSection
+
+| Prop           | Tipe        | Default             | Deskripsi                                     |
+| -------------- | ----------- | ------------------- | --------------------------------------------- |
+| `children`     | `ReactNode` | —                   | `TabsContent` children (wajib)                |
+| `defaultValue` | `string`    | Value pertama child | Value tab yang aktif saat pertama kali render |
+| `className`    | `string`    | —                   | Kelas tambahan untuk pembungkus tabs          |
+
+### TabsContent
+
+| Prop       | Tipe        | Default | Deskripsi                                                         |
+| ---------- | ----------- | ------- | ----------------------------------------------------------------- |
+| `value`    | `string`    | —       | Identifier unik untuk tab (wajib)                                 |
+| `tabLabel` | `string`    | —       | Label custom di tab trigger (opsional, default: capitalize value) |
+| `children` | `ReactNode` | —       | Konten yang ditampilkan saat tab aktif                            |
+
+---
+
+## 1. Penggunaan Dasar
+
+Bungkus `TabsContent` di dalam `TabsSection`. Label tab akan otomatis di-generate dari `value` (dengan huruf kapital pertama).
+
+<ComponentPreview title="TabsSection Dasar" fileName="page.mdx">
+
+```mdx
+<TabsSection>
+  <TabsContent value="overview">
+    <div>Ini adalah konten overview</div>
+  </TabsContent>
+  <TabsContent value="analytics">
+    <div>Ini adalah konten analytics</div>
+  </TabsContent>
+  <TabsContent value="reports">
+    <div>Ini adalah konten reports</div>
+  </TabsContent>
+</TabsSection>
+```
+
+</ComponentPreview>
+
+---
+
+## 2. Label Custom
+
+Gunakan prop `tabLabel` pada `TabsContent` untuk menampilkan label yang berbeda dari value:
+
+<ComponentPreview title="TabsSection dengan Label Custom" fileName="page.mdx">
+````mdx
+<TabsSection>
+  <TabsContent value="home" tabLabel="Beranda">
+    <div>Halaman utama</div>
+  </TabsContent>
+  <TabsContent value="about" tabLabel="Tentang Kami">
+    <div>Profil perusahaan</div>
+  </TabsContent>
+  <TabsContent value="contact" tabLabel="Hubungi">
+    <div>Form kontak</div>
+  </TabsContent>
+</TabsSection>
+`````
+
+</ComponentPreview>
+
+---
+
+## 3. Default Tab Aktif
+
+Secara default, tab pertama yang aktif. Gunakan `defaultValue` untuk mengatur tab awal yang berbeda:
+
+<ComponentPreview title="TabsSection dengan Default Tab" fileName="page.mdx">
+  ````mdx
+  <TabsSection defaultValue="analytics">
+    <TabsContent value="overview">
+      <div>Overview content</div>
+    </TabsContent>
+    <TabsContent value="analytics">
+      <div>Analytics content — ini aktif duluan!</div>
+    </TabsContent>
+  </TabsSection>
+  ````
+</ComponentPreview>
+
+---
+
+## 4. Konten Kompleks
+
+`TabsContent` bisa berisi JSX kompleks seperti komponen lain, tabel, atau bahkan blok kode:
+
+<ComponentPreview
+  title="TabsSection dengan Konten Kompleks"
+  fileName="page.mdx"
+>
+  ````mdx
+  <TabsSection>
+    <TabsContent value="npm">```bash npm install noxkit ```</TabsContent>
+    <TabsContent value="pnpm">```bash pnpm add noxkit ```</TabsContent>
+    <TabsContent value="yarn">```bash yarn add noxkit ```</TabsContent>
+  </TabsSection>
+  ````
+</ComponentPreview>
+
+---
+
+## 5. Penggunaan di File React/TSX
+
+<CodeBlock filename="page.tsx">
+```tsx
+import { TabsSection, TabsContent } from "noxkit/common/tabs-section"
+
+export function Page() {
+  return (
+    <TabsSection defaultValue="code">
+      <TabsContent value="preview">
+        <div>Preview content</div>
+      </TabsContent>
+      <TabsContent value="code" tabLabel="Source Code">
+        <pre>{`const x = 1`}</pre>
+      </TabsContent>
+    </TabsSection>
+  )
+}
+```
+</CodeBlock>
+
+---
+
+## 6. Cara Kerja
+
+1. `TabsSection` menerima children berupa `TabsContent` components.
+2. Setiap child diekstrak `value`-nya untuk membuat `TabsTrigger` di `TabsList`.
+3. Label trigger diambil dari prop `tabLabel` jika ada, atau capitalize dari `value`.
+4. Tab pertama secara default aktif, kecuali `defaultValue` ditentukan.
+5. `TabsContent` di-render langsung sebagai children dari `Tabs` wrapper.
+
+---
+
+## 7. Catatan
+
+- `TabsSection` adalah client component — gunakan langsung di file MDX tanpa perlu `"use client"`.
+- Label tab di-generate otomatis dari `value` dengan huruf kapital pertama (misalnya `"overview"` → `"Overview"`).
+- Gunakan `tabLabel` jika ingin label yang berbeda dari value.
+- Setiap `value` harus unik dalam satu `TabsSection`.

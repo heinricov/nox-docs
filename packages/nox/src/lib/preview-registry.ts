@@ -8,6 +8,7 @@ import {
 } from "../common/code-diff"
 import { PackageManagerTabs } from "../common/package-manager-tabs"
 import { File, Folder, ProjectTree } from "../common/project-tree"
+import { TabsSection } from "../common/tabs-section"
 import {
   AsciiArt,
   Cancelled,
@@ -131,6 +132,7 @@ export const previewRegistry: Record<string, unknown> = {
   OldCode,
   OldFile,
   PackageManagerTabs,
+  TabsSection,
   ProjectTree,
   Folder,
   File,

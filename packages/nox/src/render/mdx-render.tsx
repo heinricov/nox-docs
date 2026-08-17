@@ -15,6 +15,7 @@ import {
 import { ComponentPreview } from "../common/component-preview"
 import { PackageManagerTabs } from "../common/package-manager-tabs"
 import { File, Folder, ProjectTree } from "../common/project-tree"
+import { TabsSection, TabsContent } from "../common/tabs-section"
 import { mdxTableComponents } from "../common/tabel-render"
 import {
   AsciiArt,
@@ -49,6 +50,8 @@ const mdxComponents = {
   NewFile,
   ComponentPreview,
   PackageManagerTabs,
+  TabsSection,
+  TabsContent,
   ProjectTree,
   Folder,
   File,

@@ -83,9 +83,11 @@ function TabsTrigger({
 
 function TabsContent({
   className,
+  tabLabel: _tabLabel,
   ...props
 }: TabsPrimitive.Panel.Props & {
   className?: string
+  tabLabel?: string
 }) {
   return (
     <TabsPrimitive.Panel

@@ -7,6 +7,7 @@ import elementToJSXString from "react-element-to-jsx-string"
 import { cn } from "../lib/utils"
 import { CodeBlock } from "./code-block"
 import { PackageManagerTabs } from "./package-manager-tabs"
+import { TabsSection, TabsContent } from "./tabs-section"
 import { previewRegistry } from "../lib/preview-registry"
 import {
   findDataLanguage,
@@ -102,6 +103,8 @@ async function evaluateComponent(source: string) {
       if (id === "react") return React
       if (id === "PackageManagerTabs") return PackageManagerTabs
       if (id === "CodeBlock") return CodeBlock
+      if (id === "TabsSection") return TabsSection
+      if (id === "TabsContent") return TabsContent
       if (id === "mdxui" || id.startsWith("mdxui/")) return previewRegistry
       throw new Error(`Modul "${id}" tidak tersedia di ComponentPreview.`)
     }
@@ -109,12 +112,23 @@ async function evaluateComponent(source: string) {
       "React",
       "PackageManagerTabs",
       "CodeBlock",
+      "TabsSection",
+      "TabsContent",
       "module",
       "exports",
       "require",
       code
     )
-    factory(React, PackageManagerTabs, CodeBlock, mod, mod.exports, requireShim)
+    factory(
+      React,
+      PackageManagerTabs,
+      CodeBlock,
+      TabsSection,
+      TabsContent,
+      mod,
+      mod.exports,
+      requireShim
+    )
     return (
       mod.exports.default ??
       Object.values(mod.exports).find((value) => typeof value === "function")
