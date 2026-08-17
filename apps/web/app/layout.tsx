@@ -11,6 +11,7 @@ import { NavFooter } from "@/components/nav-footer"
 import { MyLogo } from "@/components/logo"
 import icon from "./icon.png"
 import { Cpu, Notebook } from "lucide-react"
+import "noxkit/globals.css"
 
 export const metadata: Metadata = {
   title: {

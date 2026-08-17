@@ -19,7 +19,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <NoxLayout targetDir={["/docs"]} menu={sidebarMenu}>
+        <NoxLayout
+          defaultTheme="system"
+          targetDir={["/docs"]}
+          menu={sidebarMenu}
+        >
           {children}
         </NoxLayout>
       </body>

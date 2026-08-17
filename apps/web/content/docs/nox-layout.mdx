@@ -1,10 +1,65 @@
 ---
+
 title: "NoxLayout"
 description: "Layout utama noxkit: header, sidebar, konten, dan footer dalam satu komponen"
 ---
 
 `NoxLayout` adalah komponen layout utama noxkit yang menyusun **header**, **sidebar**, **area konten**, dan **footer** dalam satu kerangka responsif. Cukup bungkus halaman aplikasi Anda dengannya, dan struktur dokumentasi siap dipakai.
 
+## Setup CSS
+
+noxkit tidak mengimpor CSS secara otomatis. Anda punya dua opsi:
+
+### Opsi 1: Proyek dengan shadcn UI (Recommended)
+
+Jika proyek sudah menggunakan shadcn UI, gunakan CSS yang sudah ada. Tidak perlu import apapun dari noxkit:
+
+<CodeBlock filename="app/globals.css">
+```css
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    /* ... variabel shadcn lainnya */
+}
+
+/* Definisi warna :root dan .dark */
+:root { ... }
+.dark { ... }
+```
+</CodeBlock>
+
+### Opsi 2: Proyek tanpa shadcn UI
+
+Jika proyek belum memiliki shadcn, import CSS bawaan noxkit:
+
+<CodeBlock filename="app/layout.tsx">
+```tsx
+import "noxkit/globals.css" // Tambahkan di root layout
+import { NoxLayout } from "noxkit"
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <NoxLayout menu={menu}>
+          {children}
+        </NoxLayout>
+      </body>
+    </html>
+  )
+}
+```
+</CodeBlock>
+
+> **Penting:** Jangan import `noxkit/globals.css` jika sudah punya shadcn setup, karena akan menimpa warna custom Anda.
 ## Fitur Utama
 
 - **`navheader`** — header sticky dengan logo, navigasi, tombol toggle sidebar (mobile), pencarian, dan tombol tema; default dari `default-header.tsx`

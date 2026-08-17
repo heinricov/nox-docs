@@ -7,6 +7,7 @@ export { NavCollaps } from "./nav-collaps"
 export { NavLogo } from "./nav-logo"
 export { NavMain } from "./nav-main"
 export { NoxLayout } from "./nox-layout"
+export type { NoxLayoutProps } from "./nox-layout"
 export { SearchForm } from "./search-form"
 export { SiteHeader } from "./site-header"
 export type {

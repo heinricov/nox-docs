@@ -11,8 +11,6 @@ import { DefaultFooter } from "./default-footer"
 import { DefaultHeader } from "./default-header"
 import { ThemeProvider } from "./theme-provider"
 
-import "../styles/globals.css"
-
 type NoxLayoutProps = {
   menu: NoxSidebarMenu[]
   groupmenu?: GroupMenuItem[]
@@ -81,3 +79,5 @@ export function NoxLayout({
     </ThemeProvider>
   )
 }
+
+export type { NoxLayoutProps }
