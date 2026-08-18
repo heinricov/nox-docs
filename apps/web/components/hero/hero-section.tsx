@@ -2,6 +2,7 @@ import { ArrowUpRight, CirclePlay } from "lucide-react"
 import { cn } from "@workspace/ui/lib/utils"
 import { Button } from "@workspace/ui/components/button"
 import AnimatedGridPattern from "./animated-grid-pattern"
+import Link from "next/link"
 
 export function Hero() {
   return (
@@ -17,23 +18,26 @@ export function Hero() {
       />
       <div className="relative z-10 max-w-3xl text-center">
         <h1 className="mx-auto mt-6 max-w-xl text-4xl font-medium tracking-[-0.04em] sm:text-[2.75rem] md:text-6xl/[1.2]">
-          Ship better UI without&nbsp;the&nbsp;hassle
+          Fast Build Documentation Application
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-xl text-muted-foreground md:text-2xl/normal">
-          Instead of starting from scratch every time, use thoughtfully designed
-          blocks that give you a solid foundation for any UI.
+          Build your documentation application in minutes.
         </p>
         <div className="mt-12 flex items-center justify-center gap-4">
-          <Button className="rounded-full" size="lg">
-            Get Started <ArrowUpRight className="h-5! w-5!" />
-          </Button>
-          <Button
-            className="rounded-full shadow-none"
-            size="lg"
-            variant="outline"
-          >
-            <CirclePlay className="h-5! w-5!" /> Watch Demo
-          </Button>
+          <Link href="/docs/manual">
+            <Button className="rounded-full" size="lg">
+              Get Started <ArrowUpRight className="h-5! w-5!" />
+            </Button>
+          </Link>
+          <Link href="/demo">
+            <Button
+              className="rounded-full shadow-none"
+              size="lg"
+              variant="outline"
+            >
+              <CirclePlay className="h-5! w-5!" /> Watch Demo
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

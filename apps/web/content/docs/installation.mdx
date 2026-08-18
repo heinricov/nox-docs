@@ -3,171 +3,346 @@ title: "Installation"
 description: "Memasang Nox melalui template atau manual, beserta struktur proyek yang dihasilkan"
 ---
 
-# Installation
+Cara termudah memakai noxkit adalah dengan satu perintah:
 
-**Nox** adalah starter untuk situs dokumentasi berbasis MDX. Ada dua cara memasangnya: **menggunakan template** (disarankan) atau **secara manual**. Halaman ini memandu Anda melewati kedua cara tersebut langkah demi langkah.
+## Instalasi NoxKit Manual Project
 
-## Use Template
+Ada dua cara untuk menginstal noxkit:
 
-1. Jalankan perintah berikut di terminal:
+- Memulai dengan membuat proyek baru [Next.js](https://nextjs.org/docs/app-router) dengan menggunakan `create-next-app`
+- Memulai melalui create proyect di Shadcn UI [Shadcn UI Create](https://ui.shadcn.com/create).
 
-   <CodeBlock filename="terminal">
-     ```bash
-     npx nox@latest template
-     ```
-   </CodeBlock>
+Anda bisa mengunjungi dokumentasi lengkap [Shadcn UI Create](https://ui.shadcn.com/create) untuk memahami lebih lanjut tentang cara menggunakan Shadcn UI Create dan dokumentasi [Next.js](https://nextjs.org/docs/app-router) untuk memahami lebih lanjut tentang cara menggunakan Next.js App Router.
 
-2. Pilih template yang diinginkan — **nextjs**, atau **vite**:
+<TabsSection>
 
-   <TerminalView title="npx nox@latest template">
-     <Command>npx nox@latest template</Command>
-     <QuestionStep question="Pilih template yang diinginkan:">
-       <Option selected description="Next.js dengan app router">nextjs</Option>
-       <Option>vite</Option>
-     </QuestionStep>
-   </TerminalView>
+<TabsContent value="nextjs">
 
-3. Proyek yang diinginkan akan dihasilkan secara otomatis.
+- Instalasi Next.js App Router
 
-### NextJS Template Structure
+<PackageManagerTabs>create-next-app@latest</PackageManagerTabs>
 
-Template NextJS sudah disiapkan sehingga Anda tidak perlu mengonfigurasi apa pun:
+- Pastikan proyek Anda menggunakan Next.js App Router dengan `use recommended defaults`.
 
-1. **`layout.tsx` sudah terupdate** — root layout sudah memuat `NoxLayout`, `ThemeProvider`, dan font, lengkap dengan `sidebarMenu`.
+<TerminalView title="create-next-app">
+  <Command>npx create-next-app@latest</Command>
+  <QuestionStep done question="What is your project named? › my-app" />
+  <QuestionStep question="Would you like to use the recommended Next.js defaults? › - Use arrow-keys. Return to submit.">
+    <Option selected>Yes, use recommended defaults</Option>
+    <Option>No, reuse previous settings</Option>
+    <Option>No, customize settings</Option>
+  </QuestionStep>
+  <SuccessProcess message="Created my-app" />
+  <Command>cd my-app</Command>
+</TerminalView>
 
-2. **Otomatis dibuatkan `[...docs]/page.tsx`** — route tangkap-semua yang merender file MDX dari folder `content/docs`.
+</TabsContent>
 
-3. **Otomatis dibuatkan folder penyimpanan file MDX** — `content` dan `content/docs`:
+<TabsContent value="shadcn">
+  
+  - Instalasi Shadcn UI Create
 
-   <ProjectTree name="project">
-     <Folder name="content" open>
-       <Folder name="docs" open>
-         <File name="index.mdx" />
-         <File name="setup.mdx" />
-       </Folder>
-     </Folder>
-   </ProjectTree>
+<PackageManagerTabs>{`shadcn@latest init --preset b0 --template next --pointer`}</PackageManagerTabs>
 
-### Saat Deploy
+atau
 
-Sebelum deploy, dua hal perlu diperhatikan:
+<PackageManagerTabs>{`shadcn@latest init --preset b1tMcUbQm --template next --pointer`}</PackageManagerTabs>
 
-1. **Update `eslint.config.ts`** — pastikan isinya sebagai berikut:
+`--preset` merupakan preset yang disediakan oleh Shadcn UI Create saat ini ada dua. `b0` dan `b1tMcUbQm`. Anda bisa masuk ke [Shadcn UI Create](https://ui.shadcn.com/create) untuk melihat daftar preset yang tersedia.
 
-   <CodeBlock filename="eslint.config.ts">
-     ```ts
-     import { nextJsConfig } from "@workspace/eslint-config/next-js"
+<TerminalView title="shadcn-ui-create">
+  <Command>
+    npx shadcn@latest init --preset b1tMcUbQm --template next --pointer
+  </Command>
+  <QuestionStep done question="What is your project named? › my-app" />
+  <SuccessProcess message="Creating a new Next.js project." />
+  <SuccessProcess message="Writing components.json." />
+  <SuccessProcess message="Checking registry." />
+  <SuccessProcess message="Installing dependencies." />
+  <SuccessProcess message="Updating fonts." />
+  <SuccessProcess message="Created 2 files:">
+    <ListItem>components/ui/button.tsx</ListItem>
+    <ListItem>lib/utils.ts</ListItem>
+  </SuccessProcess>
+  <SuccessProcess message="Updating app/globals.css" />
+  <Result message="Project initialization completed." />
+  <Result message="You may now add components." />
+  <Command>cd my-app</Command>
+</TerminalView>
 
-     /** @type {import("eslint").Linter.Config} */
-     export default nextJsConfig
-     ```
-   </CodeBlock>
+</TabsContent>
 
-2. **Hapus `type module` di `package.json`** — hapus baris berikut agar aplikasi tidak di-deploy sebagai ES module:
+</TabsSection>
 
-   ```json
-   {
-     "type": "module"
-   }
-   ```
+## Instalasi noxkit
 
----
+<PackageManagerTabs install>noxkit@latest</PackageManagerTabs>
 
-## Use Manual
+- Jalankan printah install noxkit, dengan hasil seperti ini:
 
-1. Install `noxkit`:
+<TerminalView title="noxkit">
+  <Command>npm install noxkit@latest</Command>
+  <Result message="added 402 packages, and audited 762 packages in 18s" />
+  <Result message="359 packages are looking for funding" />
+  <Result message="run `npm fund` for details" />
+  <Result message="found 0 vulnerabilities" />
+  <SuccessProcess message="Installed noxkit successfully!" />
+</TerminalView>
 
-   <CodeBlock filename="terminal">
-     ```bash
-     npm install noxkit
-     ```
-   </CodeBlock>
+Perintah di atas menginstal paket `noxkit`, sehingga Anda langsung bisa memakai import berikut:
 
-   Perintah ini menginstal `noxkit`, sehingga import berikut langsung tersedia:
+- `NoxLayout` dari `noxkit`
+- `NoxSidebarMenu` (tipe) dari `noxkit`
+- `NoxRender` dari `noxkit`
 
-   ```ts
-   import { NoxLayout, NoxRender } from "noxkit"
-   import type { NoxSidebarMenu } from "noxkit"
-   ```
+## Setup
 
-2. **Tambahkan paket ke `transpilePackages`** di `next.config.ts`:
+### Tambahkan paket ke transpilePackages
 
-   <CodeBlock filename="next.config.ts">
-     ```ts
-     const nextConfig = {
-        transpilePackages: ["noxkit"],
-     }
+Karena `noxkit` didistribusikan sebagai source TypeScript, tambahkan ke `transpilePackages` di `next.config.ts`:
 
-     export default nextConfig
-     ```
-   </CodeBlock>
+<CodeBlock filename="next.config.ts">
+```ts
+import type { NextConfig } from "next"
 
-3. **Update `layout.tsx`** — ganti isi root layout dengan kode berikut:
+const nextConfig: NextConfig = {
+transpilePackages: ["noxkit"],
+}
 
-   <CodeBlock filename="app/layout.tsx">
-     ```tsx
-     import type { ReactNode } from "react"
+export default nextConfig
+```
+</CodeBlock>
+
+### Update globals.css
+
+Pastikan `app/globals.css` mengimpor Tailwind dan dependensinya:
+
+<CodeBlock filename="app/globals.css">
+
+```css
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "noxkit/globals.css";
+```
+
+</CodeBlock>
+
+`NoxLayout` mengimpor tema `noxkit` secara otomatis, jadi Anda tidak perlu menambahkan import CSS noxkit secara manual.
+
+### Edit root layout
+
+Ganti isi `app/layout.tsx` dengan `NoxLayout`, dan definisikan menu sidebar bertipe `NoxSidebarMenu`:
+
+<TabsSection>
+  <TabsContent value="Next.js">
+    
+    <CodeBlock filename="app/layout.tsx">
+      ```tsx
+      import type { ReactNode } from "react"
+      import type { Metadata } from "next"
+      import { Geist, Geist_Mono } from "next/font/google"
+      import "./globals.css"
+
       import { NoxLayout } from "noxkit"
       import type { NoxSidebarMenu } from "noxkit"
 
-     export const sidebarMenu: NoxSidebarMenu[] = [
-       {
-         type: "main",
-         label: "Documentation",
-         items: [
-           {
-             title: "Introduction",
-             url: "/docs/index",
-           },
-         ],
-       },
-     ]
+      const geistSans = Geist({
+      variable: "--font-geist-sans",
+      subsets: ["latin"],
+      })
 
-     export default function RootLayout({ children }: { children: ReactNode }) {
-       return (
-          <html lang="en" suppressHydrationWarning>
-           <body>
-             <NoxLayout targetDir={["/docs"]} menu={sidebarMenu}>
-               {children}
-             </NoxLayout>
-           </body>
-         </html>
-       )
-     }
-     ```
-   </CodeBlock>
+      const geistMono = Geist_Mono({
+      variable: "--font-geist-mono",
+      subsets: ["latin"],
+      })
 
-4. **Buat `[...docs]/page.tsx`** — route tangkap-semua yang merender `NoxRender`:
+      export const metadata: Metadata = {
+        title: "Create Next App",
+        description: "Generated by create next app",
+      }
 
-   <CodeBlock filename="app/[...docs]/page.tsx">
-     ```tsx
-      import { NoxRender } from "noxkit"
+      export const sidebarMenu: NoxSidebarMenu[] = [
+        {
+          type: "main",
+          label: "Documentation",
+          items: [
+            {
+              title: "Introduction",
+              url: "/docs/index",
+            },
+          ],
+        },
+      ]
 
-     export default async function DocsPage({
-       params,
-     }: {
-       params: Promise<{ docs?: string[] }>
-     }) {
-       const { docs = [] } = await params
-       const segments = docs[0] === "docs" ? docs.slice(1) : docs
+      export default function RootLayout({ children }: { children: ReactNode }) {
+        return (
+          <html
+            lang="en"
+            suppressHydrationWarning
+            className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+          >
+            <body>
+              <NoxLayout
+                defaultTheme="system"
+                targetDir={["/docs"]}
+                menu={sidebarMenu}
+              >
+                {children}
+              </NoxLayout>
+            </body>
+          </html>
+        )
+      }
 
-       return <NoxRender dir="/docs" slug={segments.join("/")} />
-     }
-     ```
-   </CodeBlock>
+      ```
+    </CodeBlock>
 
-5. **Buat folder penyimpanan file MDX** — `content` dan `content/docs`, lengkap dengan `meta.ts`:
+  </TabsContent>
+  <TabsContent value="Shadcn UI">
+    <CodeBlock filename="app/layout.tsx">
+        ```tsx
+        import type { Metadata } from "next"
+        import { Geist_Mono, Inter } from "next/font/google"
 
-   <ProjectTree name="project">
-     <Folder name="content" open>
-       <Folder name="docs" open>
-         <File name="meta.ts" />
-         <File name="index.mdx" />
-         <File name="manual.mdx" />
-       </Folder>
-     </Folder>
-   </ProjectTree>
+        import "./globals.css"
+        import { cn } from "@/lib/utils";
 
-6. **Siapkan Tailwind** — pastikan `app/globals.css` mengimpor Tailwind dan dependensinya; `NoxLayout` mengimpor tema `noxkit` secara otomatis.
+        import { NoxLayout } from "noxkit"
+        import type { NoxSidebarMenu } from "noxkit"
 
-Panduan lengkap langkah demi langkah tersedia di halaman [Manual](/docs/manual).
+        const inter = Inter({subsets:['latin'],variable:'--font-sans'})
+
+        const fontMono = Geist_Mono({
+          subsets: ["latin"],
+          variable: "--font-mono",
+        })
+
+
+        export const metadata: Metadata = {
+          title: "Create Next App",
+          description: "Generated by create next app",
+        }
+
+        export const sidebarMenu: NoxSidebarMenu[] = [
+          {
+            type: "main",
+            label: "Documentation",
+            items: [
+              {
+                title: "Introduction",
+                url: "/docs/index",
+              },
+            ],
+          },
+        ]
+
+        export default function RootLayout({
+          children,
+        }: Readonly<{
+          children: React.ReactNode
+        }>) {
+          return (
+            <html
+              lang="en"
+              suppressHydrationWarning
+              className={cn("antialiased", fontMono.variable, "font-sans", inter.variable)}
+            >
+              <body>
+                <NoxLayout
+                  defaultTheme="system"
+                  targetDir={["/docs"]}
+                  menu={sidebarMenu}
+                >
+                  {children}
+                </NoxLayout>
+              </body>
+            </html>
+          )
+        }
+        ```
+      </CodeBlock>
+
+  </TabsContent>
+</TabsSection>
+
+> **Penting:** Tambahkan `suppressHydrationWarning` di `<html>` agar tidak ada hydration mismatch error dari ThemeProvider.
+
+### Buat route tangkap-semua
+
+- Buat `app/[...docs]/page.tsx` yang merender `NoxRender` dengan `dir` dan `slug` dari URL:
+
+<PackageManagerTabs bash>{`
+mkdir "app/[...docs]"
+touch "app/[...docs]/page.tsx"
+`}</PackageManagerTabs>
+
+- Isi `app/[...docs]/page.tsx` dengan kode berikut:
+
+<CodeBlock filename="app/[...docs]/page.tsx">
+```tsx
+import { NoxRender } from "noxkit"
+
+export default async function DocsPage({
+  params,
+}: {
+  params: Promise<{ docs?: string[] }>
+}) {
+  const { docs = [] } = await params
+  const segments = docs[0] === "docs" ? docs.slice(1) : docs
+
+return <NoxRender dir="/docs" slug={segments.join("/")} />
+}
+
+````
+
+</CodeBlock>
+
+### Buat folder konten MDX
+
+- Buat folder `content` dan `content/docs`, lengkap dengan `meta.ts` untuk label dan urutan navigasi:
+
+<PackageManagerTabs bash>{`
+mkdir -p "content/docs"
+touch "content/docs/index.mdx"
+`}</PackageManagerTabs>
+
+- Isi `content/docs/index.mdx` dengan kode berikut:
+
+<CodeBlock filename="content/docs/index.mdx">
+```mdx
+---
+title: "Introduction"
+description: "Pengenalan framework"
+---
+
+# Introduction
+
+Selamat datang di dokumentasi noxkit.
+
+````
+
+</CodeBlock>
+
+> **Jalankan**: `npm run dev` dan buka `http://localhost:3000` dan `http://localhost:3000/docs/` untuk melihat halaman dokumentasi.
+
+## Structure
+
+<ProjectTree name="my-app structure project">
+  <Folder name="my-app" open>
+    <Folder name="app" open>
+      <Folder name="[...docs]" open noted="Create">
+        <File name="page.tsx" noted="Create" />
+      </Folder>
+      <File name="page.tsx" noted="Update" />
+      <File name="layout.tsx" noted="Update" />
+    </Folder>
+    <Folder name="content" open noted="Create">
+      <Folder name="docs" open noted="Create">
+        <File name="index.mdx" noted="Create" />
+      </Folder>
+    </Folder>
+    <File name="next.config.ts" noted="Update" />
+    <File name="package.json" noted="Update" />
+  </Folder>
+</ProjectTree>

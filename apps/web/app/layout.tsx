@@ -76,11 +76,6 @@ const sidebarMenu: NoxSidebarMenu[] = [
         group: "Basic Concept",
       },
       {
-        title: "Manual",
-        url: "/docs/manual",
-        group: "Basic Concept",
-      },
-      {
         title: "Nox Layout",
         url: "/docs/nox-layout",
         group: "Core Concept",
@@ -138,6 +133,10 @@ const sidebarMenu: NoxSidebarMenu[] = [
       {
         title: "Tabs Section",
         url: "/docs/mdx/tabs-section",
+      },
+      {
+        title: "Typography",
+        url: "/docs/mdx/typography",
       },
     ],
   },
