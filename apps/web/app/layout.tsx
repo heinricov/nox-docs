@@ -32,19 +32,6 @@ export const metadata: Metadata = {
   },
 }
 
-const groupmenu: GroupMenuItem[] = [
-  {
-    title: "Basic Concept",
-    icon: <Notebook className="size-4" />,
-    description: "Basic concept",
-  },
-  {
-    title: "Core Concept",
-    icon: <Cpu className="size-4" />,
-    description: "Core concept",
-  },
-]
-
 const sidebarMenu: NoxSidebarMenu[] = [
   {
     type: "main-mobile",
@@ -68,27 +55,22 @@ const sidebarMenu: NoxSidebarMenu[] = [
       {
         title: "Introduction",
         url: "/docs/index",
-        group: "Basic Concept",
       },
       {
         title: "Installation",
         url: "/docs/installation",
-        group: "Basic Concept",
       },
       {
         title: "Nox Layout",
         url: "/docs/nox-layout",
-        group: "Core Concept",
       },
       {
         title: "Nox Render",
         url: "/docs/nox-render",
-        group: "Core Concept",
       },
       {
         title: "Nox Sidebar",
         url: "/docs/nox-sidebar",
-        group: "Core Concept",
       },
     ],
   },
@@ -177,7 +159,6 @@ export default function RootLayout({
           logo={<MyLogo />}
           targetDir={["/docs"]}
           menu={sidebarMenu}
-          groupmenu={groupmenu}
           defaultTheme="system"
         >
           {children}
