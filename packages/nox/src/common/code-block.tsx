@@ -19,6 +19,8 @@ type CodeBlockProps = {
   inline?: boolean
   children: ReactNode
   className?: string
+  highlightLine?: number[]
+  highlightText?: Array<[number, string]>
 }
 
 export function CodeBlock({
@@ -26,6 +28,8 @@ export function CodeBlock({
   inline = false,
   children,
   className,
+  highlightLine = [],
+  highlightText = [],
 }: CodeBlockProps) {
   const [copied, setCopied] = useState(false)
   const [expanded, setExpanded] = useState(false)
@@ -40,6 +44,16 @@ export function CodeBlock({
   const [displayCode, setDisplayCode] = useState(code)
   const lines = displayCode.split("\n")
   const isLongCode = lines.length > 10
+
+  const highlightMap = useMemo(() => {
+    const map = new Map<number, string[]>()
+    for (const [line, text] of highlightText) {
+      const existing = map.get(line) ?? []
+      existing.push(text)
+      map.set(line, existing)
+    }
+    return map
+  }, [highlightText])
 
   useEffect(() => {
     let active = true
@@ -67,6 +81,39 @@ export function CodeBlock({
     window.setTimeout(() => setCopied(false), 1600)
   }
 
+  function renderHighlightedText(
+    lineText: string,
+    highlight?: string[]
+  ): ReactNode {
+    if (!highlight || highlight.length === 0) {
+      return <span>{lineText}</span>
+    }
+    const escaped = highlight.map((h) =>
+      h.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+    )
+    const regex = new RegExp(`(${escaped.join("|")})`, "g")
+    const parts = lineText.split(regex)
+    return (
+      <>
+        {parts.map((part, i) => {
+          const isMatch = highlight.some(
+            (h) => h.toLowerCase() === part.toLowerCase()
+          )
+          return isMatch ? (
+            <span
+              key={i}
+              className="rounded bg-primary/20 px-0.5 text-primary ring-1 ring-primary/30"
+            >
+              {part}
+            </span>
+          ) : (
+            <span key={i}>{part}</span>
+          )
+        })}
+      </>
+    )
+  }
+
   return (
     <div
       className={cn(
@@ -92,33 +139,47 @@ export function CodeBlock({
           )}
         >
           <code className="grid min-w-max grid-cols-[auto_1fr]">
-            {lines.map((line, index) => (
-              <span key={`${index}-${line}`} className="contents">
-                <span
-                  aria-hidden="true"
-                  className="pr-4 text-right text-muted-foreground/60 select-none"
-                >
-                  {index + 1}
+            {lines.map((line, index) => {
+              const isHighlighted = highlightLine.includes(index + 1)
+              return (
+                <span key={`${index}-${line}`} className="contents">
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      "pr-4 text-right text-muted-foreground/60 select-none",
+                      isHighlighted && "text-foreground/80"
+                    )}
+                  >
+                    {index + 1}
+                  </span>
+                  <span
+                    className={cn(
+                      isHighlighted &&
+                        "-mx-4 border-l-2 border-primary bg-primary/5 px-3"
+                    )}
+                  >
+                    {highlightMap.has(index + 1)
+                      ? renderHighlightedText(line, highlightMap.get(index + 1))
+                      : (
+                          highlightedLines[index] ?? [
+                            { content: line || " ", color: "inherit" },
+                          ]
+                        ).map((token, tokenIndex) => (
+                            <span
+                              key={`${index}-${tokenIndex}-${token.content}`}
+                              style={{
+                                color: token.color,
+                                fontStyle:
+                                  token.fontStyle === 1 ? "italic" : undefined,
+                              }}
+                            >
+                              {token.content}
+                            </span>
+                          ))}
+                  </span>
                 </span>
-                <span>
-                  {(
-                    highlightedLines[index] ?? [
-                      { content: line || " ", color: "inherit" },
-                    ]
-                  ).map((token, tokenIndex) => (
-                    <span
-                      key={`${index}-${tokenIndex}-${token.content}`}
-                      style={{
-                        color: token.color,
-                        fontStyle: token.fontStyle === 1 ? "italic" : undefined,
-                      }}
-                    >
-                      {token.content}
-                    </span>
-                  ))}
-                </span>
-              </span>
-            ))}
+              )
+            })}
           </code>
         </pre>
         {isLongCode && (

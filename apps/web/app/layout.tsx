@@ -81,6 +81,11 @@ const sidebarMenu: NoxSidebarMenu[] = [
         group: "Core Concept",
       },
       {
+        title: "Nox Render",
+        url: "/docs/nox-render",
+        group: "Core Concept",
+      },
+      {
         title: "Nox Sidebar",
         url: "/docs/nox-sidebar",
         group: "Core Concept",

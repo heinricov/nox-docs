@@ -22,12 +22,14 @@ Di file React/TSX, import terlebih dahulu:
 
 ## Props
 
-| Prop        | Tipe        | Deskripsi                                                              |
-| ----------- | ----------- | ---------------------------------------------------------------------- |
-| `filename`  | `string`    | Label nama file di header. Diabaikan pada mode `inline` (tanpa header) |
-| `inline`    | `boolean`   | Mode ringkas: tanpa header, sudut lebih kecil, tombol salin melayang   |
-| `children`  | `ReactNode` | Fenced code block (di MDX) atau string kode mentah (di React/TSX)      |
-| `className` | `string`    | Kelas tambahan untuk pembungkus kartu                                  |
+| Prop           | Tipe        | Deskripsi                                                              |
+| -------------- | ----------- | ---------------------------------------------------------------------- |
+| `filename`     | `string`    | Label nama file di header. Diabaikan pada mode `inline` (tanpa header) |
+| `inline`       | `boolean`   | Mode ringkas: tanpa header, sudut lebih kecil, tombol salin melayang   |
+| `children`     | `ReactNode` | Fenced code block (di MDX) atau string kode mentah (di React/TSX)      |
+| `className`    | `string`    | Kelas tambahan untuk pembungkus kartu                                  |
+| `highlightLine`| `number[]`  | Array nomor baris yang ingin di-highlight                              |
+| `highlightText`| `[number, string][]` | Array pasangan [nomorBaris, teks] untuk highlight teks tertentu |
 
 ---
 
@@ -81,6 +83,66 @@ export function ProfileCard() {
       <h3 className="font-semibold">Ayu Dewi</h3>
       <p className="text-sm text-muted-foreground">Frontend Developer</p>
     </article>
+  )
+}
+```
+</CodeBlock>
+
+### 1.5 Highlight baris tertentu
+
+Gunakan prop `highlightLine` dengan array nomor baris untuk menyorot baris tertentu:
+
+<CodeBlock filename="app/layout.tsx" highlightLine={[1, 12]}>
+```tsx
+import "./globals.css"
+import { NoxLayout } from "noxkit"
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  return (
+    <html
+      lang="en"
+      suppressHydrationWarning
+    >
+      <body>
+        <NoxLayout>
+          {children}
+        </NoxLayout>
+      </body>
+    </html>
+  )
+}
+```
+</CodeBlock>
+
+### 1.6 Highlight teks tertentu
+
+Gunakan prop `highlightText` dengan array `[nomorBaris, teks]` untuk menyorot teks tertentu:
+
+<CodeBlock filename="app/layout.tsx" highlightText={[[12, "children"], [15, "children"]]}>
+```tsx
+import "./globals.css"
+import { NoxLayout } from "noxkit"
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  return (
+    <html
+      lang="en"
+      suppressHydrationWarning
+    >
+      <body>
+        <NoxLayout>
+          {children}
+        </NoxLayout>
+      </body>
+    </html>
   )
 }
 ```
