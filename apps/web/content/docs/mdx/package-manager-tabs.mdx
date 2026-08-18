@@ -30,12 +30,20 @@ import { PackageManagerTabs } from "noxkit/common/package-manager-tabs"
 | `children` | `ReactNode` | —       | Teks perintah instalasi (wajib)              |
 | `className`| `string`    | —       | Kelas tambahan untuk pembungkus              |
 | `install`  | `boolean`   | `false` | Paksa gunakan `install`/`add` bukan runner   |
+| `bash`     | `boolean`   | `false` | Mode bash — tanpa dropdown, tampilkan as-is  |
 
 `children` harus berupa teks string berisi perintah yang ingin ditampilkan. Spasi di awal dan akhir akan diabaikan.
 
 ## Cara Kerja
 
 Komponen ini menerima teks perintah mentah dan mengubahnya otomatis berdasarkan package manager yang dipilih:
+
+### Mode bash
+
+Ketika `bash={true}`:
+- Dropdown package manager tidak ditampilkan
+- Perintah ditampilkan apa adanya tanpa penambahan prefix (`npm install`, `npx`, dll)
+- Label header berubah menjadi "bash"
 
 ### Aturan Format
 
@@ -61,6 +69,7 @@ Komponen ini menerima teks perintah mentah dan mengubahnya otomatis berdasarkan 
 - **Deteksi `init` otomatis** — perintah dengan kata `init` menggunakan runner yang sesuai
 - **Multi-baris** — bisa menampilkan beberapa perintah sekaligus dengan baris baru
 - **Syntax highlighting** — runner abu-abu, paket cyan, flag amber
+- **Mode bash** — tanpa dropdown, tampilkan perintah mentah
 
 ---
 
@@ -126,11 +135,25 @@ npm run dev`}</PackageManagerTabs>
 
 Gunakan `install={true}` untuk memaksa menggunakan `install`/`add` meskipun perintah mengandung `init`:
 
-<PackageManagerTabs install>{`create-next-app@latest`}</PackageManagerTabs>
+<PackageManagerTabs install>create-next-app@latest</PackageManagerTabs>
 
 <CodeBlock filename="page.mdx">
 ```mdx
 <PackageManagerTabs install>create-next-app@latest</PackageManagerTabs>
+```
+</CodeBlock>
+
+### 1.7 Mode bash
+
+Gunakan `bash` untuk menampilkan perintah mentah tanpa dropdown package manager:
+
+<PackageManagerTabs bash>{`mkdir -p app/[...docs]
+touch app/[...docs]/page.tsx`}</PackageManagerTabs>
+
+<CodeBlock filename="page.mdx">
+```mdx
+<PackageManagerTabs bash>{`mkdir -p app/[...docs]
+touch app/[...docs]/page.tsx`}</PackageManagerTabs>
 ```
 </CodeBlock>
 
@@ -160,3 +183,4 @@ export function Demo() {
 - Teks `children` di-trim sebelum diproses, jadi spasi awal/akhir tidak mempengaruhi hasil.
 - Pilihan package manager disimpan di state lokal (per komponen), bukan global.
 - Setiap baris perintah mendapat prefix `$ ` otomatis.
+- Mode `bash` cocok untuk perintah shell umum yang tidak terkait package manager.

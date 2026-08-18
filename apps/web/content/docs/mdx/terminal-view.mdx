@@ -15,7 +15,7 @@ Di file React/TSX, import terlebih dahulu:
 
 <CodeBlock inline>
 ```tsx
-import { TerminalView, Command, QuestionStep, Option, SuccessProcess, Result } from "noxkit/common/terminal-view"
+import { TerminalView, Command, QuestionStep, Option, SuccessProcess, Result, ListItem } from "noxkit/common/terminal-view"
 ```
 </CodeBlock>
 
@@ -28,7 +28,8 @@ import { TerminalView, Command, QuestionStep, Option, SuccessProcess, Result } f
 | `Result`        | Baris output perintah dengan warna abu-abu                    |
 | `QuestionStep`  | Pertanyaan interaktif dengan glyph `?` atau ceklis `✔` jika `done` |
 | `Option`        | Pilihan menu; `selected` memberi tanda `>` berwarna           |
-| `SuccessProcess`| Pesan sukses dengan ceklis hijau `✔`                          |
+| `SuccessProcess`| Pesan sukses dengan ceklis hijau `✔` dan daftar item opsional |
+| `ListItem`      | Item daftar di dalam `SuccessProcess`                         |
 | `Process`       | Progres berjalan dengan label dan persentase                  |
 
 ## Props
@@ -68,9 +69,17 @@ import { TerminalView, Command, QuestionStep, Option, SuccessProcess, Result } f
 
 ### SuccessProcess
 
+| Prop       | Tipe        | Default | Deskripsi                              |
+| ---------- | ----------- | ------- | -------------------------------------- |
+| `message`  | `string`    | —       | Teks pesan sukses (wajib)              |
+| `children` | `ReactNode` | —       | `ListItem` children (opsional)         |
+| `className`| `string`    | —       | Kelas tambahan                         |
+
+### ListItem
+
 | Prop       | Tipe        | Default | Deskripsi                    |
 | ---------- | ----------- | ------- | ---------------------------- |
-| `message`  | `string`    | —       | Teks pesan sukses (wajib)    |
+| `children` | `ReactNode` | —       | Teks item daftar (wajib)     |
 | `className`| `string`    | —       | Kelas tambahan               |
 
 ### Result
@@ -162,7 +171,29 @@ Gunakan `Result` untuk menampilkan output perintah:
 ```
 </CodeBlock>
 
-### 1.4 Proses dengan progres
+### 1.4 Daftar file yang dibuat
+
+Gunakan `SuccessProcess` dengan `ListItem` untuk menampilkan daftar file:
+
+<TerminalView title="shadcn-ui-create">
+  <SuccessProcess message="Created 2 files:">
+    <ListItem>components/ui/button.tsx</ListItem>
+    <ListItem>lib/utils.ts</ListItem>
+  </SuccessProcess>
+</TerminalView>
+
+<CodeBlock filename="page.mdx">
+```mdx
+<TerminalView title="shadcn-ui-create">
+  <SuccessProcess message="Created 2 files:">
+    <ListItem>components/ui/button.tsx</ListItem>
+    <ListItem>lib/utils.ts</ListItem>
+  </SuccessProcess>
+</TerminalView>
+```
+</CodeBlock>
+
+### 1.5 Proses dengan progres
 
 <TerminalView title="build">
   <Command>npm run build</Command>
@@ -195,18 +226,16 @@ import {
   Option,
   SuccessProcess,
   Result,
+  ListItem,
 } from "noxkit/common/terminal-view"
 
 export function Demo() {
   return (
-    <TerminalView title="create-next-app">
-      <Command>npx create-next-app@latest</Command>
-      <QuestionStep done question="What is your project named? › my-app" />
-      <QuestionStep question="Would you like to use the recommended defaults?">
-        <Option selected>Yes, use recommended defaults</Option>
-        <Option>No, customize settings</Option>
-      </QuestionStep>
-      <SuccessProcess message="Created my-app" />
+    <TerminalView title="shadcn-ui-create">
+      <SuccessProcess message="Created 2 files:">
+        <ListItem>components/ui/button.tsx</ListItem>
+        <ListItem>lib/utils.ts</ListItem>
+      </SuccessProcess>
     </TerminalView>
   )
 }
@@ -218,12 +247,14 @@ export function Demo() {
 ## 3. Cara Kerja
 
 1. `TerminalView` menggambar jendela terminal — header dengan titik lampu (merah, kuning, hijau) dan judul `title`, lalu area konten monospace.
-2. Semua komponen (`Command`, `Result`, `QuestionStep`, `Option`, `SuccessProcess`) menggunakan struktur yang sama: `flex items-center gap-2` dengan icon `w-4 text-center` sehingga sejajar.
-3. `Result` menampilkan teks output perintah dengan warna abu-abu — cocok untuk menampilkan hasil instalasi atau pesan informasi.
-4. `QuestionStep` menampilkan glyph `?` secara default, atau ceklis `✔` kuning jika `done={true}`. Anak `QuestionStep` di-indent ke kanan.
-5. `Option` menampilkan `>` berwarna cyan jika `selected`, atau `>` transparan jika tidak — teks tetap sejajar.
-6. `Process` menghitung kemajuan berbasis waktu (`duration` dalam detik) lewat `setInterval`, dan menghormati `prefers-reduced-motion`.
-7. Warna terminal selalu gelap di kedua tema (light/dark) agar terlihat seperti jendela terminal sungguhan.
+2. Semua komponen (`Command`, `Result`, `QuestionStep`, `Option`, `SuccessProcess`, `ListItem`) menggunakan struktur yang sama: `flex items-center gap-2` dengan icon `w-4 text-center` sehingga sejajar.
+3. `SuccessProcess` menampilkan ceklis hijau `✔` dengan teks hijau. Jika ada `children`, ditampilkan di bawah dengan indentasi.
+4. `ListItem` menampilkan tanda `-` dengan teks abu-abu — cocok untuk daftar file atau item.
+5. `Result` menampilkan teks output perintah dengan warna abu-abu — cocok untuk menampilkan hasil instalasi atau pesan informasi.
+6. `QuestionStep` menampilkan glyph `?` secara default, atau ceklis `✔` kuning jika `done={true}`. Anak `QuestionStep` di-indent ke kanan.
+7. `Option` menampilkan `>` berwarna cyan jika `selected`, atau `>` transparan jika tidak — teks tetap sejajar.
+8. `Process` menghitung kemajuan berbasis waktu (`duration` dalam detik) lewat `setInterval`, dan menghormati `prefers-reduced-motion`.
+9. Warna terminal selalu gelap di kedua tema (light/dark) agar terlihat seperti jendela terminal sungguhan.
 
 ---
 

@@ -17,7 +17,7 @@ export function TerminalView({
   return (
     <section
       className={cn(
-        "my-2 overflow-hidden rounded-xl border border-slate-700/50 bg-[#0d1117] text-[#e6edf3] shadow-2xl",
+        "my-3 overflow-hidden rounded-xl border border-slate-700/50 bg-[#0d1117] text-[#e6edf3] shadow-2xl",
         className
       )}
       aria-label={`${title} terminal preview`}
@@ -72,7 +72,10 @@ export function QuestionStep({
     <div className={cn("flex flex-col", className)}>
       <div className="flex items-center gap-2">
         <span
-          className={cn("w-4 text-center", done ? "text-amber-400" : "text-amber-400/70")}
+          className={cn(
+            "w-4 text-center",
+            done ? "text-amber-400" : "text-amber-400/70"
+          )}
           aria-hidden="true"
         >
           {done ? "✔" : "?"}
@@ -119,17 +122,39 @@ export function Option({
 
 export function SuccessProcess({
   message,
+  children,
   className,
 }: {
   message: string
+  children?: React.ReactNode
   className?: string
 }) {
   return (
-    <div className={cn("flex items-center gap-2", className)}>
-      <span className="w-4 text-center text-emerald-400" aria-hidden="true">
-        ✔
+    <div className={cn("flex flex-col", className)}>
+      <div className="flex items-center gap-2">
+        <span className="w-4 text-center text-emerald-400" aria-hidden="true">
+          ✔
+        </span>
+        <span className="text-emerald-400">{message}</span>
+      </div>
+      {children && <div className="ml-6 flex flex-col">{children}</div>}
+    </div>
+  )
+}
+
+export function ListItem({
+  children,
+  className,
+}: {
+  children: React.ReactNode
+  className?: string
+}) {
+  return (
+    <div className={cn("flex items-center gap-2 text-slate-400", className)}>
+      <span className="w-4 text-center" aria-hidden="true">
+        -
       </span>
-      <span className="text-emerald-400">{message}</span>
+      <span>{children}</span>
     </div>
   )
 }
@@ -194,7 +219,10 @@ export function Process({
     >
       <div className="flex items-center gap-2">
         <span
-          className={cn("w-4 text-center text-cyan-400", progress < 100 && "animate-pulse")}
+          className={cn(
+            "w-4 text-center text-cyan-400",
+            progress < 100 && "animate-pulse"
+          )}
           aria-hidden="true"
         >
           ◇

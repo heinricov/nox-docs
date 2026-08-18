@@ -11,6 +11,7 @@ import { File, Folder, ProjectTree } from "../common/project-tree"
 import { TabsSection } from "../common/tabs-section"
 import {
   Command,
+  ListItem,
   Option,
   Process,
   QuestionStep,
@@ -139,6 +140,7 @@ export const previewRegistry: Record<string, unknown> = {
   Option,
   Process,
   Result,
+  ListItem,
   cn,
   Avatar,
   AvatarBadge,

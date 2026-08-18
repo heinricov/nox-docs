@@ -225,27 +225,36 @@ export function PackageManagerTabs({
   children,
   className,
   install: forceInstall = false,
+  bash = false,
 }: {
   children: React.ReactNode
   className?: string
   install?: boolean
+  bash?: boolean
 }) {
-  const rawInput =
-    typeof children === "string" ? children : String(children ?? "")
+  const rawInput = React.useMemo(() => {
+    if (typeof children === "string") return children
+    if (Array.isArray(children)) {
+      return children
+        .map((child) => (typeof child === "string" ? child : ""))
+        .join("")
+    }
+    return String(children ?? "")
+  }, [children])
   const [manager, setManager] = React.useState<PackageManager>("npm")
 
   const commands = rawInput
     .split("\n")
     .map((line) => line.trim())
     .filter((line) => line.length > 0)
-    .map((line) => formatCommand(line, manager, forceInstall))
+    .map((line) => (bash ? line : formatCommand(line, manager, forceInstall)))
 
   const allCommands = commands.join("\n")
 
   return (
     <div
       className={cn(
-        "group w-full overflow-hidden rounded-xl border border-border/60 bg-card shadow-sm transition-shadow duration-200 hover:shadow-md",
+        "group my-3 w-full overflow-hidden rounded-xl border border-border/60 bg-card shadow-sm transition-shadow duration-200 hover:shadow-md",
         className
       )}
     >
@@ -259,50 +268,52 @@ export function PackageManagerTabs({
             />
           </div>
           <span className="text-xs font-medium text-muted-foreground">
-            Terminal
+            {bash ? "bash" : "Terminal"}
           </span>
         </div>
 
         <div className="flex items-center gap-1">
           {/* Package Manager Selector */}
-          <DropdownMenu>
-            <DropdownMenuTrigger
-              aria-label={`Package manager: ${manager}`}
-              className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-border/50 px-3 text-sm font-medium text-foreground/80 transition-all duration-150 hover:border-border hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
-            >
-              <span className="hidden sm:inline">{manager}</span>
-              <span className="sm:hidden">{manager.slice(0, 2)}</span>
-              <ChevronDown
-                aria-hidden="true"
-                className="size-3.5 text-muted-foreground"
-              />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="min-w-32 p-1">
-              <DropdownMenuGroup>
-                {packageManagers.map((option) => (
-                  <DropdownMenuItem
-                    key={option}
-                    onClick={() => setManager(option)}
-                    className={cn(
-                      "flex items-center gap-2 px-3 py-2 text-sm",
-                      manager === option && "bg-accent/50"
-                    )}
-                  >
-                    <span className="flex-1 font-medium">{option}</span>
-                    {manager === option && (
-                      <Check
-                        aria-hidden="true"
-                        className="size-4 text-primary"
-                      />
-                    )}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {!bash && (
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                aria-label={`Package manager: ${manager}`}
+                className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-border/50 px-3 text-sm font-medium text-foreground/80 transition-all duration-150 hover:border-border hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+              >
+                <span className="hidden sm:inline">{manager}</span>
+                <span className="sm:hidden">{manager.slice(0, 2)}</span>
+                <ChevronDown
+                  aria-hidden="true"
+                  className="size-3.5 text-muted-foreground"
+                />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="min-w-32 p-1">
+                <DropdownMenuGroup>
+                  {packageManagers.map((option) => (
+                    <DropdownMenuItem
+                      key={option}
+                      onClick={() => setManager(option)}
+                      className={cn(
+                        "flex items-center gap-2 px-3 py-2 text-sm",
+                        manager === option && "bg-accent/50"
+                      )}
+                    >
+                      <span className="flex-1 font-medium">{option}</span>
+                      {manager === option && (
+                        <Check
+                          aria-hidden="true"
+                          className="size-4 text-primary"
+                        />
+                      )}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
 
           {/* Divider */}
-          <div className="h-5 w-px bg-border/60" />
+          {!bash && <div className="h-5 w-px bg-border/60" />}
 
           {/* Copy Button */}
           <CopyButton command={allCommands} />

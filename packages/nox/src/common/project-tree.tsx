@@ -63,10 +63,7 @@ function TreeItem({
   depth?: number
 }) {
   return (
-    <div
-      className="flex flex-col gap-0.5"
-      style={{ paddingLeft: depth ? `${depth * 1.125}rem` : undefined }}
-    >
+    <div className="flex flex-col">
       {Children.map(children, (child) => {
         if (!isValidElement(child)) return child
         return cloneElement(child as ReactElement<{ depth?: number }>, {
@@ -89,7 +86,7 @@ function FolderItem({
   const { tooltip } = useContext(ProjectTreeContext)
 
   return (
-    <div className="flex flex-col gap-0.5">
+    <div className="flex flex-col">
       <button
         type="button"
         aria-expanded={open}
@@ -97,17 +94,19 @@ function FolderItem({
         title={tooltip ? noted : undefined}
         onClick={() => setOpen((value) => !value)}
         className={cn(
-          "group flex min-h-8 w-full items-center gap-2 rounded-md px-2 text-left text-sm transition-colors",
+          "group flex min-h-7 w-full items-center gap-1.5 rounded-md px-1.5 text-left text-[13px] transition-colors",
           "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
           className
         )}
-        style={{ paddingLeft: `${depth * 1.125 + 0.5}rem` }}
+        style={{ paddingLeft: `${depth * 0.875 + 0.25}rem` }}
       >
-        {open ? (
-          <ChevronDown className="size-3.5 shrink-0" />
-        ) : (
-          <ChevronRight className="size-3.5 shrink-0" />
-        )}
+        <span className="flex size-4 shrink-0 items-center justify-center">
+          {open ? (
+            <ChevronDown className="size-3.5" />
+          ) : (
+            <ChevronRight className="size-3.5" />
+          )}
+        </span>
         {open ? (
           <FolderOpen className="size-4 shrink-0 text-primary" />
         ) : (
@@ -137,12 +136,12 @@ function FileItem({
   return (
     <div
       className={cn(
-        "flex min-h-8 items-center gap-2 rounded-md px-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground",
+        "flex min-h-7 items-center gap-1.5 rounded-md px-1.5 text-[13px] text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground",
         className
       )}
       aria-label={noted ? `${name}: ${noted}` : name}
       title={tooltip ? noted : undefined}
-      style={{ paddingLeft: `${depth * 1.125 + 1.75}rem` }}
+      style={{ paddingLeft: `${depth * 0.875 + 1.125}rem` }}
     >
       {createElement(icon, { className: "size-4 shrink-0" })}
       <span className="truncate">{name}</span>
@@ -179,7 +178,7 @@ export function ProjectTree({
       >
         <div
           className={cn(
-            "flex items-center gap-2 border-b px-3 py-3",
+            "flex items-center gap-2 border-b px-3 py-2",
             active && "bg-accent/60"
           )}
         >
@@ -200,7 +199,7 @@ export function ProjectTree({
             />
           ) : null}
         </div>
-        <div className="p-2">
+        <div className="p-1.5">
           <TreeItem>{children}</TreeItem>
         </div>
       </div>

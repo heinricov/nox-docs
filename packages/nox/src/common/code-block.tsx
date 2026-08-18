@@ -70,8 +70,8 @@ export function CodeBlock({
   return (
     <div
       className={cn(
-        "relative my-6 overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow-sm",
-        inline && "my-4 rounded-lg",
+        "relative my-3 overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow-sm",
+        inline && "my-3 rounded-lg",
         className
       )}
     >

@@ -1,6 +1,6 @@
 {
   "name": "noxkit",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Nox - documentation site starter with MDX support",
   "type": "module",
   "files": [

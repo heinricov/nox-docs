@@ -19,6 +19,7 @@ import { TabsSection, TabsContent } from "../common/tabs-section"
 import { mdxTableComponents } from "../common/tabel-render"
 import {
   Command,
+  ListItem,
   Option,
   Process,
   QuestionStep,
@@ -58,6 +59,7 @@ const mdxComponents = {
   Option,
   Process,
   Result,
+  ListItem,
 }
 
 export async function MdxRenderer({
