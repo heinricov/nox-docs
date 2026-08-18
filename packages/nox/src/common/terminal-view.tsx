@@ -3,17 +3,7 @@
 import { cn } from "../lib/utils"
 import { useEffect, useMemo, useState } from "react"
 
-type ProcessAnimation = "progressBar" | "ProgresBar" | "spinner" | "none"
-type Status = "command" | "success" | "question" | "error" | "info" | "active"
-
-const statusGlyph: Record<Status, string> = {
-  command: "❯",
-  success: "◆",
-  question: "◇",
-  error: "■",
-  info: "●",
-  active: "◇",
-}
+type ProcessAnimation = "progressBar" | "spinner" | "none"
 
 export function TerminalView({
   children,
@@ -27,106 +17,69 @@ export function TerminalView({
   return (
     <section
       className={cn(
-        "terminal-view border-terminal-border bg-terminal text-terminal-foreground overflow-hidden border shadow-2xl",
+        "my-2 overflow-hidden rounded-xl border border-slate-700/50 bg-[#0d1117] text-[#e6edf3] shadow-2xl",
         className
       )}
       aria-label={`${title} terminal preview`}
     >
-      <div className="border-terminal-border text-terminal-muted flex items-center gap-2 border-b px-4 py-3 text-xs">
-        <span
-          className="bg-terminal-cyan size-2 rounded-full"
-          aria-hidden="true"
-        />
-        <span
-          className="bg-terminal-blue size-2 rounded-full"
-          aria-hidden="true"
-        />
-        <span
-          className="bg-terminal-green size-2 rounded-full"
-          aria-hidden="true"
-        />
-        <span className="ml-2">{title}</span>
+      <div className="flex items-center gap-2 border-b border-slate-700/50 bg-[#161b22] px-4 py-2.5">
+        <div className="flex items-center gap-1.5">
+          <span className="size-2.5 rounded-full bg-[#ff5f56]" />
+          <span className="size-2.5 rounded-full bg-[#ffbd2e]" />
+          <span className="size-2.5 rounded-full bg-[#27c93f]" />
+        </div>
+        <span className="ml-2 flex-1 truncate text-center text-xs text-slate-400">
+          {title}
+        </span>
+        <div className="w-13" />
       </div>
-      <div className="terminal-scroll flex min-w-0 flex-col gap-4 overflow-x-auto p-5 font-mono text-[13px] leading-[1.45] sm:p-7 sm:text-sm">
+      <div className="flex flex-col gap-1 overflow-x-auto p-4 font-mono text-[13px] leading-[1.6] sm:p-5 sm:text-sm">
         {children}
       </div>
     </section>
   )
 }
 
-export function AsciiArt({
-  children,
-  className,
-}: {
-  children: React.ReactNode
-  className?: string
-}) {
-  return (
-    <pre
-      className={cn(
-        "terminal-ascii text-terminal-cyan whitespace-pre",
-        className
-      )}
-      aria-label="ASCII art"
-    >
-      {children}
-    </pre>
-  )
-}
-
 export function Command({
   children,
-  status = "command",
   className,
 }: {
   children: React.ReactNode
-  status?: Status
   className?: string
 }) {
   return (
-    <div className="flex min-w-max items-start gap-2">
-      <span
-        className={cn("terminal-glyph", `terminal-${status}`)}
-        aria-hidden="true"
-      >
-        {statusGlyph[status]}
+    <div className={cn("flex items-center gap-2", className)}>
+      <span className="w-4 text-center text-emerald-400" aria-hidden="true">
+        ❯
       </span>
-      <code className={cn("text-terminal-foreground", className)}>
-        {children}
-      </code>
+      <span className="text-[#e6edf3]">{children}</span>
     </div>
   )
 }
 
-export function ResultsProcess({
+export function QuestionStep({
+  question,
+  done = false,
   children,
-  status = "active",
   className,
 }: {
-  children: React.ReactNode
-  status?: Status
+  question: string
+  done?: boolean
+  children?: React.ReactNode
   className?: string
 }) {
   return (
-    <div
-      className={cn(
-        "terminal-result border-terminal-line relative ml-1 flex flex-col gap-3 border-l pl-6",
-        status === "error" && "border-terminal-red",
-        className
-      )}
-    >
-      {children}
-    </div>
-  )
-}
-
-export function Question({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="text-terminal-foreground flex items-start gap-3">
-      <span className="terminal-glyph terminal-question" aria-hidden="true">
-        {statusGlyph.question}
-      </span>
-      <span>{children}</span>
+    <div className={cn("flex flex-col", className)}>
+      <div className="flex items-center gap-2">
+        <span
+          className={cn("w-4 text-center", done ? "text-amber-400" : "text-amber-400/70")}
+          aria-hidden="true"
+        >
+          {done ? "✔" : "?"}
+        </span>
+        <span className="text-[#e6edf3]">{question}</span>
+      </div>
+      {children && <div className="ml-6 flex flex-col">{children}</div>}
     </div>
   )
 }
@@ -135,73 +88,63 @@ export function Option({
   children,
   selected = false,
   description,
+  className,
 }: {
   children: React.ReactNode
   selected?: boolean
   description?: React.ReactNode
+  className?: string
 }) {
   return (
     <div
       className={cn(
-        "flex min-w-max items-baseline gap-2 pl-1",
-        selected ? "text-terminal-foreground" : "text-terminal-muted"
+        "flex items-center gap-2",
+        selected ? "text-[#e6edf3]" : "text-slate-400",
+        className
       )}
     >
       <span
-        className={cn("terminal-option", selected && "terminal-selected")}
-        aria-hidden="true"
+        className={cn(
+          "w-4 text-center",
+          selected ? "text-cyan-400" : "text-transparent"
+        )}
       >
-        {selected ? "▣" : "□"}
+        ❯
       </span>
       <span>{children}</span>
-      {description && (
-        <span className="text-terminal-muted">({description})</span>
-      )}
+      {description && <span className="text-slate-500">({description})</span>}
     </div>
   )
 }
 
-export function Prompt({
-  children,
-  color = "cyan",
+export function SuccessProcess({
+  message,
+  className,
 }: {
-  children: React.ReactNode
-  color?: "cyan" | "green" | "red" | "blue"
+  message: string
+  className?: string
 }) {
   return (
-    <div className={cn("flex gap-2", `terminal-${color}`)}>
-      <span aria-hidden="true">›</span>
-      <span>{children}</span>
+    <div className={cn("flex items-center gap-2", className)}>
+      <span className="w-4 text-center text-emerald-400" aria-hidden="true">
+        ✔
+      </span>
+      <span className="text-emerald-400">{message}</span>
     </div>
   )
 }
 
-export function Done({ children }: { children: React.ReactNode }) {
-  return (
-    <div
-      className="text-terminal-green flex items-center gap-3"
-      role="status"
-      aria-live="polite"
-    >
-      <span aria-hidden="true">✔</span>
-      <span>{children}</span>
-    </div>
-  )
-}
-
-export function Cancelled({
-  children = "Cancelled.",
+export function Result({
+  message,
+  className,
 }: {
-  children?: React.ReactNode
+  message: string
+  className?: string
 }) {
   return (
-    <div
-      className="text-terminal-red flex items-center gap-3"
-      role="status"
-      aria-live="polite"
-    >
-      <span aria-hidden="true">■</span>
-      <span>{children}</span>
+    <div className={cn("flex items-center gap-2", className)}>
+      <span className="w-4 text-center" aria-hidden="true" />
+      <span className="text-slate-400">{message}</span>
     </div>
   )
 }
@@ -244,17 +187,14 @@ export function Process({
   if (animation === "none") return null
   return (
     <div
-      className="text-terminal-muted flex min-w-65 flex-col gap-1"
+      className="flex min-w-64 flex-col gap-1 text-slate-400"
       role="status"
       aria-live="polite"
       aria-label={`${label}: ${Math.round(progress)} percent`}
     >
       <div className="flex items-center gap-2">
         <span
-          className={cn(
-            "terminal-glyph terminal-active",
-            progress < 100 && "animate-pulse"
-          )}
+          className={cn("w-4 text-center text-cyan-400", progress < 100 && "animate-pulse")}
           aria-hidden="true"
         >
           ◇
@@ -262,10 +202,10 @@ export function Process({
         <span>{label}</span>
         <span className="tabular-nums">{Math.round(progress)}%</span>
       </div>
-      {(animation === "progressBar" || animation === "ProgresBar") && (
-        <div className="bg-terminal-line h-1 overflow-hidden">
+      {animation === "progressBar" && (
+        <div className="ml-6 h-1 overflow-hidden rounded-full bg-slate-700/50">
           <div
-            className="bg-terminal-cyan h-full transition-[width] duration-100"
+            className="h-full rounded-full bg-linear-to-r from-cyan-500 to-cyan-400 transition-[width] duration-100"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -274,25 +214,6 @@ export function Process({
   )
 }
 
-export function TerminalStep({
-  children,
-  status = "info",
-}: {
-  children: React.ReactNode
-  status?: Status
-}) {
-  return (
-    <div className={cn("flex items-start gap-3", `terminal-${status}`)}>
-      <span className="terminal-glyph" aria-hidden="true">
-        {statusGlyph[status]}
-      </span>
-      <span>{children}</span>
-    </div>
-  )
-}
-
-export type { ProcessAnimation, Status }
-export const Comman = Command
+export type { ProcessAnimation }
 export const ProgressBar = Process
-export const ProgresBar = Process
 export default TerminalView

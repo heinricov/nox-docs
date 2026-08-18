@@ -18,16 +18,12 @@ import { File, Folder, ProjectTree } from "../common/project-tree"
 import { TabsSection, TabsContent } from "../common/tabs-section"
 import { mdxTableComponents } from "../common/tabel-render"
 import {
-  AsciiArt,
-  Cancelled,
   Command,
-  Done,
   Option,
   Process,
-  Prompt,
-  Question,
-  ResultsProcess,
-  TerminalStep,
+  QuestionStep,
+  Result,
+  SuccessProcess,
   TerminalView,
 } from "../common/terminal-view"
 
@@ -56,16 +52,12 @@ const mdxComponents = {
   Folder,
   File,
   TerminalView,
-  AsciiArt,
   Command,
-  ResultsProcess,
-  Question,
+  SuccessProcess,
+  QuestionStep,
   Option,
-  Prompt,
-  Done,
-  Cancelled,
   Process,
-  TerminalStep,
+  Result,
 }
 
 export async function MdxRenderer({

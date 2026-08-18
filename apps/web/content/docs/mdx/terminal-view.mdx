@@ -3,9 +3,9 @@ title: "TerminalView"
 description: "Menampilkan cuplikan interaksi CLI bergaya jendela terminal di dalam dokumentasi."
 ---
 
-`TerminalView` membungkus **cuplikan interaksi CLI** dalam kartu bergaya jendela terminal — lengkap dengan titik lampu macOS, judul, latar gelap, dan font monospace. Cocok untuk mendokumentasikan alur perintah CLI seperti `squad add`, hasil eksekusi, hingga proses berjalan.
+`TerminalView` membungkus **cuplikan interaksi CLI** dalam kartu bergaya jendela terminal — lengkap dengan titik lampu macOS, judul, latar gelap, dan font monospace. Cocok untuk mendokumentasikan alur perintah CLI seperti `npx create-next-app`, hasil eksekusi, hingga proses berjalan.
 
-Komponen penyusunnya bersifat komposisional: `Command` untuk perintah yang diketik, `ResultsProcess` untuk hasil eksekusi, `TerminalStep` untuk langkah, `Question`/`Option` untuk menu pilihan, `Process` untuk progres, serta `Done`/`Cancelled` untuk status akhir.
+Komponen penyusunnya bersifat komposisional dan sejajar: `Command` untuk perintah, `QuestionStep` untuk pertanyaan interaktif, `Option` untuk pilihan menu, `SuccessProcess` untuk pesan sukses, serta `Process` untuk progres.
 
 ## Import
 
@@ -14,24 +14,22 @@ Di file MDX, `TerminalView` dan seluruh komponen penyusunnya sudah terdaftar oto
 Di file React/TSX, import terlebih dahulu:
 
 <CodeBlock inline>
-  ```tsx import { TerminalView, Command, ResultsProcess } from "mdxui" ```
+```tsx
+import { TerminalView, Command, QuestionStep, Option, SuccessProcess, Result } from "noxkit/common/terminal-view"
+```
 </CodeBlock>
 
 ## Daftar komponen
 
-| Komponen           | Fungsi                                                                                     |
-| ------------------ | ------------------------------------------------------------------------------------------ |
-| `TerminalView`     | Bungkus utama — jendela terminal dengan judul dan titik lampu                              |
-| `Command`          | Baris perintah dengan glyph status (`❯`)                                                    |
-| `ResultsProcess`   | Blok hasil eksekusi dengan garis samping; `status="error"` memberi warna merah              |
-| `TerminalStep`     | Satu langkah interaksi dengan glyph sesuai `status`                                         |
-| `AsciiArt`         | Menampilkan ASCII art berwarna cyan                                                         |
-| `Question`         | Pertanyaan interaktif dengan glyph `◇`                                                       |
-| `Option`           | Pilihan menu; `selected` memberi tanda `▣` + warna aktif                                    |
-| `Prompt`           | Baris prompt sederhana dengan warna (`cyan`, `green`, `red`, `blue`)                        |
-| `Process`          | Progres berjalan (`progressBar`/`ProgresBar`) dengan label dan persentase                    |
-| `Done`             | Status sukses hijau `✔`                                                                     |
-| `Cancelled`        | Status batal merah `■`                                                                      |
+| Komponen        | Fungsi                                                        |
+| --------------- | ------------------------------------------------------------- |
+| `TerminalView`  | Bungkus utama — jendela terminal dengan judul dan titik lampu |
+| `Command`       | Baris perintah dengan glyph `❯`                               |
+| `Result`        | Baris output perintah dengan warna abu-abu                    |
+| `QuestionStep`  | Pertanyaan interaktif dengan glyph `?` atau ceklis `✔` jika `done` |
+| `Option`        | Pilihan menu; `selected` memberi tanda `>` berwarna           |
+| `SuccessProcess`| Pesan sukses dengan ceklis hijau `✔`                          |
+| `Process`       | Progres berjalan dengan label dan persentase                  |
 
 ## Props
 
@@ -45,251 +43,187 @@ Di file React/TSX, import terlebih dahulu:
 
 ### Command
 
-| Prop       | Tipe         | Default   | Deskripsi                               |
-| ---------- | ------------ | --------- | --------------------------------------- |
-| `children` | `ReactNode`  | —         | Teks perintah (wajib)                   |
-| `status`   | `Status`     | `command` | Warna glyph — `command`, `success`, `question`, `error`, `info`, `active` |
+| Prop       | Tipe        | Default | Deskripsi                    |
+| ---------- | ----------- | ------- | ---------------------------- |
+| `children` | `ReactNode` | —       | Teks perintah (wajib)        |
+| `className`| `string`    | —       | Kelas tambahan               |
 
-### ResultsProcess
+### QuestionStep
 
-| Prop       | Tipe         | Default   | Deskripsi                              |
-| ---------- | ------------ | --------- | -------------------------------------- |
-| `children` | `ReactNode`  | —         | Isi hasil eksekusi (wajib)             |
-| `status`   | `Status`     | `active`  | `error` memberi warna garis samping merah |
-
-### TerminalStep
-
-| Prop       | Tipe         | Default | Deskripsi                         |
-| ---------- | ------------ | ------- | --------------------------------- |
-| `children` | `ReactNode`  | —       | Teks langkah (wajib)              |
-| `status`   | `Status`     | `info`  | Warna glyph langkah               |
+| Prop       | Tipe        | Default | Deskripsi                                        |
+| ---------- | ----------- | ------- | ------------------------------------------------ |
+| `question` | `string`    | —       | Teks pertanyaan (wajib)                          |
+| `done`     | `boolean`   | `false` | Jika `true`, tampilkan ceklis `✔` kuning         |
+| `children` | `ReactNode` | —       | `Option` children (opsional)                     |
+| `className`| `string`    | —       | Kelas tambahan                                   |
 
 ### Option
 
-| Prop         | Tipe        | Default  | Deskripsi                            |
-| ------------ | ----------- | -------- | ------------------------------------ |
-| `children`   | `ReactNode` | —        | Nama pilihan (wajib)                 |
-| `selected`   | `boolean`   | `false`  | Tandai pilihan aktif (`▣`, warna penuh) |
-| `description`| `ReactNode` | —        | Teks penjelas dalam kurung di kanan  |
+| Prop         | Tipe        | Default | Deskripsi                            |
+| ------------ | ----------- | ------- | ------------------------------------ |
+| `children`   | `ReactNode` | —       | Nama pilihan (wajib)                 |
+| `selected`   | `boolean`   | `false` | Tandai pilihan aktif dengan `>` warna |
+| `description`| `ReactNode` | —       | Teks penjelas dalam kurung di kanan  |
+| `className`  | `string`    | —       | Kelas tambahan                       |
 
-### Prompt
+### SuccessProcess
 
-| Prop       | Tipe        | Default | Deskripsi                       |
-| ---------- | ----------- | ------- | ------------------------------- |
-| `children` | `ReactNode` | —       | Isi prompt (wajib)              |
-| `color`    | `"cyan" \| "green" \| "red" \| "blue"` | `"cyan"` | Warna prompt |
+| Prop       | Tipe        | Default | Deskripsi                    |
+| ---------- | ----------- | ------- | ---------------------------- |
+| `message`  | `string`    | —       | Teks pesan sukses (wajib)    |
+| `className`| `string`    | —       | Kelas tambahan               |
+
+### Result
+
+| Prop       | Tipe        | Default | Deskripsi                    |
+| ---------- | ----------- | ------- | ---------------------------- |
+| `message`  | `string`    | —       | Teks output perintah (wajib) |
+| `className`| `string`    | —       | Kelas tambahan               |
 
 ### Process
 
-| Prop        | Tipe    | Default         | Deskripsi                                                          |
-| ----------- | ------- | --------------- | ------------------------------------------------------------------ |
-| `duration`  | `number`| `3`             | Lama animasi dalam detik                                           |
-| `animation` | `ProcessAnimation` | `"progressBar"` | `"progressBar"`, `"ProgresBar"`, `"spinner"`, atau `"none"` |
-| `label`     | `string`| `"Processing"`  | Label di samping persentase                                        |
-
-`Done`, `Cancelled`, `AsciiArt`, dan `Question` menerima `children` sebagai `ReactNode`.
+| Prop        | Tipe             | Default         | Deskripsi                                      |
+| ----------- | ---------------- | --------------- | ---------------------------------------------- |
+| `duration`  | `number`         | `3`             | Lama animasi dalam detik                       |
+| `animation` | `ProcessAnimation` | `"progressBar"` | `"progressBar"`, `"spinner"`, atau `"none"`    |
+| `label`     | `string`         | `"Processing"`  | Label di samping persentase                    |
 
 ---
 
 ## 1. Penggunaan di File MDX
 
-Semua komponen tersedia langsung di MDX. Baris perintah, hasil, hingga status akhir bisa ditulis bersarang.
+Semua komponen tersedia langsung di MDX sebagai anak langsung `TerminalView`. Tidak perlu wrapper tambahan.
 
-### 1.1 Cuplikan dasar
+### 1.1 Terminal interaktif dengan pertanyaan
 
-<CodeBlock filename="page.mdx">
-  ```mdx
-  <TerminalView title="squad list">
-    <Command>squad add</Command>
-
-    <ResultsProcess status="error">
-      <TerminalStep status="question">
-        Pilih tipe proyek:
-        <br />
-        <span>Next.js</span>
-      </TerminalStep>
-
-      <Cancelled>Dibatalkan.</Cancelled>
-    </ResultsProcess>
-  </TerminalView>
-  ```
-</CodeBlock>
-
-<TerminalView title="squad list">
-  <Command>squad add</Command>
-
-  <ResultsProcess status="error">
-    <TerminalStep status="question">
-      Pilih tipe proyek:
-      <br />
-      <span>Next.js</span>
-    </TerminalStep>
-
-    <Cancelled>Dibatalkan.</Cancelled>
-  </ResultsProcess>
+<TerminalView title="create-next-app">
+  <Command>npx create-next-app@latest</Command>
+  <QuestionStep done question="What is your project named? › my-app" />
+  <QuestionStep question="Would you like to use the recommended Next.js defaults? › - Use arrow-keys. Return to submit.">
+    <Option selected>Yes, use recommended defaults</Option>
+    <Option>No, reuse previous settings</Option>
+    <Option>No, customize settings</Option>
+  </QuestionStep>
+  <SuccessProcess message="Created my-app" />
 </TerminalView>
 
-### 1.2 ASCII art, menu pilihan, dan progres
-
 <CodeBlock filename="page.mdx">
-  ```mdx
-  <TerminalView title="squad create new">
-    <Command status="info">squad create new</Command>
-
-    <ResultsProcess>
-      <strong>squad create new</strong>
-
-      <Question>Pilih tipe proyek yang dibuat di dalam folder apps:</Question>
-
-      <Option selected description="React framework dengan app router">
-        Next.js
-      </Option>
-      <Option>Vite React</Option>
-      <Option>NestJS</Option>
-      <Option>Blank</Option>
-
-      <Process duration={10} animation="ProgresBar" label="Creating project" />
-
-      <Done>Project created successfully.</Done>
-    </ResultsProcess>
-  </TerminalView>
-  ```
+```mdx
+<TerminalView title="create-next-app">
+  <Command>npx create-next-app@latest</Command>
+  <QuestionStep done question="What is your project named? › my-app" />
+  <QuestionStep question="Would you like to use the recommended Next.js defaults? › - Use arrow-keys. Return to submit.">
+    <Option selected>Yes, use recommended defaults</Option>
+    <Option>No, reuse previous settings</Option>
+    <Option>No, customize settings</Option>
+  </QuestionStep>
+  <SuccessProcess message="Created my-app" />
+</TerminalView>
+```
 </CodeBlock>
 
-<TerminalView title="squad create new">
-  <Command status="info">squad create new</Command>
+### 1.2 Perintah sederhana
 
-  <ResultsProcess>
-    <strong>squad create new</strong>
-
-    <Question>Pilih tipe proyek yang dibuat di dalam folder apps:</Question>
-
-    <Option selected description="React framework dengan app router">
-      Next.js
-    </Option>
-    <Option>Vite React</Option>
-    <Option>NestJS</Option>
-    <Option>Blank</Option>
-
-    <Process duration={10} animation="ProgresBar" label="Creating project" />
-
-    <Done>Project created successfully.</Done>
-  </ResultsProcess>
+<TerminalView title="install">
+  <Command>npm install noxkit</Command>
+  <SuccessProcess message="added 42 packages in 3s" />
 </TerminalView>
-
-### 1.3 ASCII art
-
-`AsciiArt` menampilkan teks apa pun dengan gaya monospace berwarna cyan — cocok untuk logo atau header teks.
 
 <CodeBlock filename="page.mdx">
-  ```mdx
-  <TerminalView title="squadra">
-    <Command>squad</Command>
-
-    <AsciiArt>{`  _____                    _           _
- / ____|                  | |         | |
-| (___   __ _ _   _  __ _ | |__   ___ | | __ _
- \___ \ / _\` | | | |/ _\` || '_ \ / _ \| |/ _\` |
- ____) | (_| | |_| | (_| || | | | (_) | | (_| |
-|_____/ \__, |\__,_|\__,_||_| |_|\___/|_|\__,_|
-         __/ |
-        |___/`}</AsciiArt>
-  </TerminalView>
-  ```
+```mdx
+<TerminalView title="install">
+  <Command>npm install noxkit</Command>
+  <SuccessProcess message="added 42 packages in 3s" />
+</TerminalView>
+```
 </CodeBlock>
 
-<TerminalView title="squadra">
-  <Command>squad</Command>
+### 1.3 Output perintah
 
-  <AsciiArt>{`  _____                    _           _
- / ____|                  | |         | |
-| (___   __ _ _   _  __ _ | |__   ___ | | __ _
- \___ \ / _\` | | | |/ _\` || '_ \ / _ \| |/ _\` |
- ____) | (_| | |_| | (_| || | | | (_) | | (_| |
-|_____/ \__, |\__,_|\__,_||_| |_|\___/|_|\__,_|
-         __/ |
-        |___/`}</AsciiArt>
+Gunakan `Result` untuk menampilkan output perintah:
+
+<TerminalView title="install noxkit">
+  <Command>npm install noxkit@latest</Command>
+  <Result message="added 402 packages, and audited 762 packages in 18s" />
+  <Result message="359 packages are looking for funding" />
+  <Result message="run `npm fund` for details" />
+  <Result message="found 0 vulnerabilities" />
 </TerminalView>
 
-> Catatan: teks di dalam kurung kurawal `` {`...`} `` mencegah spasi di depan baris terpotong oleh MDX.
+<CodeBlock filename="page.mdx">
+```mdx
+<TerminalView title="install noxkit">
+  <Command>npm install noxkit@latest</Command>
+  <Result message="added 402 packages, and audited 762 packages in 18s" />
+  <Result message="359 packages are looking for funding" />
+  <Result message="run `npm fund` for details" />
+  <Result message="found 0 vulnerabilities" />
+</TerminalView>
+```
+</CodeBlock>
+
+### 1.4 Proses dengan progres
+
+<TerminalView title="build">
+  <Command>npm run build</Command>
+  <Process duration={5} label="Building" />
+  <SuccessProcess message="Build completed successfully" />
+</TerminalView>
+
+<CodeBlock filename="page.mdx">
+```mdx
+<TerminalView title="build">
+  <Command>npm run build</Command>
+  <Process duration={5} label="Building" />
+  <SuccessProcess message="Build completed successfully" />
+</TerminalView>
+```
+</CodeBlock>
 
 ---
 
 ## 2. Penggunaan di File React / TSX
 
-Import terlebih dahulu dari `mdxui`. Penggunaannya sama persis dengan MDX — komponen ini adalah komponen React biasa dan bisa disusun bebas.
+Import terlebih dahulu dari `noxkit/common/terminal-view`. Penggunaannya sama persis dengan MDX.
 
 <ComponentPreview title="TerminalView di React" fileName="page.tsx">
-
-```tsx
-import {
-  Cancelled,
-  Command,
-  ResultsProcess,
-  TerminalView,
-} from "mdxui"
-
-export function Demo() {
-  return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-8 sm:py-12">
-      <TerminalView title="squad list">
-        <Command>squad list</Command>
-
-        <ResultsProcess status="error">
-          <strong>squad add</strong>
-          <span>Proyek gagal dibuat. Silakan coba lagi.</span>
-          <Cancelled>Dibatalkan.</Cancelled>
-        </ResultsProcess>
-      </TerminalView>
-    </div>
-  )
-}
-```
-
-</ComponentPreview>
-
-<ComponentPreview title="Menu interaktif di React" fileName="page.tsx">
-
 ```tsx
 import {
   TerminalView,
   Command,
-  ResultsProcess,
-  Question,
+  QuestionStep,
   Option,
-  Done,
-} from "mdxui"
+  SuccessProcess,
+  Result,
+} from "noxkit/common/terminal-view"
 
 export function Demo() {
   return (
-    <TerminalView title="squad create new">
-      <Command status="info">squad create new</Command>
-
-      <ResultsProcess>
-        <strong>squad create new</strong>
-        <Question>Pilih tipe proyek:</Question>
-        <Option selected description="React framework dengan app router">
-          Next.js
-        </Option>
-        <Option>Vite React</Option>
-        <Done>Project created successfully.</Done>
-      </ResultsProcess>
+    <TerminalView title="create-next-app">
+      <Command>npx create-next-app@latest</Command>
+      <QuestionStep done question="What is your project named? › my-app" />
+      <QuestionStep question="Would you like to use the recommended defaults?">
+        <Option selected>Yes, use recommended defaults</Option>
+        <Option>No, customize settings</Option>
+      </QuestionStep>
+      <SuccessProcess message="Created my-app" />
     </TerminalView>
   )
 }
 ```
-
 </ComponentPreview>
 
 ---
 
 ## 3. Cara Kerja
 
-1. `TerminalView` menggambar jendela terminal — header dengan titik lampu (cyan, biru, hijau) dan judul `title`, lalu area konten monospace.
-2. Tiap komponen status (`Command`, `TerminalStep`, `Done`, `Cancelled`, dst.) memetakan prop `status` ke glyph dan warna `terminal-*` melalui CSS variabel (`--terminal-cyan`, `--terminal-green`, `--terminal-red`, dll.).
-3. `Process` menghitung kemajuan berbasis waktu (`duration` dalam detik) lewat `setInterval`, dan menghormati `prefers-reduced-motion` dengan langsung menampilkan 100%.
-4. `ResultsProcess` memberi garis samping (`border-l`) sebagai pembatas antara baris perintah dan hasil; `status="error"` menukar warnanya menjadi merah.
-5. Warna terminal selalu gelap di kedua tema (light/dark) agar terlihat seperti jendela terminal sungguhan.
+1. `TerminalView` menggambar jendela terminal — header dengan titik lampu (merah, kuning, hijau) dan judul `title`, lalu area konten monospace.
+2. Semua komponen (`Command`, `Result`, `QuestionStep`, `Option`, `SuccessProcess`) menggunakan struktur yang sama: `flex items-center gap-2` dengan icon `w-4 text-center` sehingga sejajar.
+3. `Result` menampilkan teks output perintah dengan warna abu-abu — cocok untuk menampilkan hasil instalasi atau pesan informasi.
+4. `QuestionStep` menampilkan glyph `?` secara default, atau ceklis `✔` kuning jika `done={true}`. Anak `QuestionStep` di-indent ke kanan.
+5. `Option` menampilkan `>` berwarna cyan jika `selected`, atau `>` transparan jika tidak — teks tetap sejajar.
+6. `Process` menghitung kemajuan berbasis waktu (`duration` dalam detik) lewat `setInterval`, dan menghormati `prefers-reduced-motion`.
+7. Warna terminal selalu gelap di kedua tema (light/dark) agar terlihat seperti jendela terminal sungguhan.
 
 ---
 
@@ -297,5 +231,4 @@ export function Demo() {
 
 - `TerminalView` adalah client component (berisi animasi `Process` yang bergantung pada `window`).
 - `Process` secara otomatis berhenti dan menghormati preferensi gerakan yang dikurangi.
-- Kelas warna `terminal-cyan`, `terminal-green`, `terminal-red`, dan `terminal-blue` juga tersedia sebagai utilitas teks untuk konten di dalam terminal — misalnya `<span className="terminal-cyan">squad add</span>`.
-- Semua komponen tersedia di dalam evaluasi `ComponentPreview` — `import { TerminalView, ... } from "mdxui"` bisa dipakai.
+- Semua komponen tersedia di dalam evaluasi `ComponentPreview` — `import { TerminalView, ... } from "noxkit/common/terminal-view"` bisa dipakai.

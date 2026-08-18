@@ -36,15 +36,14 @@ export function MdxHeader({
         {description ??
           "Connect a provider, protect your routes, and read the current session on the server."}
       </p> */}
-      {created || updated ? (
-        <div className="mt-4 flex flex-col gap-1">
-          <p className="text-xs text-muted-foreground tabular-nums">
-            {created ? `Created : ${created}` : null}
-          </p>
-          <p className="text-xs text-muted-foreground tabular-nums">
-            {updated ? `Last updated ${updated}` : null}
-          </p>
-        </div>
+      {updated ? (
+        <p className="mt-4 text-xs text-muted-foreground tabular-nums">
+          Last updated {updated}
+        </p>
+      ) : created ? (
+        <p className="mt-4 text-xs text-muted-foreground tabular-nums">
+          Created {created}
+        </p>
       ) : null}
     </div>
   )

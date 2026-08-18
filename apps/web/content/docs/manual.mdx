@@ -5,14 +5,55 @@ description: "Memasang noxkit dengan `npm install noxkit` dan menyiapkan dokumen
 
 Cara termudah memakai noxkit adalah dengan satu perintah:
 
+## Instalasi NoxKit Manual Project
+
+Ada dua cara untuk menginstal noxkit:
+
+- Memulai dengan membuat proyek baru [Next.js](https://nextjs.org/docs/app-router) dengan menggunakan `create-next-app`
+- Memulai melalui create proyect di Shadcn UI [Shadcn UI Create](https://ui.shadcn.com/create).
+
+Anda bisa mengunjungi dokumentasi lengkap [Shadcn UI Create](https://ui.shadcn.com/create) untuk memahami lebih lanjut tentang cara menggunakan Shadcn UI Create dan dokumentasi [Next.js](https://nextjs.org/docs/app-router) untuk memahami lebih lanjut tentang cara menggunakan Next.js App Router.
+
 <TabsSection>
-  <TabsContent value="nextjs">
-    <PackageManagerTabs>noxkit@latest</PackageManagerTabs>
-  </TabsContent>
-  <TabsContent value="shadcn">
-    <PackageManagerTabs>noxkit@latest</PackageManagerTabs>
-  </TabsContent>
-</TabsSection>
+
+<TabsContent value="nextjs">
+
+- Instalasi Next.js App Router
+
+<PackageManagerTabs>create-next-app@latest</PackageManagerTabs>
+
+- Pastikan proyek Anda menggunakan Next.js App Router dengan `use recommended defaults`.
+
+<TerminalView title="create-next-app">
+  <Command>npx create-next-app@latest</Command>
+  <QuestionStep done question="What is your project named? › my-app" />
+  <QuestionStep question="Would you like to use the recommended Next.js defaults? › - Use arrow-keys. Return to submit.">
+    <Option selected>Yes, use recommended defaults</Option>
+    <Option>No, reuse previous settings</Option>
+    <Option>No, customize settings</Option>
+  </QuestionStep>
+  <SuccessProcess message="Created my-app" />
+  <Command>cd my-app</Command>
+</TerminalView>
+
+- Instalasi noxkit di dalam proyek yang sudah dibuat.
+
+<PackageManagerTabs install>noxkit@latest</PackageManagerTabs>
+
+- Jalankan printah install noxkit, dengan hasil seperti ini:
+
+<TerminalView title="noxkit">
+  <Command>npm install noxkit@latest</Command>
+  <Result message="added 402 packages, and audited 762 packages in 18s" />
+  <Result message="359 packages are looking for funding" />
+  <Result message="run `npm fund` for details" />
+  <Result message="found 0 vulnerabilities" />
+  <Result message="npm warn allow-scripts 1 package has install scripts not yet covered by allowScripts:" />
+  <Result message="npm warn allow-scripts   unrs-resolver@1.12.2 (postinstall: node postinstall.js)" />
+  <Result message="npm warn allow-scripts" />
+  <Result message="npm warn allow-scripts Run `npm approve-scripts --allow-scripts-pending` to review, or `npm approve-scripts <pkg>` to allow." />
+  <SuccessProcess message="Installed noxkit successfully!" />
+</TerminalView>
 
 Perintah di atas menginstal paket `noxkit`, sehingga Anda langsung bisa memakai import berikut:
 
@@ -20,9 +61,15 @@ Perintah di atas menginstal paket `noxkit`, sehingga Anda langsung bisa memakai 
 - `NoxSidebarMenu` (tipe) dari `noxkit`
 - `NoxRender` dari `noxkit`
 
-## Prasyarat
+</TabsContent>
 
-noxkit dibangun di atas **Next.js (App Router)** dan **Tailwind CSS v4**. Pastikan proyek Anda sudah memakai keduanya. Vite + React juga didukung untuk pemakaian pada level tipe dan komponen.
+<TabsContent value="shadcn">
+
+<PackageManagerTabs install>noxkit@latest</PackageManagerTabs>
+
+</TabsContent>
+
+</TabsSection>
 
 ## Setup
 
@@ -35,7 +82,7 @@ Karena `noxkit` didistribusikan sebagai source TypeScript, tambahkan ke `transpi
 import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["noxkit"],
+transpilePackages: ["noxkit"],
 }
 
 export default nextConfig
@@ -47,12 +94,8 @@ export default nextConfig
 Pastikan `app/globals.css` mengimpor Tailwind dan dependensinya:
 
 <CodeBlock filename="app/globals.css">
-```css
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-@import "noxkit/globals.css";
-```
+  ```css @import "tailwindcss"; @import "tw-animate-css"; @import
+  "shadcn/tailwind.css"; @import "noxkit/globals.css"; ```
 </CodeBlock>
 
 `NoxLayout` mengimpor tema `noxkit` secara otomatis, jadi Anda tidak perlu menambahkan import CSS noxkit secara manual.
@@ -117,9 +160,10 @@ export default async function DocsPage({
   const { docs = [] } = await params
   const segments = docs[0] === "docs" ? docs.slice(1) : docs
 
-  return <NoxRender dir="/docs" slug={segments.join("/")} />
+return <NoxRender dir="/docs" slug={segments.join("/")} />
 }
-```
+
+````
 </CodeBlock>
 
 ### 5. Buat folder konten MDX
@@ -135,7 +179,8 @@ Buat folder `content` dan `content/docs`, lengkap dengan `meta.ts` untuk label d
     order: ["introduction", "manual"],
   },
 })
-```
+````
+
 </CodeBlock>
 
 <CodeBlock filename="content/docs/index.mdx">
@@ -148,7 +193,8 @@ description: "Pengenalan framework"
 # Introduction
 
 Selamat datang di dokumentasi noxkit.
-```
+
+````
 </CodeBlock>
 
 ### 6. Jalankan
@@ -156,7 +202,8 @@ Selamat datang di dokumentasi noxkit.
 <CodeBlock filename="terminal">
 ```bash
 npm run dev
-```
+````
+
 </CodeBlock>
 
 Buka `/docs` — halaman dokumentasi lengkap dengan sidebar, breadcrumb, TOC, dan pagination sudah siap.

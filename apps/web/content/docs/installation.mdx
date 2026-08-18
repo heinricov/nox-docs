@@ -20,12 +20,11 @@ description: "Memasang Nox melalui template atau manual, beserta struktur proyek
 2. Pilih template yang diinginkan — **nextjs**, atau **vite**:
 
    <TerminalView title="npx nox@latest template">
-     <Command status="info">npx nox@latest template</Command>
-     <ResultsProcess>
-       <Question>Pilih template yang diinginkan:</Question>
+     <Command>npx nox@latest template</Command>
+     <QuestionStep question="Pilih template yang diinginkan:">
        <Option selected description="Next.js dengan app router">nextjs</Option>
        <Option>vite</Option>
-     </ResultsProcess>
+     </QuestionStep>
    </TerminalView>
 
 3. Proyek yang diinginkan akan dihasilkan secara otomatis.

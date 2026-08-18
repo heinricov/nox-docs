@@ -10,6 +10,7 @@
       "project-tree",
       "tabs-section",
       "terminal-view",
+      "typography",
     ],
   },
 })

@@ -7,25 +7,29 @@ description: "Komponen untuk menampilkan perintah instalasi paket yang otomatis 
 
 ## Import
 
-<CodeBlock filename="package-manager-tabs.tsx">
-  ```tsx import {PackageManagerTabs} from
-  "mdxui/components/common/package-manager-tabs" ```
-</CodeBlock>
-
-Untuk pemakaian di file MDX, `PackageManagerTabs` sudah terdaftar otomatis di `MdxRenderer`, jadi langsung bisa dipakai tanpa import:
+Di file MDX, `PackageManagerTabs` sudah terdaftar otomatis di `MdxRenderer` — langsung bisa dipakai tanpa import:
 
 <CodeBlock filename="page.mdx">
-  ```mdx
-  <PackageManagerTabs>shadcn@latest init</PackageManagerTabs>
-  ```
+```mdx
+<PackageManagerTabs>shadcn@latest init</PackageManagerTabs>
+```
+</CodeBlock>
+
+Di file React/TSX, import terlebih dahulu:
+
+<CodeBlock inline>
+```tsx
+import { PackageManagerTabs } from "noxkit/common/package-manager-tabs"
+```
 </CodeBlock>
 
 ## Props
 
-| Prop        | Tipe        | Deskripsi                                                      |
-| ----------- | ----------- | -------------------------------------------------------------- |
-| `children`  | `ReactNode` | Teks perintah instalasi (misalnya `zod`, `shadcn@latest init`) |
-| `className` | `string`    | Kelas tambahan untuk pembungkus                                |
+| Prop       | Tipe        | Default | Deskripsi                                    |
+| ---------- | ----------- | ------- | -------------------------------------------- |
+| `children` | `ReactNode` | —       | Teks perintah instalasi (wajib)              |
+| `className`| `string`    | —       | Kelas tambahan untuk pembungkus              |
+| `install`  | `boolean`   | `false` | Paksa gunakan `install`/`add` bukan runner   |
 
 `children` harus berupa teks string berisi perintah yang ingin ditampilkan. Spasi di awal dan akhir akan diabaikan.
 
@@ -33,80 +37,126 @@ Untuk pemakaian di file MDX, `PackageManagerTabs` sudah terdaftar otomatis di `M
 
 Komponen ini menerima teks perintah mentah dan mengubahnya otomatis berdasarkan package manager yang dipilih:
 
-| Perintah mentah      | npm                      | pnpm                          | yarn                          | bun                             |
-| -------------------- | ------------------------ | ----------------------------- | ----------------------------- | ------------------------------- |
-| `zod`                | `npm install zod`        | `pnpm add zod`                | `yarn add zod`                | `bun add zod`                   |
-| `shadcn@latest init` | `npx shadcn@latest init` | `pnpm dlx shadcn@latest init` | `yarn dlx shadcn@latest init` | `bunx --bun shadcn@latest init` |
+### Aturan Format
 
-Perintah yang mengandung `init` secara otomatis menggunakan runner (`npx`, `pnpm dlx`, `yarn dlx`, `bunx --bun`) bukan `install`/`add`.
+| Kondisi | npm | pnpm | yarn | bun |
+| ------- | --- | ---- | ---- | --- |
+| Kata `init` di perintah | `npx ...` | `pnpm dlx ...` | `yarn dlx ...` | `bunx --bun ...` |
+| Format `paket@versi` | `npx ...` | `pnpm dlx ...` | `yarn dlx ...` | `bunx --bun ...` |
+| Perintah lainnya | `npm install ...` | `pnpm add ...` | `yarn add ...` | `bun add ...` |
+| `install={true}` | `npm install ...` | `pnpm add ...` | `yarn add ...` | `bun add ...` |
+
+### Contoh Konversi
+
+| Perintah mentah | npm | pnpm | yarn | bun |
+| --------------- | --- | ---- | ---- | --- |
+| `zod` | `npm install zod` | `pnpm add zod` | `yarn add zod` | `bun add zod` |
+| `react@18.3.1` | `npx react@18.3.1` | `pnpm dlx react@18.3.1` | `yarn dlx react@18.3.1` | `bunx --bun react@18.3.1` |
+| `shadcn@latest init` | `npx shadcn@latest init` | `pnpm dlx shadcn@latest init` | `yarn dlx shadcn@latest init` | `bunx --bun shadcn@latest init` |
 
 ## Fitur
 
 - **Dropdown package manager** — pilih antara npm, pnpm, yarn, atau bun
 - **Salin perintah** — tombol clipboard untuk menyalin perintah yang sudah diformat
 - **Deteksi `init` otomatis** — perintah dengan kata `init` menggunakan runner yang sesuai
-- **Client component** — bisa langsung digunakan di MDX tanpa konfigurasi tambahan
+- **Multi-baris** — bisa menampilkan beberapa perintah sekaligus dengan baris baru
+- **Syntax highlighting** — runner abu-abu, paket cyan, flag amber
 
-## Contoh Penggunaan
+---
 
-### 1. Perintah instalasi sederhana
+## 1. Penggunaan di File MDX
 
-<ComponentPreview fileName="page.mdx">
-  ```mdx
-  <PackageManagerTabs>zod</PackageManagerTabs>
-  ```
-</ComponentPreview>
+### 1.1 Instalasi paket sederhana
 
-<ComponentPreview fileName="page.tsx">
+<PackageManagerTabs>zod</PackageManagerTabs>
 
-```tsx
-import {PackageManagerTabs} from "mdxui"
-
-export function Page() {
-return (
-  <>
-    <PackageManagerTabs>zod</PackageManagerTabs>
-  </>
-)
-}
+<CodeBlock filename="page.mdx">
+```mdx
+<PackageManagerTabs>zod</PackageManagerTabs>
 ```
+</CodeBlock>
 
-</ComponentPreview>
+### 1.2 Perintah init
 
-### 2. Perintah init
+<PackageManagerTabs>shadcn@latest init</PackageManagerTabs>
 
-<ComponentPreview>
-
+<CodeBlock filename="page.mdx">
 ```mdx
 <PackageManagerTabs>shadcn@latest init</PackageManagerTabs>
 ```
+</CodeBlock>
 
+### 1.3 Versi paket tertentu
+
+<PackageManagerTabs>react@18.3.1</PackageManagerTabs>
+
+<CodeBlock filename="page.mdx">
+```mdx
+<PackageManagerTabs>react@18.3.1</PackageManagerTabs>
+```
+</CodeBlock>
+
+### 1.4 Banyak paket sekaligus
+
+<PackageManagerTabs>zod lucide-react clsx tailwind-merge</PackageManagerTabs>
+
+<CodeBlock filename="page.mdx">
+```mdx
+<PackageManagerTabs>zod lucide-react clsx tailwind-merge</PackageManagerTabs>
+```
+</CodeBlock>
+
+### 1.5 Multi-baris
+
+Perintah dengan baris baru akan ditampilkan terpisah dengan `$ ` prefix:
+
+<PackageManagerTabs>{`npx create-next-app@latest
+cd my-app
+npm run dev`}</PackageManagerTabs>
+
+<CodeBlock filename="page.mdx">
+```mdx
+<PackageManagerTabs>{`npx create-next-app@latest
+cd my-app
+npm run dev`}</PackageManagerTabs>
+```
+</CodeBlock>
+
+### 1.6 Paksa install
+
+Gunakan `install={true}` untuk memaksa menggunakan `install`/`add` meskipun perintah mengandung `init`:
+
+<PackageManagerTabs install>{`create-next-app@latest`}</PackageManagerTabs>
+
+<CodeBlock filename="page.mdx">
+```mdx
+<PackageManagerTabs install>create-next-app@latest</PackageManagerTabs>
+```
+</CodeBlock>
+
+---
+
+## 2. Penggunaan di File React / TSX
+
+<ComponentPreview title="PackageManagerTabs di React" fileName="page.tsx">
+```tsx
+import { PackageManagerTabs } from "noxkit/common/package-manager-tabs"
+
+export function Demo() {
+  return (
+    <div className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-8 sm:py-12">
+      <PackageManagerTabs>zod lucide-react</PackageManagerTabs>
+    </div>
+  )
+}
+```
 </ComponentPreview>
 
-### 3. Versi paket tertentu
+---
 
-<ComponentPreview>
-  ```mdx
-  <PackageManagerTabs>react@18.3.1</PackageManagerTabs>
-  ```
-</ComponentPreview>
-
-### 4. Banyak paket sekaligus
-
-<ComponentPreview>
-  ```mdx
-  <PackageManagerTabs>zod lucide-react clsx tailwind-merge</PackageManagerTabs>
-  ```
-</ComponentPreview>
-
-### 5. Perintah dev dependency
-
-<ComponentPreview>
-  <PackageManagerTabs>typescript @types/react</PackageManagerTabs>
-</ComponentPreview>
-
-## Catatan
+## 3. Catatan
 
 - `PackageManagerTabs` adalah client component — gunakan langsung di file MDX tanpa memikirkan "use client".
 - Teks `children` di-trim sebelum diproses, jadi spasi awal/akhir tidak mempengaruhi hasil.
 - Pilihan package manager disimpan di state lokal (per komponen), bukan global.
+- Setiap baris perintah mendapat prefix `$ ` otomatis.

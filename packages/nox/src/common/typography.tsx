@@ -43,7 +43,7 @@ export const mdxTypographyComponents = {
     </a>
   ),
   ul: ({ children }: { children?: React.ReactNode }) => (
-    <ul className="ml-4 list-disc space-y-1">{children}</ul>
+    <ul className="my-3 ml-4 list-disc space-y-1">{children}</ul>
   ),
   ol: ({ children }: { children?: React.ReactNode }) => (
     <ol className="ml-4 list-decimal space-y-1">{children}</ol>
@@ -69,7 +69,7 @@ export const mdxTypographyComponents = {
   strong: ({ children }: { children?: React.ReactNode }) => (
     <strong className="font-semibold text-foreground">{children}</strong>
   ),
-  hr: () => <hr className="my-8 border-border" />,
+  hr: () => <hr className="my-2 border-border" />,
 }
 
 export default mdxTypographyComponents
