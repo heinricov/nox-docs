@@ -13,6 +13,7 @@ import {
   OldFile,
 } from "../common/code-diff"
 import { ComponentPreview } from "../common/component-preview"
+import { MdxPreview } from "../common/mdx-preview"
 import { PackageManagerTabs } from "../common/package-manager-tabs"
 import { File, Folder, ProjectTree } from "../common/project-tree"
 import { TabsSection, TabsContent } from "../common/tabs-section"
@@ -46,6 +47,7 @@ const mdxComponents = {
   OldFile,
   NewFile,
   ComponentPreview,
+  MdxPreview,
   PackageManagerTabs,
   TabsSection,
   TabsContent,

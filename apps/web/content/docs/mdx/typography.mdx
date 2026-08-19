@@ -7,22 +7,22 @@ description: "Komponen tipografi MDX untuk heading, paragraf, daftar, kode, dan 
 
 ## Daftar Komponen
 
-| Komponen     | Elemen HTML | Deskripsi                                    |
-| ------------ | ----------- | -------------------------------------------- |
-| `h1`         | `<h1>`      | Heading level 1 — judul utama                |
-| `h2`         | `<h2>`      | Heading level 2 — dengan auto-generated `id` |
-| `h3`         | `<h3>`      | Heading level 3 — dengan auto-generated `id` |
-| `h4`         | `<h4>`      | Heading level 4 — dengan auto-generated `id` |
-| `p`          | `<p>`       | Paragraf                                     |
-| `a`          | `<a>`       | Tautan dengan underline                      |
-| `ul`         | `<ul>`      | Daftar tak berurutan (bullet)                |
-| `ol`         | `<ol>`      | Daftar berurutan (angka)                     |
-| `li`         | `<li>`      | Item daftar                                  |
-| `code`       | `<code>`    | kode inline                                  |
-| `pre`        | `<pre>`     | Blok kode                                    |
-| `blockquote` | `<blockquote>` | Kutipan                                    |
-| `strong`     | `<strong>`  | Teks tebal                                   |
-| `hr`         | `<hr>`      | Garis pemisah horizontal                     |
+| Komponen     | Elemen HTML    | Deskripsi                                    |
+| ------------ | -------------- | -------------------------------------------- |
+| `h1`         | `<h1>`         | Heading level 1 — judul utama                |
+| `h2`         | `<h2>`         | Heading level 2 — dengan auto-generated `id` |
+| `h3`         | `<h3>`         | Heading level 3 — dengan auto-generated `id` |
+| `h4`         | `<h4>`         | Heading level 4 — dengan auto-generated `id` |
+| `p`          | `<p>`          | Paragraf                                     |
+| `a`          | `<a>`          | Tautan dengan underline                      |
+| `ul`         | `<ul>`         | Daftar tak berurutan (bullet)                |
+| `ol`         | `<ol>`         | Daftar berurutan (angka)                     |
+| `li`         | `<li>`         | Item daftar                                  |
+| `code`       | `<code>`       | kode inline                                  |
+| `pre`        | `<pre>`        | Blok kode                                    |
+| `blockquote` | `<blockquote>` | Kutipan                                      |
+| `strong`     | `<strong>`     | Teks tebal                                   |
+| `hr`         | `<hr>`         | Garis pemisah horizontal                     |
 
 ## Gaya Default
 
@@ -30,44 +30,14 @@ description: "Komponen tipografi MDX untuk heading, paragraf, daftar, kode, dan 
 
 Heading memiliki margin atas yang berbeda untuk setiap level:
 
-| Level | Class                     | Margin |
-| ----- | ------------------------- | ------ |
-| `h1`  | `mt-2 text-2xl font-bold` | 0.5rem |
-| `h2`  | `mt-8 text-xl font-semibold` | 2rem |
-| `h3`  | `mt-6 text-lg font-semibold` | 1.5rem |
+| Level | Class                          | Margin  |
+| ----- | ------------------------------ | ------- |
+| `h1`  | `mt-2 text-2xl font-bold`      | 0.5rem  |
+| `h2`  | `mt-8 text-xl font-semibold`   | 2rem    |
+| `h3`  | `mt-6 text-lg font-semibold`   | 1.5rem  |
 | `h4`  | `mt-5 text-base font-semibold` | 1.25rem |
 
-Heading `h2`, `h3`, dan `h4` otomatis mendapat `id` dari konten teksnya (melalui `slugify`), sehingga bisa di-link langsung.
-
-### Paragraf
-
-Paragraf menggunakan ukuran font `15px` dengan line-height `relaxed` dan opacity `80%`.
-
-### Daftar
-
-- `ul` dan `ol` memiliki `ml-4` (margin kiri) dan `space-y-1` antar item
-- Marker list menggunakan warna `muted-foreground`
-
-### Kode
-
-- **Inline** (`code`): background `muted/50`, border, rounded, monospace `13px`
-- **Block** (`pre`): border, background `background`, padding `4`, monospace `xs`
-
-### Kutipan
-
-Blockquote memiliki border kiri berwarna primary dan teks italic.
-
-### Pemisah
-
-`hr` memiliki margin atas dan bawah `my-2` (0.5rem).
-
----
-
-## 1. Penggunaan di File MDX
-
-Semua komponen sudah terdaftar otomatis. Berikut contoh penggunaannya:
-
-### 1.1 Heading
+Contoh penggunaan heading:
 
 ```mdx
 # Heading 1
@@ -79,13 +49,20 @@ Semua komponen sudah terdaftar otomatis. Berikut contoh penggunaannya:
 #### Heading 4
 ```
 
-### 1.2 Paragraf dan Tautan
+Heading `h2`, `h3`, dan `h4` otomatis mendapat `id` dari konten teksnya (melalui `slugify`), sehingga bisa di-link langsung.
+
+### Paragraf
+
+Paragraf menggunakan ukuran font `15px` dengan line-height `relaxed` dan opacity `80%`.
 
 ```mdx
-Ini adalah paragraf dengan **teks tebal** dan [tautan](https://example.com).
+Paragraf menggunakan ukuran font `15px` dengan line-height `relaxed` dan opacity `80%`.
 ```
 
-### 1.3 Daftar
+### Daftar
+
+- `ul` dan `ol` memiliki `ml-4` (margin kiri) dan `space-y-1` antar item
+- Marker list menggunakan warna `muted-foreground`
 
 ```mdx
 - Item 1
@@ -97,7 +74,10 @@ Ini adalah paragraf dengan **teks tebal** dan [tautan](https://example.com).
 3. Langkah 3
 ```
 
-### 1.4 Kode
+### Kode
+
+- **Inline** (`code`): background `muted/50`, border, rounded, monospace `13px`
+- **Block** (`pre`): border, background `background`, padding `4`, monospace `xs`
 
 ```mdx
 Gunakan `useState` untuk state management.
@@ -107,13 +87,17 @@ const [count, setCount] = useState(0)
 ```
 ```
 
-### 1.5 Kutipan
+### Kutipan
+
+Blockquote memiliki border kiri berwarna primary dan teks italic.
 
 ```mdx
 > Ini adalah kutipan.
 ```
 
-### 1.6 Pemisah
+### Pemisah
+
+`hr` memiliki margin atas dan bawah `my-2` (0.5rem).
 
 ```mdx
 ---

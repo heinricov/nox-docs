@@ -28,6 +28,8 @@ import {
 type ComponentPreviewProps = {
   title?: string
   fileName?: string
+  lang?: string
+  source?: string
   children: ReactNode
   className?: string
 }
@@ -209,9 +211,66 @@ function getCode(children: ReactNode) {
   }
 }
 
+function nodeToMarkdown(node: ReactNode): string {
+  if (node === null || node === undefined || typeof node === "boolean") return ""
+  if (typeof node === "string" || typeof node === "number") return String(node)
+  if (Array.isArray(node)) return node.map(nodeToMarkdown).join("")
+  const resolved = resolveLazyNode(node)
+  if (resolved !== node) return nodeToMarkdown(resolved)
+  if (!isValidElement(node)) return ""
+  const type = typeof node.type === "string" ? node.type : ""
+  const props = node.props as { children?: ReactNode; href?: string }
+  const childText = nodeToMarkdown(props.children)
+
+  switch (type) {
+    case "h1":
+      return `# ${childText}\n\n`
+    case "h2":
+      return `## ${childText}\n\n`
+    case "h3":
+      return `### ${childText}\n\n`
+    case "h4":
+      return `#### ${childText}\n\n`
+    case "h5":
+      return `##### ${childText}\n\n`
+    case "h6":
+      return `###### ${childText}\n\n`
+    case "p":
+      return `${childText}\n\n`
+    case "a":
+      return `[${childText}](${props.href ?? ""})`
+    case "strong":
+      return `**${childText}**`
+    case "em":
+      return `*${childText}*`
+    case "code":
+      return `\`${childText}\``
+    case "ul":
+      return nodeToMarkdown(props.children)
+    case "ol":
+      return nodeToMarkdown(props.children)
+    case "li":
+      return `- ${childText}\n`
+    case "blockquote":
+      return childText
+        .split("\n")
+        .filter((l) => l.trim())
+        .map((l) => `> ${l}`)
+        .join("\n") + "\n\n"
+    case "hr":
+      return "---\n\n"
+    case "pre":
+      return nodeToMarkdown(props.children)
+    default:
+      return childText
+  }
+}
+
 export function ComponentPreview({
   title,
   fileName,
+  lang,
+  source,
   children,
   className,
 }: ComponentPreviewProps) {
@@ -221,10 +280,18 @@ export function ComponentPreview({
   const [expanded, setExpanded] = useState(false)
   const [previewNode, setPreviewNode] = useState<ReactNode>(null)
   const [evalError, setEvalError] = useState<string | null>(null)
+  const isMdx = lang === "mdx"
   const codeBlock = useMemo(() => extractCodeBlock(children), [children])
   const rawCode = useMemo(
-    () => (codeBlock ? codeBlock.source : getCode(children)),
-    [children, codeBlock]
+    () =>
+      source
+        ? source.trim()
+        : isMdx
+          ? nodeToMarkdown(children).trim()
+          : codeBlock
+            ? codeBlock.source
+            : getCode(children),
+    [children, codeBlock, isMdx, source]
   )
   const [code, setCode] = useState(rawCode)
   const [highlightedLines, setHighlightedLines] = useState<HighlightToken[][]>(
@@ -233,7 +300,7 @@ export function ComponentPreview({
   const language = resolveCodeLanguage({
     filename: fileName,
     text: rawCode,
-    dataLanguage: codeBlock?.language,
+    dataLanguage: isMdx ? "mdx" : codeBlock?.language,
   })
   const lines = code.split("\n")
   const isLongCode = mounted && lines.length > 10
@@ -245,7 +312,7 @@ export function ComponentPreview({
   useEffect(() => {
     setPreviewNode(null)
     setEvalError(null)
-    if (!codeBlock) return
+    if (isMdx || !codeBlock) return
     let active = true
     evaluateComponent(codeBlock.source)
       .then((Component) => {
@@ -261,7 +328,7 @@ export function ComponentPreview({
     return () => {
       active = false
     }
-  }, [codeBlock])
+  }, [codeBlock, isMdx])
 
   useEffect(() => {
     let active = true
@@ -412,7 +479,11 @@ export function ComponentPreview({
           role="tabpanel"
           className="flex min-h-32 items-center justify-center p-8"
         >
-          {codeBlock ? (
+          {isMdx ? (
+            <div className="flex w-full flex-col gap-5 text-[15px]/relaxed text-foreground/80">
+              {children}
+            </div>
+          ) : codeBlock ? (
             evalError ? (
               <pre className="w-full overflow-x-auto rounded-md border border-destructive/40 bg-destructive/5 p-4 text-left text-xs leading-5 text-destructive">
                 {evalError}

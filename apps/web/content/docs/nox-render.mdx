@@ -1,23 +1,315 @@
 ---
 title: "NoxRender"
-description: "Layout halaman dokumentasi MDX: breadcrumb, header, renderer, TOC, dan pagination"
+description: "Render halaman dokumentasi MDX: breadcrumb, header, konten, pagination, dan table of contents"
 ---
 
+`NoxRender` adalah komponen **server** yang merender satu halaman dokumentasi MDX secara lengkap — mulai dari breadcrumb, judul, konten, navigasi prev/next, hingga daftar isi (TOC) di samping kanan.
+
+Cukup berikan `dir` dan `slug`, dan komponen ini akan:
+
+1. Membaca file `.mdx` dari sistem file.
+2. Mengekstrak frontmatter (`title`, `description`) dan heading.
+3. Mengompilasi MDX ke React component.
+4. Membangun breadcrumb, pagination, dan TOC secara otomatis.
+
+---
+
+## Instalasi
+
+Buat file catch-all route di `app/[...docs]/page.tsx`:
+
 <CodeBlock filename="app/[...docs]/page.tsx">
-      ```tsx
-      import { NoxRender } from "noxkit"
 
-      export default async function DocsPage({
-        params,
-      }: {
-        params: Promise<{ docs?: string[] }>
-      }) {
-        const { docs = [] } = await params
-        const segments = docs[0] === "docs" ? docs.slice(1) : docs
+    ```tsx
+    import { NoxRender } from "noxkit"
 
-        return <NoxRender dir="/docs" slug={segments.join("/")} />
-      }
+    export default async function DocsPage({
+      params,
+    }: {
+      params: Promise<{ docs?: string[] }>
+    }) {
+      const { docs = [] } = await params
+      const segments = docs[0] === "docs" ? docs.slice(1) : docs
 
-      ```
+    return <NoxRender dir="/docs" slug={segments.join("/")} />
+    }
+
+    ```
 
 </CodeBlock>
+
+---
+
+## Props
+
+| Prop         | Tipe                                  | Default   | Wajib | Deskripsi                                       |
+| ------------ | ------------------------------------- | --------- | ----- | ----------------------------------------------- |
+| `dir`        | `string`                              | `"/docs"` | Tidak | Folder konten di dalam `content/` root.         |
+| `slug`       | `string`                              | `""`      | Tidak | Path halaman — dipetakan ke file `.mdx`.        |
+| `components` | `Record<string, React.ComponentType>` | —         | Tidak | Komponen MDX kustom untuk di-merge ke renderer. |
+
+---
+
+## Props Detail
+
+### `dir`
+
+Menentukan folder konten mana yang dibaca. Folder ini harus berisi file `.mdx` dan berada di dalam direktori `content/` di root proyek.
+
+**Cara kerja content root:**
+
+`NoxRender` mencari folder `content/` di dua lokasi (dalam urutan prioritas):
+
+1. `<project-root>/content/`
+2. `<project-root>/apps/docs/content/`
+
+Folder pertama yang ditemukan digunakan sebagai content root. Lalu `dir` menunjuk ke subfolder di dalamnya.
+
+**Contoh struktur file:**
+
+<ProjectTree name="content" open>
+  <Folder name="docs" open>
+    <File name="index.mdx" />
+    <File name="installation.mdx" />
+    <Folder name="components" open>
+      <File name="index.mdx" />
+      <File name="button.mdx" />
+    </Folder>
+  </Folder>
+</ProjectTree>
+
+Dengan `dir="/docs"`, file-file di atas akan terbaca.
+
+<CodeBlock filename="app/[...docs]/page.tsx" highlightText={[[11, 'dir="/docs"']]}>
+
+    ```tsx
+    import { NoxRender } from "noxkit"
+
+    export default async function DocsPage({
+      params,
+    }: {
+      params: Promise<{ docs?: string[] }>
+    }) {
+      const { docs = [] } = await params
+      const segments = docs[0] === "docs" ? docs.slice(1) : docs
+
+      return <NoxRender dir="/docs" slug={segments.join("/")} />
+    }
+    ```
+
+</CodeBlock>
+
+> Jika `dir` tidak diisi, default-nya adalah `"/docs"`.
+
+---
+
+### `slug`
+
+Path halaman yang dipetakan ke file `.mdx` di dalam folder `dir`. Dipisah dengan `/`.
+
+| `slug`                | File yang Dibaca              |
+| --------------------- | ----------------------------- |
+| `""` (kosong)         | `<dir>/index.mdx`             |
+| `"installation"`      | `<dir>/installation.mdx`      |
+| `"components/button"` | `<dir>/components/button.mdx` |
+
+**Fallback:** Jika file `<slug>.mdx` tidak ditemukan, `NoxRender` mencoba `<slug>/index.mdx`. Ini memungkinkan URL seperti `/docs/components` yang resolve ke `components/index.mdx`.
+
+<CodeBlock filename="app/[...docs]/page.tsx" highlightText={[[14, 'slug={segments.join("/")}']]}>
+
+    ```tsx
+    import { NoxRender } from "noxkit"
+    import { DemoButton } from "@/components/examples/demo-button"
+    import { PlainNotice } from "@/components/examples/plain-notice"
+
+    const mdxComponents = {
+      DemoButton,
+      PlainNotice,
+    }
+
+    export default async function DocsPage({
+      params,
+    }: {
+      params: Promise<{ docs?: string[] }>
+    }) {
+      const { docs = [] } = await params
+      const segments = docs[0] === "docs" ? docs.slice(1) : docs
+
+      return (
+        <NoxRender
+          dir="/docs"
+          slug={segments.join("/")}
+          components={mdxComponents}
+        />
+      )
+    }
+    ```
+
+</CodeBlock>
+
+**Bagaimana cara kerjanya:**
+
+URL seperti `/docs/getting-started/installation` akan:
+
+1. Dipotong menjadi `["getting-started", "installation"]`
+2. Digabung: `slug = "getting-started/installation"`
+3. File yang dibaca: `content/docs/getting-started/installation.mdx`
+
+---
+
+### `components`
+
+Daftar komponen kustom yang di-merge ke dalam renderer MDX. Berguna untuk menambahkan komponen baru atau meng-override komponen bawaan.
+
+<CodeBlock filename="app/[...docs]/page.tsx">
+
+    ```tsx
+    import { NoxRender } from "noxkit"
+    import { MyCustomCard } from "@/components/my-custom-card"
+
+    const mdxComponents = {
+      MyCustomCard,
+    }
+
+    export default async function DocsPage({ params }) {
+      const { docs = [] } = await params
+      const segments = docs[0] === "docs" ? docs.slice(1) : docs
+
+      return (
+        <NoxRender
+          dir="/docs"
+          slug={segments.join("/")}
+          components={mdxComponents}
+        />
+      )
+    }
+    ```
+
+</CodeBlock>
+
+Setelah didaftarkan, komponen bisa langsung dipakai di file MDX:
+
+<CodeBlock lang="mdx">
+
+    ```mdx
+    # Halaman Saya
+
+    <MyCustomCard title="Halo" />
+    ```
+
+</CodeBlock>
+
+**Komponen bawaan yang sudah terdaftar:**
+
+Komponen berikut sudah tersedia secara otomatis — tidak perlu didaftarkan ulang:
+
+| Komponen                                               | Deskripsi                                              |
+| ------------------------------------------------------ | ------------------------------------------------------ |
+| `CodeBlock`                                            | Blok kode dengan syntax highlighting dan tombol salin. |
+| `CodeDiff`, `OldCode`, `NewCode`, `OldFile`, `NewFile` | Perbandingan kode (diff).                              |
+| `ComponentPreview`                                     | Preview komponen + source code dalam satu kartu.       |
+| `MdxPreview`                                           | Preview konten MDX dari source string.                 |
+| `PackageManagerTabs`                                   | Tab perintah install (npm, pnpm, yarn, bun).           |
+| `TabsSection`, `TabsContent`                           | Tab section interaktif.                                |
+| `ProjectTree`, `Folder`, `File`                        | Struktur proyek / file tree.                           |
+| `TerminalView`, `Command`, `Process`, `Result`, dll.   | Tampilan terminal interaktif.                          |
+
+---
+
+## Penanganan Error
+
+### Halaman Tidak Ditemukan (404)
+
+Jika file `.mdx` tidak ditemukan (termasuk fallback ke `index.mdx`), `NoxRender` akan memanggil `notFound()` dari Next.js — yang menampilkan halaman 404 bawaan aplikasi kamu.
+
+### Redirect Otomatis
+
+Jika `slug` kosong (akses ke `/docs`) dan file `index.mdx` tidak ada, `NoxRender` akan redirect ke halaman pertama di navigasi sidebar secara otomatis.
+
+---
+
+## Struktur Halaman
+
+`NoxRender` merender halaman dengan struktur berikut:
+
+```
++-----------------------------------------------+
+|  Breadcrumb  (Home > Docs > Components)       |
++-----------------------------------------------+
+|  Header  (Judul + tanggal)                    |
++-------------------------------------+---------+
+|                                     |         |
+|  Konten MDX                         |  TOC    |
+|  (dikompilasi dari file .mdx)       |         |
+|                                     |         |
++-------------------------------------+         |
+|  Pagination  (Prev  |  Next)       |         |
+|                                     |         |
++-------------------------------------+---------+
+```
+
+- **Breadcrumb** — jalur navigasi dari path URL, dihasilkan otomatis.
+- **Header** — judul (`title`) dan deskripsi dari frontmatter, plus tanggal `createdAt`/`updatedAt` jika ada di stat file.
+- **Konten MDX** — hasil kompilasi file `.mdx` dengan semua komponen bawaan + kustom.
+- **Pagination** — navigasi prev/next berdasarkan urutan di sidebar.
+- **TOC** — daftar isi sticky di kanan (hanya tampil jika halaman punya heading h2–h4). Tersembunyi di layar kecil.
+
+---
+
+## Frontmatter
+
+File MDX dapat mendefinisikan frontmatter di bagian atas:
+
+<CodeBlock lang="mdx" filename="content/docs/hello.mdx">
+
+    ```mdx
+    ---
+    title: "Judul Halaman"
+    description: "Deskripsi singkat halaman ini"
+    ---
+
+    Konten halaman dimulai di sini...
+
+    ```
+
+</CodeBlock>
+
+| Field         | Digunakan Untuk               |
+| ------------- | ----------------------------- |
+| `title`       | Judul di header halaman (h1). |
+| `description` | Deskripsi di bawah judul.     |
+
+---
+
+## Heading and TOC
+
+Heading dengan level 2–4 (`##`, `###`, `####`) otomatis diekstrak dan ditampilkan di panel **TOC** (Table of Contents) di sisi kanan halaman.
+
+- Heading di dalam blok kode **tidak** diikutsertakan.
+- Setiap heading mendapat `id` otomatis (slugified) sehingga bisa di-link langsung (misal `/docs/components#variants`).
+
+---
+
+## Membuat File MDX
+
+### Struktur File yang Direkomendasikan
+
+<ProjectTree name="content">
+  <Folder name="docs" open>
+    <File name="index.mdx" noted="halaman utama (akses: /docs)" />
+    <Folder name="getting-started" open>
+      <File
+        name="index.mdx"
+        noted="halaman grup (akses: /docs/getting-started)"
+      />
+      <File
+        name="installation.mdx"
+        noted="halaman biasa (akses: /docs/getting-started/installation)"
+      />
+    </Folder>
+    <Folder name="components" open>
+      <File name="index.mdx" />
+      <File name="button.mdx" />
+    </Folder>
+  </Folder>
+</ProjectTree>
