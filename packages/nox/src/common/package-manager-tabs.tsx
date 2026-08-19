@@ -2,6 +2,8 @@
 
 import * as React from "react"
 import { Check, ChevronDown, Clipboard, Terminal } from "lucide-react"
+import { SiNpm, SiPnpm, SiYarn } from "react-icons/si"
+import { TbBrandBunpo } from "react-icons/tb"
 
 import {
   DropdownMenu,
@@ -16,11 +18,11 @@ type PackageManager = "npm" | "pnpm" | "yarn" | "bun"
 
 const packageManagers: PackageManager[] = ["npm", "pnpm", "yarn", "bun"]
 
-const managerIcons: Record<PackageManager, string> = {
-  npm: "📦",
-  pnpm: "pnpm",
-  yarn: "🧶",
-  bun: "🥟",
+const managerIcons: Record<PackageManager, React.ReactNode> = {
+  npm: <SiNpm />,
+  pnpm: <SiPnpm />,
+  yarn: <SiYarn />,
+  bun: <TbBrandBunpo />,
 }
 
 function formatCommand(
@@ -278,10 +280,16 @@ export function PackageManagerTabs({
             <DropdownMenu>
               <DropdownMenuTrigger
                 aria-label={`Package manager: ${manager}`}
-                className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-border/50 px-3 text-sm font-medium text-foreground/80 transition-all duration-150 hover:border-border hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+                className="inline-flex h-8 items-center gap-1.5 rounded-lg px-3 text-sm font-medium text-foreground/80 transition-all duration-150 hover:border-border hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
               >
-                <span className="hidden sm:inline">{manager}</span>
-                <span className="sm:hidden">{manager.slice(0, 2)}</span>
+                <span className="hidden items-center gap-1.5 sm:inline-flex">
+                  {managerIcons[manager]}
+                  {manager}
+                </span>
+                <span className="flex items-center gap-1.5 sm:hidden">
+                  {managerIcons[manager]}
+                  {manager}
+                </span>
                 <ChevronDown
                   aria-hidden="true"
                   className="size-3.5 text-muted-foreground"
@@ -298,7 +306,10 @@ export function PackageManagerTabs({
                         manager === option && "bg-accent/50"
                       )}
                     >
-                      <span className="flex-1 font-medium">{option}</span>
+                      <span className="flex items-center gap-2">
+                        {managerIcons[option]}
+                        {option}
+                      </span>
                       {manager === option && (
                         <Check
                           aria-hidden="true"
