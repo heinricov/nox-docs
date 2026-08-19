@@ -61,6 +61,10 @@ const sidebarMenu: NoxSidebarMenu[] = [
         url: "/docs/installation",
       },
       {
+        title: "Templates",
+        url: "/docs/templates",
+      },
+      {
         title: "Nox Layout",
         url: "/docs/nox-layout",
       },

@@ -24,7 +24,7 @@ export function Hero() {
           Build your documentation application in minutes.
         </p>
         <div className="mt-12 flex items-center justify-center gap-4">
-          <Link href="/docs/manual">
+          <Link href="/docs">
             <Button className="rounded-full" size="lg">
               Get Started <ArrowUpRight className="h-5! w-5!" />
             </Button>

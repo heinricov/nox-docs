@@ -1,0 +1,243 @@
+---
+title: "Templates"
+description: "NoxKit Menyediakan beberapa templates untuk memudah instalasi proyek Anda"
+---
+
+Anda bisa langsung menggunakan NoxKit dengan Templates yang disediakan.
+
+Ada dua Templates yang disediakan oleh NoxKit:
+
+- Next.Js App Router
+- Shadcn UI Template
+
+<TabsSection>
+
+<TabsContent value="nextjs">
+    
+Structure Project Next.Js App Router:
+
+<ProjectTree name="nextjs structure project">
+  <Folder name="my-app" open>
+    <Folder name=".next" />
+    <Folder name="app">
+      <Folder name="[...docs]" open>
+        <File name="page.tsx" />
+      </Folder>
+      <File name="page.tsx" />
+      <File name="layout.tsx" />
+    </Folder>
+    <Folder name="content">
+      <Folder name="docs">
+        <File name="index.mdx" />
+      </Folder>
+    </Folder>
+    <Folder name="node_modules" />
+    <Folder name="public" />
+    <File name="eslint.config.mjs" />
+    <File name="next.config.ts" />
+    <File name="package-lock.json" />
+    <File name="package.json" />
+  </Folder>
+</ProjectTree>
+
+</TabsContent>
+
+<TabsContent value="shadcn">
+
+Structure Project Shadcn UI Template:
+
+<ProjectTree name="shadcn structure project">
+  <Folder name="my-app" open>
+    <Folder name=".next" />
+    <Folder name="app">
+      <Folder name="[...docs]" open>
+        <File name="page.tsx" />
+      </Folder>
+      <File name="page.tsx" />
+      <File name="layout.tsx" />
+    </Folder>
+    <Folder name="content">
+      <Folder name="docs">
+        <File name="index.mdx" />
+      </Folder>
+    </Folder>
+    <Folder name="components">
+      <Folder name="ui">
+        <File name="button.tsx" />
+      </Folder>
+      <File name="theme-provider.tsx" />
+    </Folder>
+    <Folder name="node_modules" />
+    <Folder name="public" />
+    <File name="components.json" />
+    <File name="eslint.config.mjs" />
+    <File name="next.config.ts" />
+    <File name="package-lock.json" />
+    <File name="package.json" />
+  </Folder>
+</ProjectTree>
+
+</TabsContent>
+
+</TabsSection>
+
+## Instalasi noxkit dengan Templates
+
+- Instalasi noxkit dengan Templates:
+
+<PackageManagerTabs>create-app-noxkit@latest</PackageManagerTabs>
+
+- Jalankan printah install noxkit, dengan hasil seperti ini:
+
+<TabsSection>
+  <TabsContent value="Next.Js App Router">
+
+    <TerminalView title="noxkit templates">
+        <Command>npx create-app-noxkit@latest</Command>
+        <QuestionStep question="What is your project named? › ..." />
+    </TerminalView>
+    masukan nama proyek Anda, misalnya "my-app"
+    <TerminalView title="noxkit templates">
+        <Command>npx create-app-noxkit@latest</Command>
+        <QuestionStep done question="What is your project named? › my-app" />
+        <QuestionStep question="Select a template? › - Use arrow-keys. Return to submit.">
+            <Option selected>Next.Js App Router</Option>
+            <Option>Next.Js App Router + Shadcn UI Template</Option>
+        </QuestionStep>
+    </TerminalView>
+    pilih template apa yang anda inginkan, jika anda ingin menggunakan Next.Js App Router, pilih "Next.Js App Router".
+    <TerminalView title="noxkit templates">
+        <Command>npx create-app-noxkit@latest</Command>
+        <QuestionStep done question="What is your project named? › my-app" />
+        <QuestionStep done question="Select a template? › Next.Js App Router " />
+        <SuccessProcess message="added 42 packages in 3s" />
+        <SuccessProcess message="created next.js app router template project" />
+        <Result message="cd my-app and start developing" />
+    </TerminalView>
+    Jika proses create-app-noxkit selesai dengan menggunkan template Next.Js App Router, Structure Project Anda akan seperti ini:
+
+    <ProjectTree name="nextjs structure project">
+        <Folder name="my-app" open>
+            <Folder name=".next" />
+            <Folder name="app">
+            <Folder name="[...docs]" open>
+                <File name="page.tsx" />
+            </Folder>
+            <File name="page.tsx" />
+            <File name="layout.tsx" />
+            </Folder>
+            <Folder name="content">
+            <Folder name="docs">
+                <File name="index.mdx" />
+            </Folder>
+            </Folder>
+            <Folder name="node_modules" />
+            <Folder name="public" />
+            <File name="eslint.config.mjs" />
+            <File name="next.config.ts" />
+            <File name="package-lock.json" />
+            <File name="package.json" />
+        </Folder>
+    </ProjectTree>
+
+  </TabsContent>
+
+  <TabsContent value="Shadcn UI Template">
+
+<TerminalView title="noxkit templates">
+  <Command>npx create-app-noxkit@latest</Command>
+  <QuestionStep question="What is your project named? › ..." />
+</TerminalView>
+masukan nama proyek Anda, misalnya "my-app"
+<TerminalView title="noxkit templates">
+  <Command>npx create-app-noxkit@latest</Command>
+  <QuestionStep done question="What is your project named? › my-app" />
+  <QuestionStep question="Select a template? › - Use arrow-keys. Return to submit.">
+    <Option>Next.Js App Router</Option>
+    <Option selected>Next.Js App Router + Shadcn UI Template</Option>
+  </QuestionStep>
+</TerminalView>
+pilih template apa yang anda inginkan, jika anda ingin menggunakan Next.Js App
+Router + Shadcn UI Template, pilih "Next.Js App Router + Shadcn UI Template".
+<TerminalView title="noxkit templates">
+  <Command>npx create-app-noxkit@latest</Command>
+  <QuestionStep done question="What is your project named? › my-app" />
+  <QuestionStep
+    done
+    question="Select a template? › Next.Js App Router + Shadcn UI Template "
+  />
+  <QuestionStep question="What is your preset shadcn ui? › enter use default preset (b1tMcUbQm) " />
+  <SuccessProcess message="added 42 packages in 3s" />
+  <SuccessProcess message="created next.js app router template project" />
+  <Result message="cd my-app and start developing" />
+</TerminalView>
+masukan preset dari shadcn ui create, atau select default preset yang digunakan
+adalah (b1tMcUbQm), anda bisa masuk ke [Dokumentasi Shadcn UI
+Create](https://ui.shadcn.com/create) untuk membuat preset baru.
+<TerminalView title="noxkit templates">
+  <Command>npx create-app-noxkit@latest</Command>
+  <QuestionStep done question="What is your project named? › my-app" />
+  <QuestionStep
+    done
+    question="Select a template? › Next.Js App Router + Shadcn UI Template "
+  />
+  <QuestionStep done question="What is your preset shadcn ui? › b1tMcUbQm " />
+  <SuccessProcess message="added 42 packages in 3s" />
+  <SuccessProcess message="created next.js app + shadcn ui template project" />
+  <Result message="cd my-app and start developing" />
+</TerminalView>
+
+Jika proses create-app-noxkit selesai dengan menggunkan template Next.Js App Router + Shadcn UI Template, Structure Project Anda akan seperti ini:
+
+    <ProjectTree name="shadcn structure project">
+    <Folder name="my-app" open>
+        <Folder name=".next" />
+        <Folder name="app">
+        <Folder name="[...docs]" open>
+            <File name="page.tsx" />
+        </Folder>
+        <File name="page.tsx" />
+        <File name="layout.tsx" />
+        </Folder>
+        <Folder name="content">
+        <Folder name="docs">
+            <File name="index.mdx" />
+        </Folder>
+        </Folder>
+        <Folder name="components">
+        <Folder name="ui">
+            <File name="button.tsx" />
+        </Folder>
+        <File name="theme-provider.tsx" />
+        </Folder>
+        <Folder name="node_modules" />
+        <Folder name="public" />
+        <File name="components.json" />
+        <File name="eslint.config.mjs" />
+        <File name="next.config.ts" />
+        <File name="package-lock.json" />
+        <File name="package.json" />
+    </Folder>
+    </ProjectTree>
+
+  </TabsContent>
+
+</TabsSection>
+
+## CLI Commands
+
+- anda bisa menggunakan perintah berikut untuk membuat proyek Anda:
+
+<PackageManagerTabs>
+  {`create-app-noxkit@latest --template nextjskit`}
+</PackageManagerTabs>
+
+printah ini akan membuat proyek Anda dengan template Next.Js App Router.
+
+- anda bisa menggunakan perintah berikut untuk membuat proyek Anda:
+
+<PackageManagerTabs>
+  {`create-app-noxkit@latest --template shadcnkit --preset b1tMcUbQm`}
+</PackageManagerTabs>
+
+printah ini akan membuat proyek Anda dengan template Next.Js App Router + Shadcn UI Template.
